@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="1. 栈与队列的定义及特点 栈与队列是操作受限的线性表。  栈 限定在表尾进行插入删除操作的线性表。 表尾：栈顶top 表头：栈底bottom  后进先出。  队列 限定在表的一端插入，另一端删除元素的线性表。 插入一端为队尾 rear 删除的一端为队头 front  先进先出。  2.栈的顺序存储123456#define MaxSize 50typedef struct&amp;#123;    El">
+<meta property="og:type" content="article">
+<meta property="og:title" content="栈|基础">
+<meta property="og:url" content="https://www.fallenfrost.xyz/2022/07/27/%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="Elmando">
+<meta property="og:description" content="1. 栈与队列的定义及特点 栈与队列是操作受限的线性表。  栈 限定在表尾进行插入删除操作的线性表。 表尾：栈顶top 表头：栈底bottom  后进先出。  队列 限定在表的一端插入，另一端删除元素的线性表。 插入一端为队尾 rear 删除的一端为队头 front  先进先出。  2.栈的顺序存储123456#define MaxSize 50typedef struct&amp;#123;    El">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic.leetcode-cn.com/691e2a8cca120acb18e77379c7cd7eec3835c8c102d1c699303f50accd1e09df-%E5%87%BA%E5%85%A5%E6%A0%88.gif">
+<meta property="og:image" content="https://pic.leetcode-cn.com/44b3a817f0880f168de9574075b61bd204fdc77748d4e04448603d6956c6428a-%E5%87%BA%E5%85%A5%E9%98%9F.gif">
+<meta property="article:published_time" content="2022-07-27T14:47:34.000Z">
+<meta property="article:modified_time" content="2022-07-29T07:51:32.539Z">
+<meta property="article:author" content="Elmando">
+<meta property="article:tag" content="栈">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic.leetcode-cn.com/691e2a8cca120acb18e77379c7cd7eec3835c8c102d1c699303f50accd1e09df-%E5%87%BA%E5%85%A5%E6%A0%88.gif">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>栈|基础</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/tags/">tags</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2022/07/27/%E5%85%B1%E4%BA%A7%E5%85%9A%E5%AE%A3%E8%A8%80%E8%8B%B1%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2022/07/26/wordLearn20220726/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.fallenfrost.xyz/2022/07/27/%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.fallenfrost.xyz/2022/07/27/%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/&text=栈|基础"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.fallenfrost.xyz/2022/07/27/%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/&title=栈|基础"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.fallenfrost.xyz/2022/07/27/%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/&is_video=false&description=栈|基础"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=栈|基础&body=Check out this article: https://www.fallenfrost.xyz/2022/07/27/%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.fallenfrost.xyz/2022/07/27/%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/&title=栈|基础"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.fallenfrost.xyz/2022/07/27/%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/&title=栈|基础"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.fallenfrost.xyz/2022/07/27/%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/&title=栈|基础"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.fallenfrost.xyz/2022/07/27/%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/&title=栈|基础"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.fallenfrost.xyz/2022/07/27/%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/&name=栈|基础&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.fallenfrost.xyz/2022/07/27/%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/&t=栈|基础"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A0%88%E4%B8%8E%E9%98%9F%E5%88%97%E7%9A%84%E5%AE%9A%E4%B9%89%E5%8F%8A%E7%89%B9%E7%82%B9"><span class="toc-number">1.</span> <span class="toc-text">1. 栈与队列的定义及特点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%88"><span class="toc-number">1.1.</span> <span class="toc-text">栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%9F%E5%88%97"><span class="toc-number">1.2.</span> <span class="toc-text">队列</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%A0%88%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8"><span class="toc-number">2.</span> <span class="toc-text">2.栈的顺序存储</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%88%E7%A9%BA%E6%A0%88%E6%BB%A1%E7%9A%84%E7%8A%B6%E6%80%81"><span class="toc-number">2.1.</span> <span class="toc-text">栈空栈满的状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E8%A1%A8%E7%A4%BA"><span class="toc-number">2.2.</span> <span class="toc-text">代码表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%BA%E5%BA%8F%E6%A0%88%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-number">2.3.</span> <span class="toc-text">顺序栈的优缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%A0%88%E7%9A%84%E9%93%BE%E5%BC%8F%E5%AD%98%E5%82%A8"><span class="toc-number">3.</span> <span class="toc-text">3.栈的链式存储</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E5%BC%8F%E5%AD%98%E5%82%A8%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="toc-number">3.1.</span> <span class="toc-text">链式存储的优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%84%E8%8C%83"><span class="toc-number">3.2.</span> <span class="toc-text">规范</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E8%A1%A8%E7%A4%BA-1"><span class="toc-number">3.3.</span> <span class="toc-text">代码表示</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        栈|基础
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Elmando</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-07-27T14:47:34.000Z" itemprop="datePublished">2022-07-27</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E6%A0%88/" rel="tag">栈</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="1-栈与队列的定义及特点"><a href="#1-栈与队列的定义及特点" class="headerlink" title="1. 栈与队列的定义及特点"></a>1. 栈与队列的定义及特点</h2><ul>
+<li>栈与队列是<strong>操作受限</strong>的<strong>线性表</strong>。</li>
+</ul>
+<h3 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h3><p><img src="https://pic.leetcode-cn.com/691e2a8cca120acb18e77379c7cd7eec3835c8c102d1c699303f50accd1e09df-%E5%87%BA%E5%85%A5%E6%A0%88.gif"></p>
+<p>限定在表尾进行插入删除操作的线性表。</p>
+<p>表尾：栈顶top</p>
+<p>表头：栈底bottom</p>
+<blockquote>
+<p>后进先出。</p>
+</blockquote>
+<h3 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h3><p><img src="https://pic.leetcode-cn.com/44b3a817f0880f168de9574075b61bd204fdc77748d4e04448603d6956c6428a-%E5%87%BA%E5%85%A5%E9%98%9F.gif"></p>
+<p>限定在表的一端插入，另一端删除元素的线性表。</p>
+<p>插入一端为队尾 rear</p>
+<p>删除的一端为队头 front</p>
+<blockquote>
+<p>先进先出。</p>
+</blockquote>
+<h2 id="2-栈的顺序存储"><a href="#2-栈的顺序存储" class="headerlink" title="2.栈的顺序存储"></a>2.栈的顺序存储</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MaxSize 50</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span>&#123;</span><br><span class="line">    ElemType data[MaxSize];</span><br><span class="line">    <span class="type">int</span> top; <span class="comment">//栈顶指针</span></span><br><span class="line">&#125;SqStack;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="栈空栈满的状态"><a href="#栈空栈满的状态" class="headerlink" title="栈空栈满的状态"></a>栈空栈满的状态</h3><p>s.top&#x3D;&#x3D;0 表示栈空：</p>
+<ul>
+<li>入栈，top+1</li>
+<li>+1后变成1</li>
+<li>栈顶指针指向栈顶元素的下一位</li>
+<li>s.top&#x3D;&#x3D;MaxSize 表示栈满</li>
+</ul>
+<p><strong>s.top&#x3D;&#x3D;-1表示栈空</strong>：</p>
+<ul>
+<li>只要入栈，top就会+1</li>
+<li>top+1，变成0</li>
+<li>栈顶指针始终指向栈顶元素</li>
+<li>s.top&#x3D;&#x3D;MaxSize-1 表示栈满</li>
+</ul>
+<p>s.top&#x3D;&#x3D;MaxSize&#x3D;n 表示栈空：</p>
+<ul>
+<li>只要入栈，top-1到n-1</li>
+<li>栈顶指针始终指向栈顶元素</li>
+<li>s.top&#x3D;&#x3D;0表示栈满</li>
+</ul>
+<p>s.top&#x3D;MaxSize&#x3D;n-1 表示栈空</p>
+<ul>
+<li>只要入栈，top-1</li>
+<li>栈顶指针始终指向栈顶元素的上一位</li>
+<li>s.top&#x3D;&#x3D;-1表示栈满</li>
+</ul>
+<p>栈满后再入栈，会出现上溢状态。解决方法：用链栈。</p>
+<p>栈空后再出栈，会出现下溢状态。下溢是逻辑问题。</p>
+<hr>
+<h3 id="代码表示"><a href="#代码表示" class="headerlink" title="代码表示"></a>代码表示</h3><p>初始化栈</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">InitStack</span><span class="params">(SqStack &amp;S)</span></span>&#123;<span class="comment">//S必须引用</span></span><br><span class="line">    S.top = <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>判断栈是否为空</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">bool</span> <span class="title function_">StackEmpty</span><span class="params">(SqStack S)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> S.top == <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>入栈</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">bool</span> <span class="title function_">Push</span><span class="params">(SqStack &amp;S, ElemType x)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(S.top == MaxSize - <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    S.data[++S.top] = x;</span><br><span class="line">    retrun <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>出栈</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">bool</span> <span class="title function_">Pop</span><span class="params">(SqStack &amp;S,ElemType &amp;x)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(S.top == <span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    x=S.data[S.top--];</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>只读取栈顶元素（和上面类似）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">bool</span> <span class="title function_">GetTop</span><span class="params">(SqStack &amp;S,ElemType &amp;x)</span>&#123;<span class="comment">//此处引用是避免内存大量复制</span></span><br><span class="line">    <span class="keyword">if</span>(S.top == <span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    x=S.data[S.top];</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="顺序栈的优缺点"><a href="#顺序栈的优缺点" class="headerlink" title="顺序栈的优缺点"></a>顺序栈的优缺点</h3><ul>
+<li>申请存储空间过大时，会浪费存储空间。</li>
+<li>数据多时，会上溢。</li>
+</ul>
+<blockquote>
+<p>顺序表和链表造成的内存浪费：</p>
+<ul>
+<li>顺序表：MaxSize的限制</li>
+<li>链表：指针域造成内存浪费</li>
+</ul>
+</blockquote>
+<p>解决方法：最大限度利用一个存储空间————共享栈</p>
+<p><strong>共享栈：</strong></p>
+<p>底部是固定的，设定两个栈。</p>
+<p>一个从左向右走，top0&#x3D;-1,表示栈空，入栈top增加。</p>
+<p>一个从右向左走，top1&#x3D;MaxSize,表示栈空，入栈top减小。</p>
+<p>栈满：两个栈顶指针相遇：top1&#x3D;top0+1</p>
+<p>好处：时间都是O(1),节省存储空间，降低发生上溢的可能。</p>
+<h2 id="3-栈的链式存储"><a href="#3-栈的链式存储" class="headerlink" title="3.栈的链式存储"></a>3.栈的链式存储</h2><h3 id="链式存储的优势"><a href="#链式存储的优势" class="headerlink" title="链式存储的优势"></a>链式存储的优势</h3><ul>
+<li>便于多个栈共享存储空间，提高效率</li>
+<li>不存在上溢的情况</li>
+<li>插入删除结点方便</li>
+</ul>
+<h3 id="规范"><a href="#规范" class="headerlink" title="规范"></a>规范</h3><ul>
+<li>采用单链表实现</li>
+<li>所有操作在表头执行</li>
+<li>链栈没有头节点</li>
+</ul>
+<h3 id="代码表示-1"><a href="#代码表示-1" class="headerlink" title="代码表示"></a>代码表示</h3><p>存储结构</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">StackNode</span>&#123;</span></span><br><span class="line">    ElemType data;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">StackNode</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125;StackNode，*LinkStack;</span><br></pre></td></tr></table></figure>
+
+<p>入栈</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Push</span><span class="params">(LinkStack &amp;S, ElemType e)</span>&#123;</span><br><span class="line">    <span class="comment">//生成新的结点</span></span><br><span class="line">    StackNode *p = (StackNode*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(StackNode));</span><br><span class="line">    <span class="comment">//将新结点数据域设为e</span></span><br><span class="line">    p-&gt;data=e;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//将新结点插入栈顶</span></span><br><span class="line">    p-&gt;next= S;</span><br><span class="line">    <span class="comment">//修改栈顶指针为p</span></span><br><span class="line">    S = p;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>出栈(考虑下溢)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">bool</span> <span class="title function_">Pop</span><span class="params">(LinkStack &amp;S,ElemType &amp;e)</span>&#123;</span><br><span class="line">    <span class="comment">//栈空</span></span><br><span class="line">    <span class="keyword">if</span>(S==<span class="literal">NULL</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//将栈顶元素赋给e</span></span><br><span class="line">    e = S-&gt;data;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//用p临时保存栈顶元素的空间，以备释放</span></span><br><span class="line">    StackNode *p = S;</span><br><span class="line">    <span class="comment">//修改栈顶指针</span></span><br><span class="line">    S = S-&gt;next;</span><br><span class="line">	</span><br><span class="line">    <span class="built_in">free</span>(p);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">tags</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A0%88%E4%B8%8E%E9%98%9F%E5%88%97%E7%9A%84%E5%AE%9A%E4%B9%89%E5%8F%8A%E7%89%B9%E7%82%B9"><span class="toc-number">1.</span> <span class="toc-text">1. 栈与队列的定义及特点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%88"><span class="toc-number">1.1.</span> <span class="toc-text">栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%9F%E5%88%97"><span class="toc-number">1.2.</span> <span class="toc-text">队列</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%A0%88%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8"><span class="toc-number">2.</span> <span class="toc-text">2.栈的顺序存储</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%88%E7%A9%BA%E6%A0%88%E6%BB%A1%E7%9A%84%E7%8A%B6%E6%80%81"><span class="toc-number">2.1.</span> <span class="toc-text">栈空栈满的状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E8%A1%A8%E7%A4%BA"><span class="toc-number">2.2.</span> <span class="toc-text">代码表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%BA%E5%BA%8F%E6%A0%88%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-number">2.3.</span> <span class="toc-text">顺序栈的优缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%A0%88%E7%9A%84%E9%93%BE%E5%BC%8F%E5%AD%98%E5%82%A8"><span class="toc-number">3.</span> <span class="toc-text">3.栈的链式存储</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E5%BC%8F%E5%AD%98%E5%82%A8%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="toc-number">3.1.</span> <span class="toc-text">链式存储的优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%84%E8%8C%83"><span class="toc-number">3.2.</span> <span class="toc-text">规范</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E8%A1%A8%E7%A4%BA-1"><span class="toc-number">3.3.</span> <span class="toc-text">代码表示</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.fallenfrost.xyz/2022/07/27/%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.fallenfrost.xyz/2022/07/27/%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/&text=栈|基础"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.fallenfrost.xyz/2022/07/27/%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/&title=栈|基础"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.fallenfrost.xyz/2022/07/27/%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/&is_video=false&description=栈|基础"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=栈|基础&body=Check out this article: https://www.fallenfrost.xyz/2022/07/27/%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.fallenfrost.xyz/2022/07/27/%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/&title=栈|基础"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.fallenfrost.xyz/2022/07/27/%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/&title=栈|基础"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.fallenfrost.xyz/2022/07/27/%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/&title=栈|基础"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.fallenfrost.xyz/2022/07/27/%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/&title=栈|基础"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.fallenfrost.xyz/2022/07/27/%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/&name=栈|基础&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.fallenfrost.xyz/2022/07/27/%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/&t=栈|基础"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2022-2077
+    Elmando
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/tags/">tags</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
