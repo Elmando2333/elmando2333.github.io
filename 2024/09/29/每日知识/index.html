@@ -17,18 +17,18 @@
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
   
-  <title>Hello World - BaoboboboBao</title>
+  <title>知识收集单 - BaoboboboBao</title>
 
   
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+    <meta name="description" content="双流特征映射分析（Two-Stream Feature Mapping Analysis）双流特征映射分析（Two-Stream Feature Mapping Analysis）是视频理解和分析中的一种方法，主要用于动作识别等任务。这个方法的核心思想是通过两个独立的流（通常是一个空间流和一个时间流）来捕捉和处理视频中的信息。下面是这种方法的一些关键点：  空间流（Spatial Stream）：">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://example.com/2024/09/23/hello-world/index.html">
+<meta property="og:title" content="知识收集单">
+<meta property="og:url" content="http://example.com/2024/09/29/%E6%AF%8F%E6%97%A5%E7%9F%A5%E8%AF%86/index.html">
 <meta property="og:site_name" content="BaoboboboBao">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="双流特征映射分析（Two-Stream Feature Mapping Analysis）双流特征映射分析（Two-Stream Feature Mapping Analysis）是视频理解和分析中的一种方法，主要用于动作识别等任务。这个方法的核心思想是通过两个独立的流（通常是一个空间流和一个时间流）来捕捉和处理视频中的信息。下面是这种方法的一些关键点：  空间流（Spatial Stream）：">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-09-23T09:18:18.103Z">
-<meta property="article:modified_time" content="2022-07-26T03:27:35.368Z">
+<meta property="article:published_time" content="2024-09-29T11:40:40.000Z">
+<meta property="article:modified_time" content="2024-09-29T11:44:40.155Z">
 <meta property="article:author" content="baobobo">
 <meta name="twitter:card" content="summary">
   
@@ -76,30 +76,126 @@
   <div class="content">
     <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
 <span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div>
-<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-09-23T09:18:18.103Z">2024-09-23</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2022-07-26T03:27:35.368Z">2022-07-26</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-09-29T11:40:40.000Z">2024-09-29</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-09-29T11:44:40.155Z">2024-09-29</time></span></div></div></div>
     
     <div class="bottom only-title">
       
       <div class="text-area">
-        <h1 class="text title"><span>Hello World</span></h1>
+        <h1 class="text title"><span>知识收集单</span></h1>
         
       </div>
     </div>
     
   </div>
-  </div><article class="md-text content"><p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+  </div><article class="md-text content"><h2 id="双流特征映射分析（Two-Stream-Feature-Mapping-Analysis）"><a href="#双流特征映射分析（Two-Stream-Feature-Mapping-Analysis）" class="headerlink" title="双流特征映射分析（Two-Stream Feature Mapping Analysis）"></a>双流特征映射分析（Two-Stream Feature Mapping Analysis）</h2><p>双流特征映射分析（Two-Stream Feature Mapping Analysis）是视频理解和分析中的一种方法，主要用于动作识别等任务。这个方法的核心思想是通过两个独立的流（通常是一个空间流和一个时间流）来捕捉和处理视频中的信息。下面是这种方法的一些关键点：</p>
+<ol>
+<li><p><strong>空间流（Spatial Stream）</strong>：空间流处理视频中的静态帧信息。它通常使用卷积神经网络（CNN）来提取每一帧中的空间特征，类似于处理单个图像的方式。这个流关注视频的外观信息，例如物体的形状、颜色和纹理。</p>
+</li>
+<li><p><strong>时间流（Temporal Stream）</strong>：时间流处理视频中的动态信息，通常利用光流（optical flow）来捕捉帧与帧之间的运动信息。光流是一种用于描述图像序列中物体运动的矢量场，通过计算相邻帧之间的像素运动来获取。这一流关注的是视频中的运动信息和动态变化。</p>
+</li>
+<li><p><strong>特征融合</strong>：在双流特征映射分析中，来自空间流和时间流的特征通常会在某个阶段进行融合，以综合利用静态和动态信息。融合的方法有多种，可以是简单的特征拼接，也可以是通过更复杂的网络结构来进行融合。</p>
+</li>
+<li><p><strong>优势</strong>：双流方法能够更全面地捕捉视频中的信息，因为它同时考虑了空间（静态）和时间（动态）两方面的特征。这使得它在处理视频行为识别等任务时具有较高的准确性。</p>
+</li>
+<li><p><strong>应用</strong>：这种方法被广泛应用于视频行为识别、动作检测和视频分类等领域。双流卷积神经网络（Two-Stream CNN）是最经典的实现方式之一，并在许多基准数据集上取得了显著的效果。</p>
+</li>
+</ol>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>例如，在动作识别任务中，空间流可能会检测到一个人在某一帧中的姿势和背景，而时间流则会捕捉到这个人在视频中是如何移动的。这两种信息结合起来，可以更准确地识别出这个人正在做什么动作（例如跳跃、跑步等）。</p>
+<h3 id="双流网络的典型架构"><a href="#双流网络的典型架构" class="headerlink" title="双流网络的典型架构"></a>双流网络的典型架构</h3><ol>
+<li><strong>输入数据</strong>：原始视频帧（空间流）和对应的光流图（时间流）。</li>
+<li><strong>特征提取</strong>：通过两个独立的CNN分别提取空间和时间特征。</li>
+<li><strong>特征融合</strong>：将提取的空间和时间特征进行融合，通常在全连接层进行。</li>
+<li><strong>分类器</strong>：使用融合后的特征进行分类，输出最终的识别结果。</li>
+</ol>
+<p>总之，双流特征映射分析是一种有效的技术，通过分别捕捉和处理视频中的静态和动态信息，实现对复杂视频内容的深入理解。</p>
+<blockquote>
+<p>20240619 查看论文《Deep Neural Networks in Video Human Action Recognition: A Review》获得</p>
+</blockquote>
+<h2 id="多流分析（Multi-Stream-Analysis）"><a href="#多流分析（Multi-Stream-Analysis）" class="headerlink" title="多流分析（Multi-Stream Analysis）"></a>多流分析（Multi-Stream Analysis）</h2><p>多流分析（Multi-Stream Analysis）是视频理解和分析中的一种方法，通过多个独立的流来捕捉和处理视频中的信息。这些流可以代表不同类型的数据或特征，从而提供对视频内容更全面的理解。与双流分析类似，多流分析扩展了双流分析的概念，通过引入更多的流来处理更加复杂和多样化的信息。</p>
+<h3 id="多流分析的关键概念"><a href="#多流分析的关键概念" class="headerlink" title="多流分析的关键概念"></a>多流分析的关键概念</h3><ol>
+<li><p><strong>多个特征流</strong>：多流分析使用多个独立的流，每个流负责处理特定类型的信息。这些流可能包括：</p>
+<ul>
+<li><strong>空间流（Spatial Stream）</strong>：处理视频中的静态帧信息，如物体的外观和场景。</li>
+<li><strong>时间流（Temporal Stream）</strong>：处理视频中的动态信息，如物体的运动。</li>
+<li><strong>深度流（Depth Stream）</strong>：处理视频中的深度信息，用于捕捉物体的三维结构。</li>
+<li><strong>音频流（Audio Stream）</strong>：处理视频中的音频信息，用于捕捉声音特征。</li>
+<li><strong>光流流（Optical Flow Stream）</strong>：处理相邻帧之间的光流信息，用于捕捉运动特征。</li>
+</ul>
+</li>
+<li><p><strong>特征提取</strong>：每个流都有独立的特征提取网络，例如卷积神经网络（CNN），用于提取特定类型的数据特征。</p>
+</li>
+<li><p><strong>特征融合</strong>：来自不同流的特征通常会在某个阶段进行融合，以综合利用多种信息。融合的方法可以是简单的特征拼接、加权平均，也可以是通过更复杂的神经网络结构进行融合。</p>
+</li>
+<li><p><strong>分类器</strong>：使用融合后的特征进行分类或其他任务的预测，输出最终的结果。</p>
+</li>
+</ol>
+<h3 id="多流分析的优势"><a href="#多流分析的优势" class="headerlink" title="多流分析的优势"></a>多流分析的优势</h3><ul>
+<li><strong>全面性</strong>：通过多个流处理不同类型的信息，多流分析能够提供更全面的特征表示，从而提高对复杂视频内容的理解。</li>
+<li><strong>鲁棒性</strong>：不同流的信息可以互补，某个流的噪声或缺陷可以被其他流的信息补偿，提高整体系统的鲁棒性。</li>
+<li><strong>灵活性</strong>：可以根据具体应用需求，选择和设计不同的流来处理特定类型的数据。</li>
+</ul>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p>多流分析被广泛应用于各种视频理解任务，如：</p>
+<ul>
+<li><strong>动作识别</strong>：结合空间流、时间流和光流流，可以更准确地识别视频中的人类动作。</li>
+<li><strong>视频分类</strong>：通过综合视频中的视觉、音频和文本信息，可以更准确地对视频进行分类。</li>
+<li><strong>行为检测</strong>：通过多流分析，可以更精确地检测视频中的特定行为，如安全监控中的异常行为检测。</li>
+</ul>
+<h3 id="例子-1"><a href="#例子-1" class="headerlink" title="例子"></a>例子</h3><p>在一个多流分析的系统中，可能会有以下几个流：</p>
+<ul>
+<li><strong>空间流</strong>：使用CNN提取每一帧的静态特征。</li>
+<li><strong>时间流</strong>：使用3D CNN或RNN处理视频帧序列的时间特征。</li>
+<li><strong>光流流</strong>：计算相邻帧之间的光流，提取运动特征。</li>
+<li><strong>音频流</strong>：使用音频处理网络提取音频特征。</li>
+</ul>
+<p>这些流的特征通过一个融合层进行组合，然后输入到一个分类器中，最终输出视频的分类结果或行为识别结果。</p>
+<p>多流分析通过结合多个独立流的信息，能够更全面和精确地分析和理解视频内容，因此在视频处理和计算机视觉领域具有广泛的应用前景。</p>
+<blockquote>
+<p>20240619 查看论文《Deep Neural Networks in Video Human Action Recognition: A Review》获得</p>
+</blockquote>
+<h2 id="不精确与不准确"><a href="#不精确与不准确" class="headerlink" title="不精确与不准确"></a>不精确与不准确</h2><p><strong>不精确的监督</strong>：指的是标注数据可能存在一定程度的模糊或不明确，即使标注者尽了最大努力，也无法完全准确地标注每个数据点。例如，在视频分析中，可能存在某些帧或动作片段的边界不明确，或者不同标注者对相同数据有不同的理解和标注方式。</p>
+<p><strong>不准确的监督</strong>：强调的是标注数据与实际真相不完全一致的情况。这可能是由于标注者的主观判断或者在标注过程中出现的误差。例如，在人类动作识别中，一个动作被错误地标注为另一个相似的动作，或者标注者因为技术能力或知识水平的限制而无法准确理解和标注数据。</p>
+<h2 id="对比学习（Contrastive-learning）"><a href="#对比学习（Contrastive-learning）" class="headerlink" title="对比学习（Contrastive learning）"></a>对比学习（Contrastive learning）</h2><p>对比学习（Contrastive learning）是一种深度学习方法，其基本思想是通过比较不同数据样本之间的相似性和差异性来学习数据的表示或特征。它通常应用于无监督或半监督学习中，尤其在数据标注成本高昂或标签数据稀缺的情况下表现出色。</p>
+<p>具体来说，对比学习的核心思想是通过使相同类别的样本在特征空间中尽可能靠近，而不同类别的样本尽可能远离来学习有意义的特征表示。这种方法通常通过最大化同类别样本之间的相似性（类内距离），同时最小化不同类别样本之间的相似性（类间距离）来实现。通过这种方式，模型可以学习到更加鲁棒和通用的特征表示，从而在各种任务中表现更好，例如图像分类、语音识别、视频分析等。</p>
+<p>对比学习的应用范围广泛，包括但不限于：</p>
+<ul>
+<li>视频动作识别：通过比较视频中不同帧之间的动作来学习动作的时空特征。</li>
+<li>图像检索：学习如何比较图像之间的相似性，以便于检索相似图像。</li>
+<li>自监督学习：在没有显式标签的情况下学习数据的表征，例如通过图像增强方法生成正负样本对进行对比学习。</li>
+</ul>
+<p>最近，对比学习在深度学习领域得到了广泛关注和研究，特别是随着大规模数据集和强大的计算能力的普及，对比学习方法在提升模型泛化能力和效果上展现出了很大的潜力。</p>
+<blockquote>
+<p>20240619 查看论文《Deep Neural Networks in Video Human Action Recognition: A Review》获得</p>
+</blockquote>
+<h2 id="Epoch"><a href="#Epoch" class="headerlink" title="Epoch"></a>Epoch</h2><p>在深度学习中，<code>epoch</code>（纪元）是一个非常重要的概念，它表示整个训练数据集通过神经网络一次的过程。理解 <code>epoch</code> 对于掌握深度学习模型的训练过程至关重要。</p>
+<h3 id="什么是-Epoch？"><a href="#什么是-Epoch？" class="headerlink" title="什么是 Epoch？"></a>什么是 Epoch？</h3><p>在训练深度学习模型时，通常会将整个数据集多次传递通过模型，每次传递称为一个 <code>epoch</code>。每个 <code>epoch</code> 包含了以下步骤：</p>
+<ol>
+<li><strong>前向传播（Forward Pass）</strong>：将训练数据输入模型，计算预测输出。</li>
+<li><strong>损失计算（Loss Calculation）</strong>：将模型的预测输出与实际标签进行比较，计算损失值。</li>
+<li><strong>反向传播（Backward Pass）</strong>：计算损失值相对于模型参数的梯度。</li>
+<li><strong>参数更新（Parameter Update）</strong>：使用优化算法（如梯度下降）更新模型参数，以减少损失。</li>
+</ol>
+<h3 id="一个-Epoch-的过程"><a href="#一个-Epoch-的过程" class="headerlink" title="一个 Epoch 的过程"></a>一个 Epoch 的过程</h3><p>假设你有一个包含 1000 张图像的训练数据集。在一个 <code>epoch</code> 中，神经网络将会遍历这 1000 张图像一次。这意味着每张图像都会被输入模型一次，并且模型的参数会根据这些图像的损失进行更新。</p>
+<h3 id="Batch-和-Iteration"><a href="#Batch-和-Iteration" class="headerlink" title="Batch 和 Iteration"></a>Batch 和 Iteration</h3><p>在实际操作中，由于计算资源的限制，通常不会在每个 <code>epoch</code> 中一次性处理整个数据集。相反，数据集会被分成多个小块，每个小块称为一个 <strong>batch</strong>。每处理一个 batch 数据，就称为一个 <strong>iteration</strong>（迭代）。一个 <code>epoch</code> 包含多个 <code>iteration</code>，具体数量取决于 batch 的大小和数据集的大小。</p>
+<p>例如，假设你有 1000 张图像，将 batch 大小设置为 100，那么：</p>
+<ul>
+<li>一个 <code>epoch</code> 包含 10 个 batch。</li>
+<li>每个 <code>epoch</code> 将进行 10 次 iteration。</li>
+</ul>
+<h3 id="伪代码示例"><a href="#伪代码示例" class="headerlink" title="伪代码示例"></a>伪代码示例</h3><p>以下是一个简化的伪代码示例，说明一个 <code>epoch</code> 的训练过程：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(num_epochs):  <span class="comment"># 遍历所有的 epoch</span></span><br><span class="line">    <span class="keyword">for</span> batch <span class="keyword">in</span> data_loader:   <span class="comment"># 遍历一个 epoch 中的所有 batch</span></span><br><span class="line">        inputs, labels = batch  <span class="comment"># 获取一个 batch 的输入数据和标签</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 前向传播</span></span><br><span class="line">        outputs = model(inputs)</span><br><span class="line">        loss = loss_function(outputs, labels)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 反向传播和参数更新</span></span><br><span class="line">        optimizer.zero_grad()  <span class="comment"># 清空之前的梯度</span></span><br><span class="line">        loss.backward()        <span class="comment"># 计算当前 batch 的梯度</span></span><br><span class="line">        optimizer.step()       <span class="comment"># 更新模型参数</span></span><br><span class="line">        </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;Epoch <span class="subst">&#123;epoch+<span class="number">1</span>&#125;</span>/<span class="subst">&#123;num_epochs&#125;</span>, Loss: <span class="subst">&#123;loss.item()&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<p>在这个示例中，<code>num_epochs</code> 表示要训练的总 epoch 数。<code>data_loader</code> 是一个迭代器，按 batch 大小提供数据。<code>model</code> 是你要训练的神经网络模型，<code>loss_function</code> 是计算损失的函数，<code>optimizer</code> 是用于更新模型参数的优化器。</p>
+<h3 id="为什么需要多个-Epoch？"><a href="#为什么需要多个-Epoch？" class="headerlink" title="为什么需要多个 Epoch？"></a>为什么需要多个 Epoch？</h3><p>单次通过整个数据集（一个 epoch）通常不足以使模型充分学习到数据的特征和模式。通过多个 epoch，模型可以逐渐调整参数，使其在训练数据上的表现越来越好。随着 epoch 的增加，模型的损失通常会逐渐减小，准确率会逐渐提高。</p>
+<h3 id="早停（Early-Stopping）"><a href="#早停（Early-Stopping）" class="headerlink" title="早停（Early Stopping）"></a>早停（Early Stopping）</h3><p>需要注意的是，过多的 epoch 可能导致过拟合（overfitting），即模型在训练数据上表现很好，但在验证或测试数据上表现不佳。为了解决这个问题，通常会使用 <strong>早停</strong>（early stopping）技巧，当验证集的性能不再提升时，提前停止训练。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><code>epoch</code> 是深度学习训练过程中的一个重要概念，它表示整个训练数据集通过模型一次的过程。通过多个 epoch 的训练，模型逐步调整参数，以更好地拟合数据。在实际训练中，epoch 与 batch、iteration 紧密相关，通过合理设置这些参数，可以有效地训练模型并避免过拟合。</p>
+<blockquote>
+<p>20240624学习pytorch时遇到的专有名词</p>
+</blockquote>
+<h2 id="没有免费午餐定理（No-Free-Lunch-Theorem，NFL）"><a href="#没有免费午餐定理（No-Free-Lunch-Theorem，NFL）" class="headerlink" title="没有免费午餐定理（No Free Lunch Theorem，NFL）"></a>没有免费午餐定理（No Free Lunch Theorem，NFL）</h2><p>没有免费午餐定理（No Free Lunch Theorem，NFL）是由Wolpert和Macerday 在最优化理论中提出的．没有免费午餐定理证明：对于基于迭代的最优化 算法，不存在某种算法对所有问题（有限的搜索空间内）都有效．如果一个算法 对某些问题有效，那么它一定在另外一些问题上比纯随机搜索算法更差．也就是 说，不能脱离具体问题来谈论算法的优劣，任何算法都有局限性．必须要“具体问 题具体分析”． 没有免费午餐定理对于机器学习算法也同样适用．不存在一种机器学习算 法适合于任何领域或任务．如果有人宣称自己的模型在所有问题上都好于其他 模型，那么他肯定是在吹牛．</p>
+<blockquote>
+<p>20240625 《神经网络与深度学习》摘抄</p>
+</blockquote>
+<p>The paper is summarized by drawing some general conclusions, identifying open research challenges and by pointing out future research directions.</p>
 
 <div class="article-footer fs14">
     <section id="license">
@@ -109,7 +205,7 @@
     </section>
     </div>
 </article>
-<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2024/09/23/my-blog/">my blog</a></div><div class="item" id="next"></div></section></div>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2024/09/29/20240929%E6%97%A5%E8%AE%B0/">20240929日记</a></div></section></div>
 
 
 
@@ -123,7 +219,7 @@
 
 
 
-<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol></div><div class="widget-footer">
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8C%E6%B5%81%E7%89%B9%E5%BE%81%E6%98%A0%E5%B0%84%E5%88%86%E6%9E%90%EF%BC%88Two-Stream-Feature-Mapping-Analysis%EF%BC%89"><span class="toc-text">双流特征映射分析（Two-Stream Feature Mapping Analysis）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-text">例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E6%B5%81%E7%BD%91%E7%BB%9C%E7%9A%84%E5%85%B8%E5%9E%8B%E6%9E%B6%E6%9E%84"><span class="toc-text">双流网络的典型架构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E6%B5%81%E5%88%86%E6%9E%90%EF%BC%88Multi-Stream-Analysis%EF%BC%89"><span class="toc-text">多流分析（Multi-Stream Analysis）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E6%B5%81%E5%88%86%E6%9E%90%E7%9A%84%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5"><span class="toc-text">多流分析的关键概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E6%B5%81%E5%88%86%E6%9E%90%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="toc-text">多流分析的优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8"><span class="toc-text">应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90-1"><span class="toc-text">例子</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8D%E7%B2%BE%E7%A1%AE%E4%B8%8E%E4%B8%8D%E5%87%86%E7%A1%AE"><span class="toc-text">不精确与不准确</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%EF%BC%88Contrastive-learning%EF%BC%89"><span class="toc-text">对比学习（Contrastive learning）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Epoch"><span class="toc-text">Epoch</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-Epoch%EF%BC%9F"><span class="toc-text">什么是 Epoch？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA-Epoch-%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-text">一个 Epoch 的过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Batch-%E5%92%8C-Iteration"><span class="toc-text">Batch 和 Iteration</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%AA%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-text">伪代码示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%A4%9A%E4%B8%AA-Epoch%EF%BC%9F"><span class="toc-text">为什么需要多个 Epoch？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A9%E5%81%9C%EF%BC%88Early-Stopping%EF%BC%89"><span class="toc-text">早停（Early Stopping）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B2%A1%E6%9C%89%E5%85%8D%E8%B4%B9%E5%8D%88%E9%A4%90%E5%AE%9A%E7%90%86%EF%BC%88No-Free-Lunch-Theorem%EF%BC%8CNFL%EF%BC%89"><span class="toc-text">没有免费午餐定理（No Free Lunch Theorem，NFL）</span></a></li></ol></div><div class="widget-footer">
 
 <a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
 </div></aside><div class='float-panel blur'>
