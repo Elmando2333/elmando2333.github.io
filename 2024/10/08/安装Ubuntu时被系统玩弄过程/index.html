@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
-  <meta name="robots" content="noindex,follow">
+  
   <meta name="generator" content="Hexo 5.4.2">
   <meta http-equiv='x-dns-prefetch-control' content='on' />
   
@@ -17,22 +17,31 @@
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
   
-  <title>标签：乱写 - BaoboboboBao</title>
+  <title>安装Ubuntu时被系统玩弄的过程 - BaoboboboBao</title>
 
   
-    <meta name="description" content="���ڲ�����">
-<meta property="og:type" content="website">
-<meta property="og:title" content="BaoboboboBao">
-<meta property="og:url" content="http://example.com/tags/%E4%B9%B1%E5%86%99/index.html">
+    <meta name="description" content="累因为智慧交通的课上要用apollo平台来写课程作业，而平台又需要linux系统运行。虽然也可以用虚拟机在自己电脑里跑，但想到后面很多事情可能也会用到linux，索性决定在主机上安装一个ubuntu系统。 第一次被玩弄安装ubuntu可以参考官网的安装方式，说实话，简洁易懂，因为教程是在一个正常的，干净的电脑上安装的。按照它的步骤，我到了烧录iso文件到usb上的这一步。 不知道是我没仔细看文档，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安装Ubuntu时被系统玩弄的过程">
+<meta property="og:url" content="http://example.com/2024/10/08/%E5%AE%89%E8%A3%85Ubuntu%E6%97%B6%E8%A2%AB%E7%B3%BB%E7%BB%9F%E7%8E%A9%E5%BC%84%E8%BF%87%E7%A8%8B/index.html">
 <meta property="og:site_name" content="BaoboboboBao">
-<meta property="og:description" content="���ڲ�����">
+<meta property="og:description" content="累因为智慧交通的课上要用apollo平台来写课程作业，而平台又需要linux系统运行。虽然也可以用虚拟机在自己电脑里跑，但想到后面很多事情可能也会用到linux，索性决定在主机上安装一个ubuntu系统。 第一次被玩弄安装ubuntu可以参考官网的安装方式，说实话，简洁易懂，因为教程是在一个正常的，干净的电脑上安装的。按照它的步骤，我到了烧录iso文件到usb上的这一步。 不知道是我没仔细看文档，">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic.imgdb.cn/item/67049b95d29ded1a8c1babf9.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/67049eb7d29ded1a8c1dec99.jpg">
+<meta property="og:image" content="https://bu.dusays.com/2022/10/24/63567d3e092ff.png">
+<meta property="og:image" content="https://bu.dusays.com/2022/10/24/63567d3e0ab55.png">
+<meta property="article:published_time" content="2024-10-08T02:28:25.000Z">
+<meta property="article:modified_time" content="2024-10-08T03:25:40.866Z">
 <meta property="article:author" content="baobobo">
+<meta property="article:tag" content="小技巧">
+<meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic.imgdb.cn/item/67049b95d29ded1a8c1babf9.png">
   
   
   
-  
+  <meta name="keywords" content="小技巧,Linux">
 
   <!-- feed -->
   
@@ -47,7 +56,7 @@
 </head>
 <body>
 
-<div class="l_body s:aa index tech" id="start" layout="undefined" ><aside class="l_left"><div class="leftbar-container">
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
 
 
 <header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://pic.imgdb.cn/item/66f22aeff21886ccc06a4cdd.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">BaoboboboBao</div><div class="sub cap">baobobo</div></a></div></header>
@@ -59,29 +68,127 @@
 <nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="关于" href="/about/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a></nav>
 </div>
 <div class="widgets">
+
+
 <widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2024/10/08/%E5%AE%89%E8%A3%85Ubuntu%E6%97%B6%E8%A2%AB%E7%B3%BB%E7%BB%9F%E7%8E%A9%E5%BC%84%E8%BF%87%E7%A8%8B/"><span class="title">安装Ubuntu时被系统玩弄的过程</span></a><a class="item title" href="/2024/10/07/applo%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B61/"><span class="title">apollo自动驾驶学习笔记（一）</span></a><a class="item title" href="/2024/10/05/%E5%9B%BD%E5%BA%86%E5%81%87%E6%9C%9F%E4%BD%93%E6%84%9F%E7%BB%93%E6%9D%9F%E4%BA%86/"><span class="title">国庆假期体感结束了</span></a><a class="item title" href="/2024/10/01/plantuml%E5%92%8Cgpt%E7%BB%93%E5%90%88%E5%BF%AB%E9%80%9F%E7%94%BB%E5%9B%BE/"><span class="title">plantuml和gpt结合快速画图技巧</span></a><a class="item title" href="/2024/09/30/%E5%A6%82%E6%9E%9C%E7%A7%91%E7%A0%94%E6%A5%BC%E5%87%BA%E7%8E%B0%E4%BA%86%E4%B8%A7%E5%B0%B8%E6%80%8E%E4%B9%88%E5%8A%9E/"><span class="title">如果科研楼被丧尸包围了怎么办</span></a><a class="item title" href="/2024/09/30/%E5%9B%BD%E5%BA%86%E5%89%8D%E5%A4%9C%E9%9A%8F%E7%AC%94/"><span class="title">国庆前夜碎碎念</span></a><a class="item title" href="/2024/09/29/%E6%AF%8F%E6%97%A5%E7%9F%A5%E8%AF%86/"><span class="title">知识收集单</span></a><a class="item title" href="/2024/09/29/%E9%92%93%E9%B1%BC%E8%80%85/"><span class="title">钓鱼人</span></a><a class="item title" href="/2024/09/29/20240929%E6%97%A5%E8%AE%B0/"><span class="title">20240929日记</span></a><a class="item title" href="/2024/09/24/20240924%E6%97%A5%E6%8A%A5/"><span class="title">20240924日报</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" onclick="switchTheme()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><path fill="currentColor" fill-rule="evenodd" d="M582.4 326.4c-140.8 0-256 115.2-256 256s115.2 256 256 256 256-115.2 256-256-115.2-256-256-256z m0 448c-70.4 0-131.2-36.8-164.8-92.8 12.8 3.2 27.2 4.8 40 4.8 121.6 0 219.2-99.2 219.2-219.2 0-17.6-1.6-35.2-6.4-52.8 60.8 32 102.4 96 102.4 169.6 1.6 104-84.8 190.4-190.4 190.4zM582.4 262.4c17.6 0 32-14.4 32-32v-128c0-17.6-14.4-32-32-32s-32 14.4-32 32v128c0 17.6 14.4 32 32 32zM262.4 582.4c0-17.6-14.4-32-32-32h-128c-17.6 0-32 14.4-32 32s14.4 32 32 32h128c17.6 0 32-14.4 32-32zM310.4 356.8c6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6 12.8-12.8 12.8-32 0-44.8l-91.2-91.2c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l91.2 91.2zM944 220.8c-12.8-12.8-32-12.8-44.8 0l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-33.6 0-44.8zM310.4 808l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-32 0-44.8-11.2-11.2-32-11.2-44.8 0z"></path></svg></a></div></footer>
 </div></aside><div class="l_main" id="main">
 
-<header class="header mobile-only"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://pic.imgdb.cn/item/66f22aeff21886ccc06a4cdd.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">BaoboboboBao</div><div class="sub cap">baobobo</div></a></div></header>
-
- 
 
 
 
 
-<div class="navbar top"><nav class="post"><a href="/">近期发布</a><a href="/categories">分类</a><a class="active" href="/tags">标签：乱写</a><a href="/archives">归档</a></nav></div>
-<div class="post-list post"><a class="post-card post" href="/2024/09/30/%E5%A6%82%E6%9E%9C%E7%A7%91%E7%A0%94%E6%A5%BC%E5%87%BA%E7%8E%B0%E4%BA%86%E4%B8%A7%E5%B0%B8%E6%80%8E%E4%B9%88%E5%8A%9E/">
-<article class="md-text"><h2 class="post-title">如果科研楼被丧尸包围了怎么办</h2><div class="excerpt"><p>怎么办丧尸病毒是从地下车库被带进来的，经过一个月的严密防御，学校还是没有抵御住丧尸的攻击。而当时因为科研楼的大门还没有打开，于是熬夜写本子的我在实验室睡了一晚上，逃过了一劫。
-当我醒来时，实验室好像不止我一个人熬大夜，灯已经亮了，好像外面传来了警报声...</p></div><div class="meta cap"><span class="cap" id="post-meta"><svg style="margin-bottom:2px" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M6.94 2c.416 0 .753.324.753.724v1.46c.668-.012 1.417-.012 2.26-.012h4.015c.842 0 1.591 0 2.259.013v-1.46c0-.4.337-.725.753-.725s.753.324.753.724V4.25c1.445.111 2.394.384 3.09 1.055c.698.67.982 1.582 1.097 2.972L22 9H2v-.724c.116-1.39.4-2.302 1.097-2.972c.697-.67 1.645-.944 3.09-1.055V2.724c0-.4.337-.724.753-.724"/><path fill="currentColor" d="M22 14v-2c0-.839-.004-2.335-.017-3H2.01c-.013.665-.01 2.161-.01 3v2c0 3.771 0 5.657 1.172 6.828C4.343 22 6.228 22 10 22h4c3.77 0 5.656 0 6.828-1.172C22 19.658 22 17.772 22 14" opacity=".5"/><path fill="currentColor" d="M18 17a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><time datetime="2024-09-30T14:30:38.000Z">2024-09-30</time></span></div></article>
-</a></div>
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-10-08T02:28:25.000Z">2024-10-08</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-10-08T03:25:40.866Z">2024-10-08</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>安装Ubuntu时被系统玩弄的过程</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h1 id="累"><a href="#累" class="headerlink" title="累"></a>累</h1><p>因为智慧交通的课上要用apollo平台来写课程作业，而平台又需要linux系统运行。虽然也可以用虚拟机在自己电脑里跑，但想到后面很多事情可能也会用到linux，索性决定在主机上安装一个ubuntu系统。</p>
+<h2 id="第一次被玩弄"><a href="#第一次被玩弄" class="headerlink" title="第一次被玩弄"></a>第一次被玩弄</h2><p>安装ubuntu可以参考官网的安装方式，说实话，简洁易懂，因为教程是在一个正常的，干净的电脑上安装的。按照它的步骤，我到了烧录iso文件到usb上的这一步。</p>
+<p>不知道是我没仔细看文档，没人告诉我会把USB格式化清除原有数据！</p>
+<p>我惊出一身冷汗，害怕师兄的U盘上会不会有什么机密文件就这么被我给格式化了。还好师兄说没有关系，此为第一次被玩弄。</p>
+<p>如果有人要烧录U盘，最好用个空的。。。。最好用自己的。。。。就算数据没丢，但是文件读取方式变了，怎么改文件系统都不知道。</p>
+<p><a target="_blank" rel="noopener" href="https://pic.imgdb.cn/item/67049b95d29ded1a8c1babf9.png"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://pic.imgdb.cn/item/67049b95d29ded1a8c1babf9.png"></a></p>
+<blockquote>
+<p>在用 USB 烧录 Ubuntu 的 ISO 文件后，你可能会遇到以下两个常见问题：</p>
+<ol>
+<li><strong>USB 在 Windows 上无法打开，提示文件系统不对或未格式化</strong>。</li>
+<li><strong>重新使用 USB 时需要格式化和清除数据</strong>。</li>
+</ol>
+<p>这些问题通常是由于使用了特定的工具（如 <code>Rufus</code>、<code>Etcher</code>(没错就是你)、<code>UNetbootin</code> 等）将 Ubuntu 的 ISO 文件烧录到 USB 上时，修改了 USB 的分区表和文件系统导致的。为了更好地理解这些现象，我们需要先了解在 Linux 发行版 ISO 烧录过程中 USB 是如何被处理的。</p>
+<h3 id="问题原因分析"><a href="#问题原因分析" class="headerlink" title="问题原因分析"></a>问题原因分析</h3><h4 id="1-烧录过程如何修改了-USB-的分区表和文件系统？"><a href="#1-烧录过程如何修改了-USB-的分区表和文件系统？" class="headerlink" title="1. 烧录过程如何修改了 USB 的分区表和文件系统？"></a>1. 烧录过程如何修改了 USB 的分区表和文件系统？</h4><p>在创建 Ubuntu 启动盘时，烧录工具通常会对 USB 进行以下操作：</p>
+<ul>
+<li><strong>直接写入 ISO 镜像内容</strong>： 烧录工具并不是简单地将 ISO 文件拷贝到 USB 中，而是会将 ISO 镜像的底层文件系统结构、启动扇区（boot sector）以及分区信息直接写入到 USB。这样一来，USB 就被改造成了一个类似光盘格式的设备。</li>
+<li><strong>创建混合分区（Hybrid Partition Table）</strong>： 大部分 Linux ISO 文件在制作时采用了混合分区结构（Hybrid Partition）。混合分区表包含了 GPT 和 MBR 两种分区表，允许该 USB 在 BIOS 和 UEFI 两种启动模式下都可以被识别和启动。</li>
+<li><strong>修改文件系统格式</strong>： 通常的 USB 设备在 Windows 下默认使用的文件系统是 FAT32 或 exFAT。而 Linux 发行版的 ISO 文件内部使用了不同的文件系统，比如 <code>ISO9660</code>、<code>SquashFS</code> 或 <code>ext4</code>。当把这些文件系统直接写入到 USB 时，原先的 FAT32 文件系统就会被覆盖掉，导致 USB 在 Windows 系统上无法识别。</li>
+</ul>
+<p>由于 Windows 系统无法识别 <code>ISO9660</code> 或 <code>SquashFS</code> 这样的 Linux 文件系统，因此你会看到 USB 显示为“文件系统不对”或“需要格式化”。</p>
+<h4 id="2-为什么-Windows-无法识别烧录后的-USB-？"><a href="#2-为什么-Windows-无法识别烧录后的-USB-？" class="headerlink" title="2. 为什么 Windows 无法识别烧录后的 USB ？"></a>2. 为什么 Windows 无法识别烧录后的 USB ？</h4><p>这是由于在写入 Ubuntu ISO 时，USB 的分区表和文件系统被改变。Windows 默认只能识别 FAT32、NTFS、exFAT 等常见文件系统，而 Ubuntu 的启动盘可能会使用 <code>ISO9660</code> 或混合文件系统，这些文件系统在 Windows 下无法识别。因此，当你尝试在 Windows 中打开 USB 时，会看到以下几种情况：</p>
+<ul>
+<li><strong>未分配分区或无效文件系统</strong>： Windows 可能显示 USB 为“RAW”格式，表示 Windows 无法识别该文件系统。</li>
+<li><strong>提示需要格式化</strong>： 这是因为 Windows 认为该 USB 中的文件系统不符合 FAT32 或 NTFS 格式，所以无法访问。</li>
+<li><strong>分区表错误或显示多个分区</strong>： 由于混合分区表的存在，Windows 可能只能识别其中一个分区（通常是 EFI 分区），其余分区显示为未分配或无效。</li>
+</ul>
+<h4 id="3-为什么重新使用-USB-时需要格式化？"><a href="#3-为什么重新使用-USB-时需要格式化？" class="headerlink" title="3. 为什么重新使用 USB 时需要格式化？"></a>3. 为什么重新使用 USB 时需要格式化？</h4><p>由于 Ubuntu 烧录工具更改了 USB 的分区表和文件系统格式，所以如果你想将 USB 恢复为普通存储设备，必须执行以下操作：</p>
+<ol>
+<li><strong>删除所有分区并重新创建</strong>： 恢复 USB 的分区表和结构，使其回到 FAT32 或 exFAT 格式。</li>
+<li><strong>重新格式化</strong>： 创建新的文件系统，以便 Windows 和其他操作系统能够识别和使用。</li>
+</ol>
+</blockquote>
+<h2 id="第二次被玩弄"><a href="#第二次被玩弄" class="headerlink" title="第二次被玩弄"></a>第二次被玩弄</h2><p>按照步骤，我现在应该把它插入pc，启动boot，选择usb，美美安装系统。</p>
+<p>一切很顺利，直到安装ubuntu的第三步，选完系统语言那一步。</p>
+<p>告诉我：此计算机使用了英特尔RST(快速存储技术)，我需要在windows中关闭。</p>
+<p>没错，这台主机之前是windows的，而且我不知道上一个用户的密码。</p>
+<p>此为第二次被玩弄。</p>
+<blockquote>
+<p>在安装 Ubuntu（或其他 Linux 发行版）时，如果计算机的 BIOS 或 UEFI 中启用了 Intel 的快速存储技术（Intel Rapid Storage Technology, RST），则可能导致安装程序无法识别到硬盘。这是因为 RST 提供了一种复杂的 RAID 管理模式，而默认的 Linux 内核通常不支持这种模式。这会导致在安装 Linux 时出现以下问题：</p>
+<ol>
+<li><strong>硬盘无法被识别</strong>： 当 RST 启用时，Ubuntu 安装程序（或者其他 Linux 发行版）可能无法正确识别硬盘，导致在安装过程中找不到任何硬盘或分区。</li>
+<li><strong>磁盘分区访问异常</strong>： 即使能看到硬盘，有时分区表和分区信息也会被扭曲，出现不可读的状态，导致无法对分区进行操作（如格式化、安装引导程序等）。</li>
+<li><strong>与 Windows 共存的双系统可能出错</strong>： 如果打算安装双系统，启用 RST 会导致 Ubuntu 与 Windows 共享硬盘时可能发生读写冲突。即使能成功安装，Ubuntu 也可能无法正确访问 Windows 的分区或数据。</li>
+</ol>
+<h3 id="为什么会发生这种情况？"><a href="#为什么会发生这种情况？" class="headerlink" title="为什么会发生这种情况？"></a>为什么会发生这种情况？</h3><p>RST 是 Intel 为提升磁盘性能和数据安全性而推出的一种 RAID 模式。当启用 RST 时，BIOS 或 UEFI 会将硬盘控制权交给 RST 驱动程序。这样一来，操作系统看到的硬盘是经过 RST 中间层处理后的，而不是传统意义上的硬盘。Windows 有内置的 RST 驱动程序，所以能够正常工作，但大部分 Linux 发行版在默认情况下不具备对 RST 驱动的支持，因此无法正确识别经过 RST 处理的硬盘。</p>
+</blockquote>
+<h2 id="第三次被玩弄"><a href="#第三次被玩弄" class="headerlink" title="第三次被玩弄"></a>第三次被玩弄</h2><p>师兄说可以把windows密码先改了，于是又去借了个U盘去下载另一个系统（再次感谢师兄的耐心）。</p>
+<p><a target="_blank" rel="noopener" href="https://pic.imgdb.cn/item/67049eb7d29ded1a8c1dec99.jpg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://pic.imgdb.cn/item/67049eb7d29ded1a8c1dec99.jpg"></a></p>
+<p>问题来了，重新登陆windows时，没有办法切换用户，并且改了密码也进不去。</p>
+<p>此为第三次被玩弄。</p>
+<h2 id="第四次被玩弄"><a href="#第四次被玩弄" class="headerlink" title="第四次被玩弄"></a>第四次被玩弄</h2><p>师兄说直接把windows给消灭了吧，于是就把windows系统给删掉了。</p>
+<p>drama来了，当我又回到了安装ubuntu的第三步时，还是提醒我RST没有关闭。</p>
+<blockquote>
+<p>即便 Windows 已被移除，只要 BIOS 中的 RST 功能仍然处于启用状态，安装程序就会检测到这个问题并阻止安装。</p>
+</blockquote>
+<h2 id="第五次被玩弄"><a href="#第五次被玩弄" class="headerlink" title="第五次被玩弄"></a>第五次被玩弄</h2><p>那让我们返回BIOS里。由于只浅浅瞟了一眼网上的教程，把将 SATA 模式直接改成了null（如果我没有记错）。</p>
+<p>终于没有RST关闭的提示了！但是在磁盘分区的时候，发现系统好像被安装在了U盘上而非主机磁盘上。</p>
+<p>此为第五次被玩弄。</p>
+<blockquote>
+<p>将 SATA 模式改为 <code>null</code> 可能导致 BIOS 无法正确识别硬盘，从而让 Ubuntu 安装程序只能找到 USB 驱动器进行安装。</p>
+</blockquote>
+<h2 id="第六次被玩弄"><a href="#第六次被玩弄" class="headerlink" title="第六次被玩弄"></a>第六次被玩弄</h2><p>事已至此，不如问问GPT吧。</p>
+<p>原来应该把SATA模式改为AHCI。终于成功安装了Ubuntu！</p>
+<blockquote>
+<p>在 AHCI 模式下，Linux 对 SATA 硬盘的支持更加广泛和稳定。许多 Linux 发行版在默认情况下能够更好地识别和管理 AHCI 设备。</p>
+</blockquote>
+<p>然后发现之前踩过的所有坑，GPT都给我回答了一遍。</p>
+<h2 id="成功后的教训"><a href="#成功后的教训" class="headerlink" title="成功后的教训"></a>成功后的教训</h2><div class="tag-plugin quot"><p class="content" type="icon"><img class="icon prefix lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://bu.dusays.com/2022/10/24/63567d3e092ff.png" /><span class="text">早点问GPT！</span><img class="icon prefix lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://bu.dusays.com/2022/10/24/63567d3e0ab55.png" /></p></div>
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2024/10/07/applo%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B61/">apollo自动驾驶学习笔记（一）</a></div></section></div>
+
+
+
+
 
 
 <footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">baobobo</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
 </div></footer>
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
-</aside><div class='float-panel blur'>
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B4%AF"><span class="toc-text">累</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%A2%AB%E7%8E%A9%E5%BC%84"><span class="toc-text">第一次被玩弄</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90"><span class="toc-text">问题原因分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E7%83%A7%E5%BD%95%E8%BF%87%E7%A8%8B%E5%A6%82%E4%BD%95%E4%BF%AE%E6%94%B9%E4%BA%86-USB-%E7%9A%84%E5%88%86%E5%8C%BA%E8%A1%A8%E5%92%8C%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%EF%BC%9F"><span class="toc-text">1. 烧录过程如何修改了 USB 的分区表和文件系统？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E4%B8%BA%E4%BB%80%E4%B9%88-Windows-%E6%97%A0%E6%B3%95%E8%AF%86%E5%88%AB%E7%83%A7%E5%BD%95%E5%90%8E%E7%9A%84-USB-%EF%BC%9F"><span class="toc-text">2. 为什么 Windows 无法识别烧录后的 USB ？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%87%8D%E6%96%B0%E4%BD%BF%E7%94%A8-USB-%E6%97%B6%E9%9C%80%E8%A6%81%E6%A0%BC%E5%BC%8F%E5%8C%96%EF%BC%9F"><span class="toc-text">3. 为什么重新使用 USB 时需要格式化？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AC%A1%E8%A2%AB%E7%8E%A9%E5%BC%84"><span class="toc-text">第二次被玩弄</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E5%8F%91%E7%94%9F%E8%BF%99%E7%A7%8D%E6%83%85%E5%86%B5%EF%BC%9F"><span class="toc-text">为什么会发生这种情况？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AC%A1%E8%A2%AB%E7%8E%A9%E5%BC%84"><span class="toc-text">第三次被玩弄</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E6%AC%A1%E8%A2%AB%E7%8E%A9%E5%BC%84"><span class="toc-text">第四次被玩弄</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E6%AC%A1%E8%A2%AB%E7%8E%A9%E5%BC%84"><span class="toc-text">第五次被玩弄</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E6%AC%A1%E8%A2%AB%E7%8E%A9%E5%BC%84"><span class="toc-text">第六次被玩弄</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%90%E5%8A%9F%E5%90%8E%E7%9A%84%E6%95%99%E8%AE%AD"><span class="toc-text">成功后的教训</span></a></li></ol></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
   </button>
