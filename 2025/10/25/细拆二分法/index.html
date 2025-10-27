@@ -17,28 +17,27 @@
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
   
-  <title>反射机制与序列化 - BaoboboboBao</title>
+  <title>细拆二分法 - BaoboboboBao</title>
 
   
-    <meta name="description" content="之前用Unity在定义变量时经常会在变量前面标记[SerializeField]，用于将private和protected属性的变量显示在inspector上（public变量会直接显示）。学习时没有细想这些都是什么。关于序列化也是只知道大概的作用。学习UE时碰到了反射系统，而序列化则是反射系统的一大应用场景。此篇笔记将学习记录序列化的概念，反射的概念以及UE的C++反射实现，以及在UE中，序列化">
+    <meta name="description" content="这两周学到了二分相关，思想听起来颇为简单，实际写起来漏洞百出，如果是面向测试案例编程的话，经常胡乱+1-1，随机尝试&gt;或者&gt;&#x3D;，拆了东墙补西墙，怎么堵都堵不明白。细节太多了，各种写法层出不穷，开区间的，闭区间的，左开右闭的，左闭右开的。找目标值的，找两端目标值位置的，找插入位置的，找最小的，找最大的，就是各种变了花样地找。所以还是一步步搞搞清楚，目前的总结只是从我刷到的六道题中总结的，">
 <meta property="og:type" content="article">
-<meta property="og:title" content="反射机制与序列化">
-<meta property="og:url" content="http://example.com/2025/08/17/%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E4%B8%8E%E5%BA%8F%E5%88%97%E5%8C%96/index.html">
+<meta property="og:title" content="细拆二分法">
+<meta property="og:url" content="http://example.com/2025/10/25/%E7%BB%86%E6%8B%86%E4%BA%8C%E5%88%86%E6%B3%95/index.html">
 <meta property="og:site_name" content="BaoboboboBao">
-<meta property="og:description" content="之前用Unity在定义变量时经常会在变量前面标记[SerializeField]，用于将private和protected属性的变量显示在inspector上（public变量会直接显示）。学习时没有细想这些都是什么。关于序列化也是只知道大概的作用。学习UE时碰到了反射系统，而序列化则是反射系统的一大应用场景。此篇笔记将学习记录序列化的概念，反射的概念以及UE的C++反射实现，以及在UE中，序列化">
+<meta property="og:description" content="这两周学到了二分相关，思想听起来颇为简单，实际写起来漏洞百出，如果是面向测试案例编程的话，经常胡乱+1-1，随机尝试&gt;或者&gt;&#x3D;，拆了东墙补西墙，怎么堵都堵不明白。细节太多了，各种写法层出不穷，开区间的，闭区间的，左开右闭的，左闭右开的。找目标值的，找两端目标值位置的，找插入位置的，找最小的，找最大的，就是各种变了花样地找。所以还是一步步搞搞清楚，目前的总结只是从我刷到的六道题中总结的，">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-08-17T07:44:39.000Z">
-<meta property="article:modified_time" content="2025-08-17T09:29:19.085Z">
+<meta property="article:published_time" content="2025-10-25T08:02:00.000Z">
+<meta property="article:modified_time" content="2025-10-27T15:21:24.328Z">
 <meta property="article:author" content="baobobo">
-<meta property="article:tag" content="UE">
 <meta property="article:tag" content="C++">
-<meta property="article:tag" content="序列化">
-<meta property="article:tag" content="反射">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="二分查找">
 <meta name="twitter:card" content="summary">
   
   
   
-  <meta name="keywords" content="UE,C++,序列化,反射">
+  <meta name="keywords" content="C++,算法,二分查找">
 
   <!-- feed -->
   
@@ -80,72 +79,390 @@
   <div class="content">
     <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
 <span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div>
-<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-08-17T07:44:39.000Z">2025-08-17</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2025-08-17T09:29:19.085Z">2025-08-17</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-10-25T08:02:00.000Z">2025-10-25</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2025-10-27T15:21:24.328Z">2025-10-27</time></span></div></div></div>
     
     <div class="bottom only-title">
       
       <div class="text-area">
-        <h1 class="text title"><span>反射机制与序列化</span></h1>
+        <h1 class="text title"><span>细拆二分法</span></h1>
         
       </div>
     </div>
     
   </div>
-  </div><article class="md-text content"><p>之前用Unity在定义变量时经常会在变量前面标记[SerializeField]，用于将private和protected属性的变量显示在inspector上（public变量会直接显示）。学习时没有细想这些都是什么。关于序列化也是只知道大概的作用。学习UE时碰到了反射系统，而序列化则是反射系统的一大应用场景。此篇笔记将学习记录序列化的概念，反射的概念以及UE的C++反射实现，以及在UE中，序列化又是如何通过反射实现的。</p>
-<h2 id="1-什么是序列化"><a href="#1-什么是序列化" class="headerlink" title="1. 什么是序列化"></a>1. 什么是序列化</h2><p>计算机程序的基本运行周期可分为三个阶段：启动、运行和终止。当程序运行时，编译后的代码会被加载到内存中，程序运行过程中产生的变量和对象则存储在内存的栈区和堆区。然而，一旦程序终止运行，这些存储在内存中的临时数据都将丢失。为了持久化这些数据，我们需要在程序运行期间或终止前将其保存下来。这种需求常见于以下场景：</p>
-<ul>
-<li>网络传输（如多人游戏中不同客户端间的状态同步）</li>
-<li>游戏存档（保存玩家进度）</li>
-<li>编辑器中对游戏对象的修改保存</li>
-</ul>
-<p>简单来说，<strong>序列化</strong> 是将程序中的 <strong>对象（Object）</strong> 或 <strong>数据结构</strong> 转换为一种 <strong>可存储或可传输的格式</strong>（如二进制、JSON、XML等），以便在需要时能够重新恢复（反序列化）为原始对象的过程。</p>
-<h2 id="2-什么是反射（Reflection）"><a href="#2-什么是反射（Reflection）" class="headerlink" title="2. 什么是反射（Reflection）"></a>2. 什么是反射（Reflection）</h2><p>在UE中，每次修改完C++代码后都需要重新编译才能继续在编辑器中进行操作。这是因为编辑器需要获取代码中的变量和对象信息，以便在面板中提供可视化编辑功能。然而，C++编译过程会丢失许多对编辑器至关重要的元数据信息。C++的源码中的各种类型名变量名函数名文本人类可读，而编译器会直接将人类可读的代码源码编译为机器指令。编译器会丢弃什么呢？对于一个对象MyClass，运行时内存只需要知道某一块内存是哪种类型，并不需要知道名字字符串。对象成员health，只需要知道其在某一块内存的固定偏移量是多少。各种继承关系也会被处理为虚函数表（vtable），运行时通过vtable指针调用虚函数，而vtable本身不包含任何类名或父类名信息。简单来说，一切都被编译器转化为了各种地址信息，程序运行时只需要知道从哪块地址取出什么数据及指令即可。</p>
-<p>程序在运行的时候如果想知道：</p>
-<ul>
-<li>我自己有哪些类？</li>
-<li>这个类叫什么名字？继承自谁？</li>
-<li>类里面有哪些成员变量，叫什么？是什么类型？</li>
-<li>类里面有哪些成员函数？参数和返回值是什么？</li>
-</ul>
-<p>那么反射机制就是程序在运行时获取自身结构信息（类，属性，函数等）并能够操作他们的能力。</p>
-<blockquote>
-<p>Unreal引擎的许多强大功能和高效工作流都严重依赖反射。没有它，以下事情要么极其困难，要么根本不可能：</p>
-<ul>
-<li><strong>序列化：</strong> 将对象的状态（属性值）保存到磁盘（如存盘文件.uasset）或通过网络发送。<ul>
-<li>  引擎需要知道对象有哪些属性、它们的类型以及如何读取/写入它们的值。反射提供了这份“属性清单”和操作方法。</li>
-</ul>
-</li>
-<li><strong>垃圾回收：</strong> Unreal使用自动内存管理（GC）来回收不再使用的UObject。<ul>
-<li>  GC需要知道一个对象引用了哪些其他UObject（避免误删仍在使用的对象）。反射提供了属性之间的引用关系图（通过<code>UPROPERTY()</code>标记）。</li>
-</ul>
-</li>
-<li><strong>蓝图与C++的互操作性：</strong> 这是Unreal最强大的特性之一。让设计师在蓝图中使用C++类、访问C++变量、调用C++函数。<ul>
-<li>  蓝图系统需要在运行时知道C++类有哪些属性(<code>UPROPERTY</code>)暴露给蓝图编辑、有哪些函数(<code>UFUNCTION</code>)可以被蓝图调用、它们的参数是什么。反射提供了这份蓝图与C++交互的“接口说明书”。</li>
-</ul>
-</li>
-<li><strong>编辑器细节面板：</strong> 在Unreal编辑器中选中一个Actor或Component时，右侧的“Details”面板会显示其可编辑的属性。<ul>
-<li>  编辑器需要知道这个对象有哪些属性可以显示和编辑、它们的分类（Category）、显示名称、工具提示、取值范围等（通过<code>UPROPERTY</code>的元说明符如<code>EditAnywhere, BlueprintReadWrite, Category=&quot;Movement&quot;</code>等实现）。反射提供了构建这个UI所需的所有信息。</li>
-</ul>
-</li>
-<li><strong>网络复制：</strong> 在多人游戏中，服务器需要将状态同步到客户端。<ul>
-<li>  引擎需要知道哪些属性(<code>UPROPERTY(Replicated)</code>)需要被复制、在什么条件下复制。反射提供了需要复制的属性列表和复制规则。</li>
-</ul>
-</li>
-<li><strong>命令行动态调用：</strong> 通过控制台命令或蓝图调用特定对象的特定函数。<ul>
-<li>  系统需要根据字符串形式的函数名和参数，在运行时找到匹配的函数并执行它。反射提供了函数名到实际函数指针的映射。</li>
-</ul>
-</li>
-<li><strong>动态创建对象：</strong> 根据类名（字符串）在运行时创建对象实例（例如<code>NewObject()</code>或<code>SpawnActor()</code>内部查找）。<ul>
-<li>  引擎需要根据提供的类名字符串，找到对应的<code>UClass*</code>，然后才能创建实例。反射维护了所有反射类的注册表。</li>
-</ul>
-</li>
-</ul>
-</blockquote>
-<p>C++ 语言本身不支持反射特性，UE 在 C++ 的语法基础上通过 UHT 实现了反射信息的生成，从而实现了运行时的反射的目的。</p>
-<h2 id="3-UE-C-中的反射机制"><a href="#3-UE-C-中的反射机制" class="headerlink" title="3. UE C++中的反射机制"></a>3. UE C++中的反射机制</h2><p>随便打开一个在UE中创建的C++文件，比如MoveActor.h:</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Fill out your copyright notice in the Description page of Project Settings.</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;CoreMinimal.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;GameFramework/Actor.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;MoveActor.generated.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">UCLASS</span>()</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RIDERTEST_API</span> AMoveActor : <span class="keyword">public</span> AActor</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">GENERATED_BODY</span>()</span><br><span class="line">	</span><br><span class="line"><span class="keyword">public</span>:	</span><br><span class="line">	<span class="comment">// Sets default values for this actor&#x27;s properties</span></span><br><span class="line">	<span class="built_in">AMoveActor</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	<span class="comment">// Called when the game starts or when spawned</span></span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">BeginPlay</span><span class="params">()</span> <span class="keyword">override</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:	</span><br><span class="line">	<span class="comment">// Called every frame</span></span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">Tick</span><span class="params">(<span class="type">float</span> DeltaTime)</span> <span class="keyword">override</span></span>;</span><br><span class="line">	<span class="built_in">UPROPERTY</span>(EditAnywhere,BlueprintReadWrite)</span><br><span class="line">	<span class="type">float</span> Speed;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+  </div><article class="md-text content"><p>这两周学到了二分相关，思想听起来颇为简单，实际写起来漏洞百出，如果是面向测试案例编程的话，经常胡乱+1-1，随机尝试&gt;或者&gt;=，拆了东墙补西墙，怎么堵都堵不明白。细节太多了，各种写法层出不穷，开区间的，闭区间的，左开右闭的，左闭右开的。找目标值的，找两端目标值位置的，找插入位置的，找最小的，找最大的，就是各种变了花样地找。所以还是一步步搞搞清楚，目前的总结只是从我刷到的六道题中总结的，但感觉万变不离其宗。所以来拿表格总结演示一下。</p>
+<p>我的日常写法跟随大众写左闭右开，也就是说最后的答案基本是从left得到的。（虽然最后的退出条件是两者相等，但是为了统一还是用left。）</p>
+<p>首先确定一些必要的条件：</p>
+<ol>
+<li>由于计算mid时，为了防止溢出，经常使用这一句：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mid=left+(right-left)/2;</span><br></pre></td></tr></table></figure>
 
-<p>注意这三个地方：<strong>UCLASS()，GENERATED_BODY()，UPROPERTY(EditAnywhere,BlueprintReadWrite)</strong></p>
+<p>所以，如果窗口长度为偶数，mid计算出来为偏向左边的索引。很符合左闭右开的规则。</p>
+<p>举例：</p>
+<p>left=3，right=6，mid=3+（6-3）/2=4.5=4。</p>
+<p>left=0，right=1，mid=0+（1-0）/2=0.5=0。</p>
+<p>想找的值比所有都大：</p>
+<p>left=length-1, right=length, mid=length-1+(length-length+1)/2=length-1+0.5=length-1;</p>
+<p>left=mid+1=length, 退出循环，进行最后的判断。</p>
+<p>想找的值比所有都小：</p>
+<p>left=0, right=1,mid=0+(1-0)/2=0.5=0</p>
+<p>right=mid=0,此时left=right，退出循环，判断索引0是否为想要的值即可。</p>
+<h2 id="给的target不在里面怎么办"><a href="#给的target不在里面怎么办" class="headerlink" title="给的target不在里面怎么办"></a>给的target不在里面怎么办</h2><p>举个例子，此处具体数值只用small和big代表，防止陷入对数值的计算。</p>
+<p>1 3 5 7 9      找6</p>
+<p>left先到5，right还是9，然后right成为7，找不到的情况下，left和right肯定相邻，并且left为small，right为big。</p>
+<p>为了细致表达，考虑完整的三种情况：</p>
+<p>第一种：找不到的数的大小处于数组中间：</p>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>0</th>
+<th>。。。</th>
+<th>。。。</th>
+<th>x</th>
+<th>x+1</th>
+<th>。。。</th>
+<th>len-1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>number</td>
+<td></td>
+<td></td>
+<td></td>
+<td>smaller</td>
+<td>bigger</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>point</td>
+<td></td>
+<td></td>
+<td></td>
+<td>left，mid</td>
+<td>right</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>此时，left&lt;right，还可以跑一次循环，left需要往右移动，变成：</p>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>0</th>
+<th>。。。</th>
+<th>。。。</th>
+<th>x</th>
+<th>x+1</th>
+<th>。。。</th>
+<th>len-1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>number</td>
+<td></td>
+<td></td>
+<td></td>
+<td>smaller</td>
+<td>bigger</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>point</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>left，right</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>此时，left=right，退出循环。最后，我们得到的left所指的这个数就是大于target的最小索引</p>
+<p>第二种情况，target比所有数都小，right会不断往左移动，最后还是会和left相邻：</p>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>0</th>
+<th>1</th>
+<th>。。。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>number</td>
+<td>bigger</td>
+<td>bigger</td>
+<td></td>
+</tr>
+<tr>
+<td>point</td>
+<td>left，mid</td>
+<td>right</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>此时，由于mid比target大，right还需要往左移，变成：</p>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>0</th>
+<th>1</th>
+<th>。。。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>number</td>
+<td>bigger</td>
+<td>bigger</td>
+<td></td>
+</tr>
+<tr>
+<td>point</td>
+<td>left，mid，right</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>此时，left=right，退出循环。left值不是我们想要的值，此时left就是大于target值的最小索引。</p>
+<p>第三种情况，target比所有数都大，left会不断向右移动，最后和right相邻：</p>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>0</th>
+<th>。。。</th>
+<th>len-2</th>
+<th>len-1</th>
+<th>len</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>number</td>
+<td></td>
+<td></td>
+<td></td>
+<td>smaller</td>
+<td>nullptr！</td>
+</tr>
+<tr>
+<td>point</td>
+<td></td>
+<td></td>
+<td></td>
+<td>left，mid</td>
+<td>right</td>
+</tr>
+</tbody></table>
+<p>此时left还需要右移，得到：</p>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>0</th>
+<th>。。。</th>
+<th>。。。</th>
+<th>len-2</th>
+<th>len-1</th>
+<th>len</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>number</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>smaller</td>
+<td>nullptr！</td>
+</tr>
+<tr>
+<td>point</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>left，right</td>
+</tr>
+</tbody></table>
+<p>此时left和right相等，退出循环。检查left的值，超出len-1，说明target比所有数都大。</p>
+<p>至此，可以稍微总结一下找不到target的情况下，算出来的left：</p>
+<ul>
+<li>left左边还有地，那么left就是小于target的最大索引，left+1如果存在，那么left+1就是大于target的最小索引。</li>
+<li>left直接跑出长度范围了，那么没别的意义，left-1即len-1即为最大值。</li>
+</ul>
+<h2 id="如果想求大于-小于target的最小-最大索引，但有重复target怎么办？"><a href="#如果想求大于-小于target的最小-最大索引，但有重复target怎么办？" class="headerlink" title="如果想求大于/小于target的最小/最大索引，但有重复target怎么办？"></a>如果想求大于/小于target的最小/最大索引，但有重复target怎么办？</h2><p>上面推导的情况，也就是target不出现/只出现一次时，小于/大于target的最小索引/最大索引其实根据推导的结论也能直接得到了。但是大部分的题目不长这么简单，它会出现很多重复的target，这时候就需要计算边界了。</p>
+<p>一般的题目我们都不会知道target会不会存在于数组中。为了保险起见，下面会做完整的推理。</p>
+<p>如果存在，并且有很多个，那么就需要计算边界了。首先计算左边界：</p>
+<p>计算左边界的时候，如果得到了nums[mid]==target，也不能就此退出，需要继续寻找左边还有没有，这时候就需要让right向左挤压。</p>
+<p>首先要想清楚一点，就是left只有在nums[mid]&lt;target的时候才会移动。所以，nums[left]第一次和target相等后，就不会再动了，然后right步步紧逼，最后形成以下局面</p>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>0</th>
+<th>i-1</th>
+<th>i</th>
+<th>i+1</th>
+<th></th>
+<th></th>
+<th>。。。</th>
+<th>len-1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>number</td>
+<td></td>
+<td></td>
+<td>x</td>
+<td>x</td>
+<td>。。。</td>
+<td>x</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>point</td>
+<td></td>
+<td></td>
+<td>left，mid</td>
+<td>right</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>再来一次循环，right再向左移动</p>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>0</th>
+<th>i-1</th>
+<th>i</th>
+<th>i+1</th>
+<th></th>
+<th></th>
+<th>。。。</th>
+<th>len-1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>number</td>
+<td></td>
+<td></td>
+<td>x</td>
+<td>x</td>
+<td>。。。</td>
+<td>x</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>point</td>
+<td></td>
+<td></td>
+<td>left，mid，right</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>此时，退出循环，left即为我们要找的最左边。</p>
+<p>有很多题都会用到求最左侧的索引。比如<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-count-of-positive-integer-and-negative-integer?envType=problem-list-v2&envId=To8CM2c9">2529</a>这道题，找到比0小的，0有可能存在也有可能不存在。如果0存在，那么我们计算出left后，要检查left-1是否存在，如果存在，那么left左边都是比0小的，left-1就是小于0的最大索引。</p>
+<p>如果0不存在，又回到了最初那个target不存在的情况，即left本身就为小于target值的最大索引。</p>
+<p>-2，-1，3</p>
+<p>那么如何求最右侧的索引呢？思路差不多，也就是让left向右步步紧逼。也要搞清楚一点，right的值只会在target&lt;nums[mid]才会移动到mid上。如图，最后都会走向如此局面：</p>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>0</th>
+<th>i-1</th>
+<th>i</th>
+<th>i+1</th>
+<th>i+k</th>
+<th>i+k+1</th>
+<th>。。。</th>
+<th>len-1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>number</td>
+<td></td>
+<td></td>
+<td>x</td>
+<td>。。。</td>
+<td>x</td>
+<td>bigger</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>point</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>left,mid</td>
+<td>right</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>此时left还需要右移，得到下面：</p>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>0</th>
+<th>i-1</th>
+<th>i</th>
+<th>i+1</th>
+<th>i+k</th>
+<th>i+k+1</th>
+<th>。。。</th>
+<th>len-1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>number</td>
+<td></td>
+<td></td>
+<td>x</td>
+<td>。。。</td>
+<td>x</td>
+<td>bigger</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>point</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>left，right</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>此时left=right，而我们发现left所指的是x后面那个数，所以最后我们要返回left-1。</p>
+<p>而其实，left即为大于target的最小索引。</p>
+<p>那么如果target不存在呢？那我们又回到了最初的那种情况：left即为大于target的最小索引，小于left都比它小。</p>
+<p>所以可以发现，如果想求大于target的值的多少，拿到left即可了，left的左边绝对都比tartget小。</p>
+<p>那么搞明白这些，也就差不多了。</p>
+<p>代码：（待补充）</p>
 
 <div class="article-footer fs14">
     <section id="license">
@@ -155,7 +472,7 @@
     </section>
     </div>
 </article>
-<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2025/08/24/%E9%A5%BC%E5%9B%BE%E7%BB%83%E4%B9%A0/">饼图练习</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2024/10/01/plantuml%E5%92%8Cgpt%E7%BB%93%E5%90%88%E5%BF%AB%E9%80%9F%E7%94%BB%E5%9B%BE/">plantuml和gpt结合快速画图技巧</a></div></section></div>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2025/10/10/%E8%B0%88%E8%B0%88%E5%8F%B3%E5%80%BC/">谈谈右值与右值引用</a></div></section></div>
 
 
 
@@ -181,7 +498,7 @@
 
 
 
-<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-text">1. 什么是序列化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%BB%80%E4%B9%88%E6%98%AF%E5%8F%8D%E5%B0%84%EF%BC%88Reflection%EF%BC%89"><span class="toc-text">2. 什么是反射（Reflection）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-UE-C-%E4%B8%AD%E7%9A%84%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6"><span class="toc-text">3. UE C++中的反射机制</span></a></li></ol></div><div class="widget-footer">
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%99%E7%9A%84target%E4%B8%8D%E5%9C%A8%E9%87%8C%E9%9D%A2%E6%80%8E%E4%B9%88%E5%8A%9E"><span class="toc-text">给的target不在里面怎么办</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E6%83%B3%E6%B1%82%E5%A4%A7%E4%BA%8E-%E5%B0%8F%E4%BA%8Etarget%E7%9A%84%E6%9C%80%E5%B0%8F-%E6%9C%80%E5%A4%A7%E7%B4%A2%E5%BC%95%EF%BC%8C%E4%BD%86%E6%9C%89%E9%87%8D%E5%A4%8Dtarget%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="toc-text">如果想求大于&#x2F;小于target的最小&#x2F;最大索引，但有重复target怎么办？</span></a></li></ol></div><div class="widget-footer">
 
 <a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089" clip-rule="evenodd"/><path fill="currentColor" d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><span>参与讨论</span></a></div></widget>
 </div></aside><div class='float-panel blur'>
