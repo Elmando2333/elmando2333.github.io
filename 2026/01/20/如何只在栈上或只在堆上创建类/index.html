@@ -17,27 +17,25 @@
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
   
-  <title>细拆二分法 - BaoboboboBao</title>
+  <title>如何只在栈上或只在堆上创建类 - BaoboboboBao</title>
 
   
-    <meta name="description" content="这两周学到了二分相关，思想听起来颇为简单，实际写起来漏洞百出，如果是面向测试案例编程的话，经常胡乱+1-1，随机尝试&gt;或者&gt;&#x3D;，拆了东墙补西墙，怎么堵都堵不明白。细节太多了，各种写法层出不穷，开区间的，闭区间的，左开右闭的，左闭右开的。找目标值的，找两端目标值位置的，找插入位置的，找最小的，找最大的，就是各种变了花样地找。所以还是一步步搞搞清楚，目前的总结只是从我刷到的六道题中总结的，">
+    <meta name="description" content="如何只允许在堆上创建类？第一种思路，就是构造函数私有化，如下： 1234567891011121314#pragma onceclass OnlyOnHeap&amp;#123;public:	~OnlyOnHeap() &#x3D; default;private:	OnlyOnHeap()&#x3D;default;&amp;#125;;int main()&amp;#123;	OnlyOnHeap o1;&amp;#125;  如果尝试在栈上">
 <meta property="og:type" content="article">
-<meta property="og:title" content="细拆二分法">
-<meta property="og:url" content="http://example.com/2025/10/25/%E7%BB%86%E6%8B%86%E4%BA%8C%E5%88%86%E6%B3%95/index.html">
+<meta property="og:title" content="如何只在栈上或只在堆上创建类">
+<meta property="og:url" content="http://example.com/2026/01/20/%E5%A6%82%E4%BD%95%E5%8F%AA%E5%9C%A8%E6%A0%88%E4%B8%8A%E6%88%96%E5%8F%AA%E5%9C%A8%E5%A0%86%E4%B8%8A%E5%88%9B%E5%BB%BA%E7%B1%BB/index.html">
 <meta property="og:site_name" content="BaoboboboBao">
-<meta property="og:description" content="这两周学到了二分相关，思想听起来颇为简单，实际写起来漏洞百出，如果是面向测试案例编程的话，经常胡乱+1-1，随机尝试&gt;或者&gt;&#x3D;，拆了东墙补西墙，怎么堵都堵不明白。细节太多了，各种写法层出不穷，开区间的，闭区间的，左开右闭的，左闭右开的。找目标值的，找两端目标值位置的，找插入位置的，找最小的，找最大的，就是各种变了花样地找。所以还是一步步搞搞清楚，目前的总结只是从我刷到的六道题中总结的，">
+<meta property="og:description" content="如何只允许在堆上创建类？第一种思路，就是构造函数私有化，如下： 1234567891011121314#pragma onceclass OnlyOnHeap&amp;#123;public:	~OnlyOnHeap() &#x3D; default;private:	OnlyOnHeap()&#x3D;default;&amp;#125;;int main()&amp;#123;	OnlyOnHeap o1;&amp;#125;  如果尝试在栈上">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-10-25T08:02:00.000Z">
-<meta property="article:modified_time" content="2025-10-28T06:45:57.817Z">
+<meta property="article:published_time" content="2026-01-20T12:13:50.000Z">
+<meta property="article:modified_time" content="2026-01-20T12:47:50.675Z">
 <meta property="article:author" content="baobobo">
 <meta property="article:tag" content="C++">
-<meta property="article:tag" content="算法">
-<meta property="article:tag" content="二分查找">
 <meta name="twitter:card" content="summary">
   
   
   
-  <meta name="keywords" content="C++,算法,二分查找">
+  <meta name="keywords" content="C++">
 
   <!-- feed -->
   
@@ -79,482 +77,73 @@
   <div class="content">
     <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
 <span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div>
-<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-10-25T08:02:00.000Z">2025-10-25</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2025-10-28T06:45:57.817Z">2025-10-28</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-01-20T12:13:50.000Z">2026-01-20</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-01-20T12:47:50.675Z">2026-01-20</time></span></div></div></div>
     
     <div class="bottom only-title">
       
       <div class="text-area">
-        <h1 class="text title"><span>细拆二分法</span></h1>
+        <h1 class="text title"><span>如何只在栈上或只在堆上创建类</span></h1>
         
       </div>
     </div>
     
   </div>
-  </div><article class="md-text content"><p>这两周学到了二分相关，思想听起来颇为简单，实际写起来漏洞百出，如果是面向测试案例编程的话，经常胡乱+1-1，随机尝试&gt;或者&gt;=，拆了东墙补西墙，怎么堵都堵不明白。细节太多了，各种写法层出不穷，开区间的，闭区间的，左开右闭的，左闭右开的。找目标值的，找两端目标值位置的，找插入位置的，找最小的，找最大的，就是各种变了花样地找。所以还是一步步搞搞清楚，目前的总结只是从我刷到的六道题中总结的，但感觉万变不离其宗。所以来拿表格总结演示一下。</p>
-<p>我的日常写法跟随大众写左闭右开，也就是说最后的答案基本是从left得到的。（虽然最后的退出条件是两者相等，但是为了统一还是用left。）</p>
-<p>首先确定一些必要的条件：</p>
-<ol>
-<li>由于计算mid时，为了防止溢出，经常使用这一句：</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mid=left+(right-left)/2;</span><br></pre></td></tr></table></figure>
+  </div><article class="md-text content"><h2 id="如何只允许在堆上创建类？"><a href="#如何只允许在堆上创建类？" class="headerlink" title="如何只允许在堆上创建类？"></a>如何只允许在堆上创建类？</h2><p>第一种思路，就是构造函数私有化，如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">OnlyOnHeap</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	~<span class="built_in">OnlyOnHeap</span>() = <span class="keyword">default</span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="built_in">OnlyOnHeap</span>()=<span class="keyword">default</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	OnlyOnHeap o1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>所以，如果窗口长度为偶数，mid计算出来为偏向左边的索引。很符合左闭右开的规则。</p>
-<p>举例：</p>
-<p>left=3，right=6，mid=3+（6-3）/2=4.5=4。</p>
-<p>left=0，right=1，mid=0+（1-0）/2=0.5=0。</p>
-<p>想找的值比所有都大：</p>
-<p>left=length-1, right=length, mid=length-1+(length-length+1)/2=length-1+0.5=length-1;</p>
-<p>left=mid+1=length, 退出循环，进行最后的判断。</p>
-<p>想找的值比所有都小：</p>
-<p>left=0, right=1,mid=0+(1-0)/2=0.5=0</p>
-<p>right=mid=0,此时left=right，退出循环，判断索引0是否为想要的值即可。</p>
-<h2 id="给的target不在里面怎么办"><a href="#给的target不在里面怎么办" class="headerlink" title="给的target不在里面怎么办"></a>给的target不在里面怎么办</h2><p>举个例子，此处具体数值只用small和big代表，防止陷入对数值的计算。</p>
-<p>1 3 5 7 9      找6</p>
-<p>left先到5，right还是9，然后right成为7，找不到的情况下，left和right肯定相邻，并且left为small，right为big。</p>
-<p>为了细致表达，考虑完整的三种情况：</p>
-<p>第一种：找不到的数的大小处于数组中间：</p>
-<table>
-<thead>
-<tr>
-<th>index</th>
-<th>0</th>
-<th>。。。</th>
-<th>。。。</th>
-<th>x</th>
-<th>x+1</th>
-<th>。。。</th>
-<th>len-1</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>number</td>
-<td></td>
-<td></td>
-<td></td>
-<td>smaller</td>
-<td>bigger</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>point</td>
-<td></td>
-<td></td>
-<td></td>
-<td>left，mid</td>
-<td>right</td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<p>此时，left&lt;right，还可以跑一次循环，left需要往右移动，变成：</p>
-<table>
-<thead>
-<tr>
-<th>index</th>
-<th>0</th>
-<th>。。。</th>
-<th>。。。</th>
-<th>x</th>
-<th>x+1</th>
-<th>。。。</th>
-<th>len-1</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>number</td>
-<td></td>
-<td></td>
-<td></td>
-<td>smaller</td>
-<td>bigger</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>point</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>left，right</td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<p>此时，left=right，退出循环。最后，我们得到的left所指的这个数就是大于target的最小索引</p>
-<p>第二种情况，target比所有数都小，right会不断往左移动，最后还是会和left相邻：</p>
-<table>
-<thead>
-<tr>
-<th>index</th>
-<th>0</th>
-<th>1</th>
-<th>。。。</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>number</td>
-<td>bigger</td>
-<td>bigger</td>
-<td></td>
-</tr>
-<tr>
-<td>point</td>
-<td>left，mid</td>
-<td>right</td>
-<td></td>
-</tr>
-</tbody></table>
-<p>此时，由于mid比target大，right还需要往左移，变成：</p>
-<table>
-<thead>
-<tr>
-<th>index</th>
-<th>0</th>
-<th>1</th>
-<th>。。。</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>number</td>
-<td>bigger</td>
-<td>bigger</td>
-<td></td>
-</tr>
-<tr>
-<td>point</td>
-<td>left，mid，right</td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<p>此时，left=right，退出循环。left值不是我们想要的值，此时left就是大于target值的最小索引。</p>
-<p>第三种情况，target比所有数都大，left会不断向右移动，最后和right相邻：</p>
-<table>
-<thead>
-<tr>
-<th>index</th>
-<th>0</th>
-<th>。。。</th>
-<th>len-2</th>
-<th>len-1</th>
-<th>len</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>number</td>
-<td></td>
-<td></td>
-<td></td>
-<td>smaller</td>
-<td>nullptr！</td>
-</tr>
-<tr>
-<td>point</td>
-<td></td>
-<td></td>
-<td></td>
-<td>left，mid</td>
-<td>right</td>
-</tr>
-</tbody></table>
-<p>此时left还需要右移，得到：</p>
-<table>
-<thead>
-<tr>
-<th>index</th>
-<th>0</th>
-<th>。。。</th>
-<th>。。。</th>
-<th>len-2</th>
-<th>len-1</th>
-<th>len</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>number</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>smaller</td>
-<td>nullptr！</td>
-</tr>
-<tr>
-<td>point</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>left，right</td>
-</tr>
-</tbody></table>
-<p>此时left和right相等，退出循环。检查left的值，超出len-1，说明target比所有数都大。</p>
-<p>至此，可以稍微总结一下找不到target的情况下，算出来的left：</p>
-<ul>
-<li>left就是大于target的最小索引，left左边绝对比target小。</li>
-<li>left直接跑出长度范围了，那么没别的意义，left-1即len-1即为最大值。</li>
-</ul>
-<h2 id="如果想求大于-小于target的最小-最大索引，但有重复target怎么办？"><a href="#如果想求大于-小于target的最小-最大索引，但有重复target怎么办？" class="headerlink" title="如果想求大于/小于target的最小/最大索引，但有重复target怎么办？"></a>如果想求大于/小于target的最小/最大索引，但有重复target怎么办？</h2><p>上面推导的情况，也就是target不出现/只出现一次时，小于/大于target的最小索引/最大索引其实根据推导的结论也能直接得到了。但是大部分的题目不长这么简单，它会出现很多重复的target，这时候就需要计算边界了。</p>
-<p>一般的题目我们都不会知道target会不会存在于数组中。为了保险起见，下面会做完整的推理。</p>
-<p>如果存在，并且有很多个，那么就需要计算边界了。首先计算左边界：</p>
-<p>计算左边界的时候，如果得到了nums[mid]==target，也不能就此退出，需要继续寻找左边还有没有，这时候就需要让right向左挤压。</p>
-<p>首先要想清楚一点，就是left只有在nums[mid]&lt;target的时候才会移动。所以，nums[left]第一次和target相等后，就不会再动了，然后right步步紧逼，最后形成以下局面</p>
-<table>
-<thead>
-<tr>
-<th>index</th>
-<th>0</th>
-<th>i-1</th>
-<th>i</th>
-<th>i+1</th>
-<th></th>
-<th></th>
-<th>。。。</th>
-<th>len-1</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>number</td>
-<td></td>
-<td></td>
-<td>x</td>
-<td>x</td>
-<td>。。。</td>
-<td>x</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>point</td>
-<td></td>
-<td></td>
-<td>left，mid</td>
-<td>right</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<p>再来一次循环，right再向左移动</p>
-<table>
-<thead>
-<tr>
-<th>index</th>
-<th>0</th>
-<th>i-1</th>
-<th>i</th>
-<th>i+1</th>
-<th></th>
-<th></th>
-<th>。。。</th>
-<th>len-1</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>number</td>
-<td></td>
-<td></td>
-<td>x</td>
-<td>x</td>
-<td>。。。</td>
-<td>x</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>point</td>
-<td></td>
-<td></td>
-<td>left，mid，right</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<p>此时，退出循环，left即为我们要找的最左边。</p>
-<p>有很多题都会用到求最左侧的索引。比如<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-count-of-positive-integer-and-negative-integer?envType=problem-list-v2&envId=To8CM2c9">2529</a>这道题，找到比0小的，0有可能存在也有可能不存在。如果0存在，那么我们计算出left后，要检查left-1是否存在，如果存在，那么left左边都是比0小的，left-1就是小于0的最大索引。</p>
-<p>如果0不存在，又回到了最初那个target不存在的情况，即left本身就为小于target值的最大索引。</p>
-<p>-2，-1，3</p>
-<p>那么如何求最右侧的索引呢？思路差不多，也就是让left向右步步紧逼。也要搞清楚一点，right的值只会在target&lt;nums[mid]才会移动到mid上。如图，最后都会走向如此局面：</p>
-<table>
-<thead>
-<tr>
-<th>index</th>
-<th>0</th>
-<th>i-1</th>
-<th>i</th>
-<th>i+1</th>
-<th>i+k</th>
-<th>i+k+1</th>
-<th>。。。</th>
-<th>len-1</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>number</td>
-<td></td>
-<td></td>
-<td>x</td>
-<td>。。。</td>
-<td>x</td>
-<td>bigger</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>point</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>left,mid</td>
-<td>right</td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<p>此时left还需要右移，得到下面：</p>
-<table>
-<thead>
-<tr>
-<th>index</th>
-<th>0</th>
-<th>i-1</th>
-<th>i</th>
-<th>i+1</th>
-<th>i+k</th>
-<th>i+k+1</th>
-<th>。。。</th>
-<th>len-1</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>number</td>
-<td></td>
-<td></td>
-<td>x</td>
-<td>。。。</td>
-<td>x</td>
-<td>bigger</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>point</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>left，right</td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<p>此时left=right，而我们发现left所指的是x后面那个数，所以最后我们要返回left-1。</p>
-<p>而其实，left即为大于target的最小索引。</p>
-<p>那么如果target不存在呢？那我们又回到了最初的那种情况：left即为大于target的最小索引，小于left都比它小。</p>
-<p>所以可以发现，如果想求大于target的值的多少，拿到left即可了，left的左边绝对都比tartget小。</p>
-<p>那么搞明白这些，也就差不多了。</p>
-<p>至于边际条件，搞清楚left的取值范围是[0,len]，注意一下为0时和为len时的情况即可。</p>
-<hr>
-<h2 id="回到题目总结："><a href="#回到题目总结：" class="headerlink" title="回到题目总结："></a>回到题目总结：</h2><p>先记住：</p>
-<ul>
-<li><strong>lower_bound</strong>：第一个 <strong>≥ target</strong> 的位置</li>
-<li><strong>upper_bound</strong>：第一个 <strong>&gt; target</strong> 的位置</li>
-</ul>
-<h3 id="lc34-在排序数组中查找元素的第一个和最后一个位置"><a href="#lc34-在排序数组中查找元素的第一个和最后一个位置" class="headerlink" title="lc34  在排序数组中查找元素的第一个和最后一个位置"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array?envType=problem-list-v2&envId=To8CM2c9">lc34 </a> 在排序数组中查找元素的第一个和最后一个位置</h3><p>思路：</p>
-<ul>
-<li>第一个位置：<code>lower_bound(target)</code></li>
-<li>最后一个位置：<code>upper_bound(target) - 1</code></li>
-<li>特殊情况：检查元素是否存在</li>
-</ul>
-<h3 id="lc35-搜索插入位置："><a href="#lc35-搜索插入位置：" class="headerlink" title="lc35 搜索插入位置："></a>lc35 搜索插入位置：</h3><p>给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。</p>
-<p>思路：</p>
-<ul>
-<li>找第一个 <code>≥ target</code> 的位置</li>
-<li><strong>解法</strong>：直接 <code>lower_bound(target)</code></li>
-</ul>
-<h3 id="lc-744-寻找比目标字母大的最小字母："><a href="#lc-744-寻找比目标字母大的最小字母：" class="headerlink" title="lc 744 寻找比目标字母大的最小字母："></a>lc 744 寻找比目标字母大的最小字母：</h3><p>给你一个字符数组 <code>letters</code>，该数组按<strong>非递减顺序</strong>排序，以及一个字符 <code>target</code>。<code>letters</code> 里<strong>至少有两个不同</strong>的字符。</p>
-<p>返回 <code>letters</code> 中大于 <code>target</code> 的最小的字符。如果不存在这样的字符，则返回 <code>letters</code> 的第一个字符。</p>
-<p>思路：</p>
-<ul>
-<li>找第一个&gt;target的字母，即用upper_bound。</li>
-</ul>
-<h3 id="lc-2529-正整数和负整数的最大计数"><a href="#lc-2529-正整数和负整数的最大计数" class="headerlink" title="lc 2529 正整数和负整数的最大计数"></a>lc 2529 正整数和负整数的最大计数</h3><p>给你一个按 <strong>非递减顺序</strong> 排列的数组 <code>nums</code> ，返回正整数数目和负整数数目中的最大值。</p>
-<ul>
-<li>换句话讲，如果 <code>nums</code> 中正整数的数目是 <code>pos</code> ，而负整数的数目是 <code>neg</code> ，返回 <code>pos</code> 和 <code>neg</code>二者中的最大值。</li>
-</ul>
-<p><strong>注意：</strong><code>0</code> 既不是正整数也不是负整数。</p>
-<p>思路：</p>
-<ul>
-<li>负数数量：第一个 <code>≥ 0</code> 的位置 = <code>lower_bound(0)</code></li>
-<li>正数数量：总数 - 第一个 <code>&gt; 0</code> 的位置 = <code>n - upper_bound(0)</code></li>
-<li>取两者最大值</li>
-</ul>
-<h3 id="lc-2300-咒语和药水的成功对数"><a href="#lc-2300-咒语和药水的成功对数" class="headerlink" title="lc 2300 咒语和药水的成功对数"></a>lc 2300 咒语和药水的成功对数</h3><p>给你两个正整数数组 <code>spells</code> 和 <code>potions</code> ，长度分别为 <code>n</code> 和 <code>m</code> ，其中 <code>spells[i]</code> 表示第 <code>i</code> 个咒语的能量强度，<code>potions[j]</code> 表示第 <code>j</code> 瓶药水的能量强度。</p>
-<p>同时给你一个整数 <code>success</code> 。一个咒语和药水的能量强度 <strong>相乘</strong> 如果 <strong>大于等于</strong> <code>success</code> ，那么它们视为一对 <strong>成功</strong> 的组合。</p>
-<p>请你返回一个长度为 <code>n</code> 的整数数组 <code>pairs</code>，其中 <code>pairs[i]</code> 是能跟第 <code>i</code> 个咒语成功组合的 <strong>药水</strong> 数目。</p>
-<p>思路：</p>
-<ul>
-<li>对每个spell，找第一个 <code>≥ success/spell</code> 的药水</li>
-<li><strong>解法</strong>：<code>m - left_bound(success/spell)</code></li>
-</ul>
-<h3 id="lc-1385-两个数组间的距离值"><a href="#lc-1385-两个数组间的距离值" class="headerlink" title="lc 1385 两个数组间的距离值"></a>lc 1385 两个数组间的距离值</h3><p>给你两个整数数组 <code>arr1</code> ， <code>arr2</code> 和一个整数 <code>d</code> ，请你返回两个数组之间的 <strong>距离值</strong> 。</p>
-<p>「<strong>距离值</strong>」 定义为符合此距离要求的元素数目：对于元素 <code>arr1[i]</code> ，不存在任何元素 <code>arr2[j]</code> 满足 <code>|arr1[i]-arr2[j]| &lt;= d</code> 。</p>
-<p>思路</p>
-<ul>
-<li>检查 <code>[x-d, x+d]</code> 区间是否为空</li>
-<li><strong>解法</strong>：找第一个 <code>≥ x-d</code> 的位置，检查是否 <code>&gt; x+d</code></li>
-</ul>
-<h2 id="决策指南"><a href="#决策指南" class="headerlink" title="决策指南"></a>决策指南</h2><table>
-<thead>
-<tr>
-<th>要找什么</th>
-<th>使用的函数</th>
-<th>例子</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>第一个 ≥ target 的</td>
-<td>lower_bound</td>
-<td>插入位置</td>
-</tr>
-<tr>
-<td>第一个 &gt; target 的</td>
-<td>upper_bound</td>
-<td>下一个更大元素</td>
-</tr>
-<tr>
-<td>最后一个 = target 的</td>
-<td>upper_bound - 1</td>
-<td>元素结束位置</td>
-</tr>
-<tr>
-<td>最后一个 &lt; target 的</td>
-<td>lower_bound - 1</td>
-<td>前一个较小元素</td>
-</tr>
-<tr>
-<td>统计 target 出现次数</td>
-<td>upper_bound - lower_bound</td>
-<td>频率统计</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p>注意数组越界和空数组的情况！</p>
-</blockquote>
-<h2 id="直接用STL"><a href="#直接用STL" class="headerlink" title="直接用STL"></a>直接用STL</h2><p>每次自己写寻找边界索引很麻烦，了解原理后直接上STL：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在 [first, last) 范围内查找</span></span><br><span class="line"><span class="built_in">lower_bound</span>(first, last, value);    <span class="comment">// 第一个 ≥ value 的位置</span></span><br><span class="line"><span class="built_in">upper_bound</span>(first, last, value);    <span class="comment">// 第一个 &gt; value 的位置</span></span><br><span class="line"><span class="built_in">equal_range</span>(first, last, value);    <span class="comment">// 返回 pair&lt;lower_bound, upper_bound&gt;</span></span><br><span class="line"><span class="built_in">binary_search</span>(first, last, value);  <span class="comment">// 返回 bool，是否存在</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>如果尝试在栈上构建此对象，则会报错，信息如下：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;OnlyOnHeap::OnlyOnHeap()&quot;</span> (已声明 所在行数:<span class="number">7</span>，所属文件:<span class="string">&quot;E:\UnrealWorld\Cpp\LearnMordenCpp\OnlyOnHeap.h&quot;</span>) 不可访问</span><br></pre></td></tr></table></figure>
 
-<p>基础用法：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;<span class="type">int</span>&gt; nums = &#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// lower_bound: 第一个 ≥ 4 的位置</span></span><br><span class="line"><span class="keyword">auto</span> it1 = <span class="built_in">lower_bound</span>(nums.<span class="built_in">begin</span>(), nums.<span class="built_in">end</span>(), <span class="number">4</span>);</span><br><span class="line"><span class="comment">// it1 指向 5，索引 = it1 - nums.begin() = 2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// upper_bound: 第一个 &gt; 5 的位置  </span></span><br><span class="line"><span class="keyword">auto</span> it2 = <span class="built_in">upper_bound</span>(nums.<span class="built_in">begin</span>(), nums.<span class="built_in">end</span>(), <span class="number">5</span>);</span><br><span class="line"><span class="comment">// it2 指向 7，索引 = 3</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>但是，此时如果想实现在堆上构造，new也用不了了。此时只能写一个显式的静态函数去调用私有的构造函数去创建类并返回类的指针，如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">OnlyOnHeap</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	~<span class="built_in">OnlyOnHeap</span>() = <span class="keyword">default</span>;</span><br><span class="line">	<span class="function"><span class="type">static</span> OnlyOnHeap* <span class="title">Create</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">OnlyOnHeap</span>();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="built_in">OnlyOnHeap</span>()=<span class="keyword">default</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>此时就可以通过create函数去间接在堆上构造这个类了。</p>
+<p>此时发现一个问题：如果使用赋值，还是可以赋值到一个栈上的对象并且不报错：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">OnlyOnHeap *o1=OnlyOnHeap::<span class="built_in">Create</span>();</span><br><span class="line">OnlyOnHeap o2 = *o1;<span class="comment">//没有报错</span></span><br></pre></td></tr></table></figure>
+
+<p>此时还需要禁用拷贝构造和拷贝赋值函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">OnlyOnHeap</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	~<span class="built_in">OnlyOnHeap</span>() = <span class="keyword">default</span>;</span><br><span class="line">	<span class="function"><span class="type">static</span> OnlyOnHeap* <span class="title">Create</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">OnlyOnHeap</span>();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">OnlyOnHeap</span>(<span class="type">const</span> OnlyOnHeap&amp;) = <span class="keyword">delete</span>;</span><br><span class="line">	OnlyOnHeap&amp; <span class="keyword">operator</span>=(<span class="type">const</span> OnlyOnHeap&amp;) = <span class="keyword">delete</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="built_in">OnlyOnHeap</span>()=<span class="keyword">default</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>换一种思路。如果要禁用在栈上构造对象，程序退出栈的时候会自动调用栈上类的析构函数。编译器会把析构函数插入到程序中，可以把析构函数设为private，是否可行？如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">OnlyOnHeap</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">OnlyOnHeap</span>() = <span class="keyword">default</span>;</span><br><span class="line">	<span class="function"><span class="type">static</span> OnlyOnHeap* <span class="title">Create</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">OnlyOnHeap</span>();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">OnlyOnHeap</span>(<span class="type">const</span> OnlyOnHeap&amp;) = <span class="keyword">delete</span>;</span><br><span class="line">	OnlyOnHeap&amp; <span class="keyword">operator</span>=(<span class="type">const</span> OnlyOnHeap&amp;) = <span class="keyword">delete</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	~<span class="built_in">OnlyOnHeap</span>() = <span class="keyword">default</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    OnlyOnHeap o1;<span class="comment">//尝试在栈上创建对象</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此时报错：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;OnlyOnHeap::~OnlyOnHeap() noexcept&quot;</span> (已声明 所在行数:<span class="number">18</span>，所属文件:<span class="string">&quot;E:\UnrealWorld\Cpp\LearnMordenCpp\OnlyOnHeap.h&quot;</span>) 不可访问</span><br></pre></td></tr></table></figure>
+
+<p>所以，私有化析构函数也可以防止程序在栈上创建类。</p>
+<p>最佳实践的写法如下，核心就是手写创建和销毁，间接去调用new和delete去管理堆上的内存。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">OnlyOnHeap</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="type">static</span> OnlyOnHeap* <span class="title">Create</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">OnlyOnHeap</span>();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">destory</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">delete</span> <span class="keyword">this</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">OnlyOnHeap</span>(<span class="type">const</span> OnlyOnHeap&amp;) = <span class="keyword">delete</span>;</span><br><span class="line">	OnlyOnHeap&amp; <span class="keyword">operator</span>=(<span class="type">const</span> OnlyOnHeap&amp;) = <span class="keyword">delete</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="built_in">OnlyOnHeap</span>() = <span class="keyword">default</span>;</span><br><span class="line">	~<span class="built_in">OnlyOnHeap</span>() = <span class="keyword">default</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="如何只允许在栈上创建类？"><a href="#如何只允许在栈上创建类？" class="headerlink" title="如何只允许在栈上创建类？"></a>如何只允许在栈上创建类？</h2><p>这个就好写多了。平时在堆上创建类有两种方法，一种是用new，一种是malloc。</p>
+<p>禁止使用new，就把new的运算符禁用即可，别忘了数组也要禁用。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">OnlyOnStack</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">OnlyOnStack</span>()=<span class="keyword">default</span>;</span><br><span class="line">	~<span class="built_in">OnlyOnStack</span>() = <span class="keyword">default</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="type">void</span>* <span class="keyword">operator</span> <span class="title">new</span><span class="params">(<span class="type">size_t</span>)</span> </span>= <span class="keyword">delete</span>;</span><br><span class="line">	<span class="type">void</span>* <span class="keyword">operator</span> <span class="keyword">new</span>[](<span class="type">size_t</span>) = <span class="keyword">delete</span>;</span><br><span class="line">	<span class="function"><span class="type">void</span>* <span class="keyword">operator</span> <span class="title">new</span><span class="params">(<span class="type">size_t</span>, <span class="type">void</span>* p)</span></span>=<span class="keyword">delete</span>;</span><br><span class="line">    <span class="type">void</span>* <span class="keyword">operator</span> <span class="keyword">new</span>[](<span class="type">size_t</span>, <span class="type">void</span>* p) = <span class="keyword">delete</span>;</span><br></pre></td></tr></table></figure>
+
+<p>如果是malloc来创建对象。这里理解一下如何通过malloc分配的内存在堆上创建对象：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span>* memory = <span class="built_in">malloc</span>(<span class="built_in">sizeof</span>(MyClass));  <span class="comment">// 仅仅分配原始内存</span></span><br></pre></td></tr></table></figure>
+
+<p>malloc函数只分配一堆字节内存空间，并不会调用类的构造函数，返回的是一个void*指针。</p>
+<p>如果我们用new操作的话，过程如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">MyClass* obj = <span class="keyword">new</span> <span class="built_in">MyClass</span>();</span><br><span class="line"><span class="comment">// 1. void* memory = operator new(sizeof(MyClass));  // 分配内存</span></span><br><span class="line"><span class="comment">// 2. obj = static_cast&lt;MyClass*&gt;(memory);</span></span><br><span class="line"><span class="comment">// 3. obj-&gt;MyClass();  // 调用构造函数（编译器隐式调用）</span></span><br></pre></td></tr></table></figure>
+
+<p>一般如果显式地写malloc，后面是这么构造对象的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 其实也就是手动完成上面三步</span></span><br><span class="line"><span class="type">void</span>* memory = <span class="built_in">malloc</span>(<span class="built_in">sizeof</span>(MyClass));          <span class="comment">// 1. 分配内存（替代operator new）</span></span><br><span class="line">MyClass* obj = <span class="built_in">new</span>(memory) <span class="built_in">MyClass</span>();           <span class="comment">// 2. 构造对象</span></span><br><span class="line"><span class="comment">// 使用对象...</span></span><br><span class="line">obj-&gt;~<span class="built_in">MyClass</span>();                                <span class="comment">// 3. 手动析构</span></span><br><span class="line"><span class="built_in">free</span>(memory);                                   <span class="comment">// 4. 释放内存</span></span><br></pre></td></tr></table></figure>
+
+<p>所以还要禁用掉placement new，也就是</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span>* <span class="keyword">operator</span> <span class="title">new</span><span class="params">(<span class="type">size_t</span>, <span class="type">void</span>* p)</span></span>=<span class="keyword">delete</span>;</span><br></pre></td></tr></table></figure>
+
+<p>此时如果尝试在堆上创建类：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OnlyOnStack* os = <span class="keyword">new</span> <span class="built_in">OnlyOnStack</span>();</span><br></pre></td></tr></table></figure>
+
+<p>就会报错：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">无法引用 函数 <span class="string">&quot;OnlyOnStack::operator new(size_t)&quot;</span> (已声明 所在行数:<span class="number">9</span>，所属文件:<span class="string">&quot;E:\UnrealWorld\Cpp\LearnMordenCpp\OnlyOnStack.h&quot;</span>) <span class="literal">--</span> 它是已删除的函数</span><br></pre></td></tr></table></figure>
 
 
 <div class="article-footer fs14">
@@ -565,7 +154,7 @@
     </section>
     </div>
 </article>
-<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2025/12/24/%E5%8F%88%E8%B0%88%E5%8F%B3%E5%80%BC%E4%B8%8E%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/">又谈右值引用与移动构造函数</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2025/10/10/%E8%B0%88%E8%B0%88%E5%8F%B3%E5%80%BC/">谈谈右值与右值引用</a></div></section></div>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/01/12/%E5%A4%9A%E7%BB%A7%E6%89%BF%E7%B1%BB%E7%9A%84%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8%E4%BC%9A%E6%9C%89%E5%87%A0%E5%BC%A0%EF%BC%9F/">多继承类的虚函数表会有几张？</a></div></section></div>
 
 
 
@@ -591,7 +180,7 @@
 
 
 
-<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%99%E7%9A%84target%E4%B8%8D%E5%9C%A8%E9%87%8C%E9%9D%A2%E6%80%8E%E4%B9%88%E5%8A%9E"><span class="toc-text">给的target不在里面怎么办</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E6%83%B3%E6%B1%82%E5%A4%A7%E4%BA%8E-%E5%B0%8F%E4%BA%8Etarget%E7%9A%84%E6%9C%80%E5%B0%8F-%E6%9C%80%E5%A4%A7%E7%B4%A2%E5%BC%95%EF%BC%8C%E4%BD%86%E6%9C%89%E9%87%8D%E5%A4%8Dtarget%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="toc-text">如果想求大于&#x2F;小于target的最小&#x2F;最大索引，但有重复target怎么办？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9E%E5%88%B0%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="toc-text">回到题目总结：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#lc34-%E5%9C%A8%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E6%9F%A5%E6%89%BE%E5%85%83%E7%B4%A0%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%92%8C%E6%9C%80%E5%90%8E%E4%B8%80%E4%B8%AA%E4%BD%8D%E7%BD%AE"><span class="toc-text">lc34  在排序数组中查找元素的第一个和最后一个位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lc35-%E6%90%9C%E7%B4%A2%E6%8F%92%E5%85%A5%E4%BD%8D%E7%BD%AE%EF%BC%9A"><span class="toc-text">lc35 搜索插入位置：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lc-744-%E5%AF%BB%E6%89%BE%E6%AF%94%E7%9B%AE%E6%A0%87%E5%AD%97%E6%AF%8D%E5%A4%A7%E7%9A%84%E6%9C%80%E5%B0%8F%E5%AD%97%E6%AF%8D%EF%BC%9A"><span class="toc-text">lc 744 寻找比目标字母大的最小字母：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lc-2529-%E6%AD%A3%E6%95%B4%E6%95%B0%E5%92%8C%E8%B4%9F%E6%95%B4%E6%95%B0%E7%9A%84%E6%9C%80%E5%A4%A7%E8%AE%A1%E6%95%B0"><span class="toc-text">lc 2529 正整数和负整数的最大计数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lc-2300-%E5%92%92%E8%AF%AD%E5%92%8C%E8%8D%AF%E6%B0%B4%E7%9A%84%E6%88%90%E5%8A%9F%E5%AF%B9%E6%95%B0"><span class="toc-text">lc 2300 咒语和药水的成功对数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lc-1385-%E4%B8%A4%E4%B8%AA%E6%95%B0%E7%BB%84%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB%E5%80%BC"><span class="toc-text">lc 1385 两个数组间的距离值</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%B3%E7%AD%96%E6%8C%87%E5%8D%97"><span class="toc-text">决策指南</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E7%94%A8STL"><span class="toc-text">直接用STL</span></a></li></ol></div><div class="widget-footer">
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%8F%AA%E5%85%81%E8%AE%B8%E5%9C%A8%E5%A0%86%E4%B8%8A%E5%88%9B%E5%BB%BA%E7%B1%BB%EF%BC%9F"><span class="toc-text">如何只允许在堆上创建类？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%8F%AA%E5%85%81%E8%AE%B8%E5%9C%A8%E6%A0%88%E4%B8%8A%E5%88%9B%E5%BB%BA%E7%B1%BB%EF%BC%9F"><span class="toc-text">如何只允许在栈上创建类？</span></a></li></ol></div><div class="widget-footer">
 
 <a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089" clip-rule="evenodd"/><path fill="currentColor" d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><span>参与讨论</span></a></div></widget>
 </div></aside><div class='float-panel blur'>
