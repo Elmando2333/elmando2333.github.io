@@ -1,0 +1,693 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
+  
+  <meta name="generator" content="Hexo 5.4.2">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  
+  <title>位运算小甜品 - BaoboboboBao</title>
+
+  
+    <meta name="description" content="位运算作为计算机最底层的操作之一，其高效性源于直接对整数的二进制表示进行操作。在C++编程中，巧妙运用位运算往往能显著提升算法性能、简化代码逻辑，特别是在处理集合操作、状态压缩和性能敏感场景时表现突出。 我一直觉得位运算是个很有意思的话题。它连接了高级算法思维与计算机底层实现，掌握这些技巧不仅能够编写出更高效的代码，更能深化对计算机系统工作原理的理解。今天就来聊聊位运算的一些实用技巧。 位运算的基">
+<meta property="og:type" content="article">
+<meta property="og:title" content="位运算小甜品">
+<meta property="og:url" content="http://example.com/2026/01/27/%E4%BD%8D%E8%BF%90%E7%AE%97%E5%B0%8F%E7%94%9C%E5%93%81/index.html">
+<meta property="og:site_name" content="BaoboboboBao">
+<meta property="og:description" content="位运算作为计算机最底层的操作之一，其高效性源于直接对整数的二进制表示进行操作。在C++编程中，巧妙运用位运算往往能显著提升算法性能、简化代码逻辑，特别是在处理集合操作、状态压缩和性能敏感场景时表现突出。 我一直觉得位运算是个很有意思的话题。它连接了高级算法思维与计算机底层实现，掌握这些技巧不仅能够编写出更高效的代码，更能深化对计算机系统工作原理的理解。今天就来聊聊位运算的一些实用技巧。 位运算的基">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-01-27T15:42:18.000Z">
+<meta property="article:modified_time" content="2026-01-27T15:54:29.868Z">
+<meta property="article:author" content="baobobo">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+  
+  
+  
+  <meta name="keywords" content="C++">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.29.1">
+
+  
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://pic.imgdb.cn/item/66f22aeff21886ccc06a4cdd.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">BaoboboboBao</div><div class="sub cap">baobobo</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="关于" href="/about/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="日报" href="/Daily/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/01/27/%E4%BD%8D%E8%BF%90%E7%AE%97%E5%B0%8F%E7%94%9C%E5%93%81/"><span class="title">位运算小甜品</span></a><a class="item title" href="/2026/01/26/new%E5%92%8Cdelete/"><span class="title">new和delete（一）new与构造函数与各种初始化大乱炖</span></a><a class="item title" href="/2026/01/24/%E6%88%91%E7%9C%9F%E7%9A%84%E5%BE%88%E8%AE%A8%E5%8E%8Cmalloc%E5%A4%B1%E8%B4%A5%E5%81%87%E8%A3%85%E6%B2%A1%E4%BA%8B/"><span class="title">malloc失败假装没事谁信（malloc内存分配相关总结整理）</span></a><a class="item title" href="/2026/01/21/LRU%E6%8A%8A%E6%9C%80%E8%80%81%E7%9A%84%E8%B5%B6%E5%87%BA%E9%97%A8%E7%8A%AF%E6%B3%95%E5%90%97/"><span class="title">LRU把最老的赶出门犯法吗</span></a><a class="item title" href="/2026/01/20/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/"><span class="title">进程和线程到底有什么区别</span></a><a class="item title" href="/2026/01/20/%E5%A6%82%E4%BD%95%E5%8F%AA%E5%9C%A8%E6%A0%88%E4%B8%8A%E6%88%96%E5%8F%AA%E5%9C%A8%E5%A0%86%E4%B8%8A%E5%88%9B%E5%BB%BA%E7%B1%BB/"><span class="title">如何只在栈上或只在堆上创建类</span></a><a class="item title" href="/2026/01/12/%E5%A4%9A%E7%BB%A7%E6%89%BF%E7%B1%BB%E7%9A%84%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8%E4%BC%9A%E6%9C%89%E5%87%A0%E5%BC%A0%EF%BC%9F/"><span class="title">多继承类的虚函数表会有几张？</span></a><a class="item title" href="/2025/12/24/%E5%8F%88%E8%B0%88%E5%8F%B3%E5%80%BC%E4%B8%8E%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/"><span class="title">又谈右值引用与移动构造函数</span></a><a class="item title" href="/2025/10/25/%E7%BB%86%E6%8B%86%E4%BA%8C%E5%88%86%E6%B3%95/"><span class="title">细拆二分法</span></a><a class="item title" href="/2025/10/10/%E8%B0%88%E8%B0%88%E5%8F%B3%E5%80%BC/"><span class="title">谈谈右值与右值引用</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" onclick="switchTheme()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><path fill="currentColor" fill-rule="evenodd" d="M582.4 326.4c-140.8 0-256 115.2-256 256s115.2 256 256 256 256-115.2 256-256-115.2-256-256-256z m0 448c-70.4 0-131.2-36.8-164.8-92.8 12.8 3.2 27.2 4.8 40 4.8 121.6 0 219.2-99.2 219.2-219.2 0-17.6-1.6-35.2-6.4-52.8 60.8 32 102.4 96 102.4 169.6 1.6 104-84.8 190.4-190.4 190.4zM582.4 262.4c17.6 0 32-14.4 32-32v-128c0-17.6-14.4-32-32-32s-32 14.4-32 32v128c0 17.6 14.4 32 32 32zM262.4 582.4c0-17.6-14.4-32-32-32h-128c-17.6 0-32 14.4-32 32s14.4 32 32 32h128c17.6 0 32-14.4 32-32zM310.4 356.8c6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6 12.8-12.8 12.8-32 0-44.8l-91.2-91.2c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l91.2 91.2zM944 220.8c-12.8-12.8-32-12.8-44.8 0l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-33.6 0-44.8zM310.4 808l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-32 0-44.8-11.2-11.2-32-11.2-44.8 0z"></path></svg></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-01-27T15:42:18.000Z">2026-01-27</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-01-27T15:54:29.868Z">2026-01-27</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>位运算小甜品</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><p>位运算作为计算机最底层的操作之一，其高效性源于直接对整数的二进制表示进行操作。在C++编程中，巧妙运用位运算往往能显著提升算法性能、简化代码逻辑，特别是在处理集合操作、状态压缩和性能敏感场景时表现突出。</p>
+<p>我一直觉得位运算是个很有意思的话题。它连接了高级算法思维与计算机底层实现，掌握这些技巧不仅能够编写出更高效的代码，更能深化对计算机系统工作原理的理解。今天就来聊聊位运算的一些实用技巧。</p>
+<h2 id="位运算的基础原理与核心操作"><a href="#位运算的基础原理与核心操作" class="headerlink" title="位运算的基础原理与核心操作"></a>位运算的基础原理与核心操作</h2><p>位运算直接操作整数的二进制位，每个操作都有其特定的数学含义。这些操作之所以高效，是因为它们通常被编译为单条机器指令，直接在CPU的寄存器级别完成运算。</p>
+<p>先来看看几个基础操作：</p>
+<p>**按位与(&amp;)**：两个位都为1时结果才为1，常用于掩码操作。比如判断一个数的奇偶性，用<code>n &amp; 1</code>就能直接获取最低位。</p>
+<p>**按位或(|)**：两个位中有一个为1时结果就为1，常用于设置特定位。在状态压缩中，我们可以用<code>set |= (1 &lt;&lt; i)</code>来添加元素。</p>
+<p>**按位异或(^)**：两个位不同时结果为1，相同则为0，具有”开关切换”特性。这个特性很有意思，后面会看到它的妙用。</p>
+<p>**按位取反(~)**：将所有位取反，0变1，1变0。配合其他操作使用，比如删除集合中的元素可以用<code>set &amp;= ~(1 &lt;&lt; i)</code>。</p>
+<p>**左移(&lt;&lt;)**：将所有位向左移动，右侧补0，相当于乘以2的幂。<code>n &lt;&lt; k</code>就是<code>n * 2^k</code>，但效率更高。</p>
+<p>**右移(&gt;&gt;)**：将所有位向右移动，左侧补符号位（算术右移）或0（逻辑右移），相当于除以2的幂。<code>n &gt;&gt; k</code>就是<code>n / 2^k</code>。</p>
+<h2 id="数值属性的快速判断技巧"><a href="#数值属性的快速判断技巧" class="headerlink" title="数值属性的快速判断技巧"></a>数值属性的快速判断技巧</h2><p>利用位运算可以在常数时间内完成某些数学属性的判断，这比传统的数学运算要快得多。</p>
+<h3 id="奇偶性检测"><a href="#奇偶性检测" class="headerlink" title="奇偶性检测"></a>奇偶性检测</h3><p>判断一个数是奇数还是偶数，最直接的方法是<code>n % 2 == 0</code>。但用位运算会更高效：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">isEven</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (n &amp; <span class="number">1</span>) == <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个方法的原理很简单：任何整数的二进制表示中，最低位决定了它的奇偶性。通过与操作<code>n &amp; 1</code>，我们能够直接访问最低位，无需进行耗时的模运算。这种方法的效率优势在循环遍历或频繁判断的场景中尤为明显。</p>
+<h3 id="2的幂次方判断"><a href="#2的幂次方判断" class="headerlink" title="2的幂次方判断"></a>2的幂次方判断</h3><p>判断一个数是否是2的幂次方，有个很巧妙的技巧：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">isPowerOfTwo</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> n &gt; <span class="number">0</span> &amp;&amp; (n &amp; (n - <span class="number">1</span>)) == <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个表达式利用了2的幂次方的数学性质：对于2的幂，其二进制表示有且仅有一个1。当<code>n</code>为2的幂时，<code>n-1</code>会将那个唯一的1及其后的所有位翻转，使得按位与的结果为0。</p>
+<p>举个例子，<code>8</code>的二进制是<code>1000</code>，<code>7</code>的二进制是<code>0111</code>，两者相与结果为<code>0000</code>。而<code>6</code>的二进制是<code>0110</code>，<code>5</code>的二进制是<code>0101</code>，相与结果为<code>0100</code>，不为0。</p>
+<h2 id="高效位操作技巧集锦"><a href="#高效位操作技巧集锦" class="headerlink" title="高效位操作技巧集锦"></a>高效位操作技巧集锦</h2><h3 id="最低位1的提取（lowbit操作）"><a href="#最低位1的提取（lowbit操作）" class="headerlink" title="最低位1的提取（lowbit操作）"></a>最低位1的提取（lowbit操作）</h3><p>这是许多高级算法的基础，比如树状数组（Fenwick Tree）：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">lowbit</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> n &amp; (-n);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个操作利用了补码表示中负数的特性：负数是原数按位取反再加1。表达式<code>n &amp; (-n)</code>能够快速分离出最低位的1及其后面的0。</p>
+<p>比如<code>12</code>的二进制是<code>1100</code>，<code>-12</code>的二进制是<code>0100</code>（在补码表示中），两者相与得到<code>0100</code>，正好是最低位的1。</p>
+<h3 id="1的个数统计"><a href="#1的个数统计" class="headerlink" title="1的个数统计"></a>1的个数统计</h3><p>统计一个数二进制表示中1的个数，有个很经典的算法叫Brian Kernighan算法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">countOnes</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (n) &#123;</span><br><span class="line">        n &amp;= (n - <span class="number">1</span>);  <span class="comment">// 移除最低位的1</span></span><br><span class="line">        count++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>n &amp;= (n - 1)</code>操作能够巧妙地移除最低位的1。重复此操作直到<code>n</code>变为0，操作次数即为原数中1的个数。这种方法的时间复杂度与1的个数成正比，在稀疏二进制数中特别高效。</p>
+<h3 id="无临时变量的交换"><a href="#无临时变量的交换" class="headerlink" title="无临时变量的交换"></a>无临时变量的交换</h3><p>这个技巧体现了异或运算的自反性质：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">swap</span><span class="params">(<span class="type">int</span>&amp; a, <span class="type">int</span>&amp; b)</span> </span>&#123;</span><br><span class="line">    a ^= b;</span><br><span class="line">    b ^= a;</span><br><span class="line">    a ^= b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过三次异或操作，可以在不使用额外内存的情况下交换两个变量。虽然现代编译器的优化可能减少了这种技巧的实际必要性，但它仍然是理解位运算特性的绝佳示例。</p>
+<p>原理很简单：<code>a ^ b</code>的结果包含了<code>a</code>和<code>b</code>的所有差异信息。第一次异或后，<code>a</code>变成了<code>a ^ b</code>；第二次异或后，<code>b</code>变成了<code>b ^ (a ^ b) = a</code>；第三次异或后，<code>a</code>变成了<code>(a ^ b) ^ a = b</code>。</p>
+<h2 id="状态压缩与集合操作"><a href="#状态压缩与集合操作" class="headerlink" title="状态压缩与集合操作"></a>状态压缩与集合操作</h2><p>位运算在状态压缩领域展现出巨大威力。使用整数作为位掩码，可以将一个大小为n的布尔数组压缩到n个比特中，不仅节省空间，而且集合操作可以直接转换为位运算，效率极高。</p>
+<h3 id="集合的位表示法"><a href="#集合的位表示法" class="headerlink" title="集合的位表示法"></a>集合的位表示法</h3><p>我们可以用一个整数来表示一个集合，每一位代表一个元素是否存在：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> set = <span class="number">0</span>;  <span class="comment">// 空集合</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加元素i</span></span><br><span class="line">set |= (<span class="number">1</span> &lt;&lt; i);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 删除元素i</span></span><br><span class="line">set &amp;= ~(<span class="number">1</span> &lt;&lt; i);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 判断元素i是否在集合中</span></span><br><span class="line"><span class="type">bool</span> contains = (set &gt;&gt; i) &amp; <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 集合的交、并、差运算</span></span><br><span class="line"><span class="type">int</span> intersection = set1 &amp; set2;</span><br><span class="line"><span class="type">int</span> union_set = set1 | set2;</span><br><span class="line"><span class="type">int</span> difference = set1 &amp; ~set2;</span><br></pre></td></tr></table></figure>
+
+<p>这种表示法不仅节省空间，而且集合的交、并、差运算可以直接转换为<code>&amp;</code>、<code>|</code>、<code>&amp; ~</code>操作，效率极高。</p>
+<h3 id="子集遍历技巧"><a href="#子集遍历技巧" class="headerlink" title="子集遍历技巧"></a>子集遍历技巧</h3><p>枚举一个集合的所有子集，有个很高效的技巧：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> set = <span class="number">0b1011</span>;  <span class="comment">// 假设有4个元素，当前集合是&#123;0, 1, 3&#125;</span></span><br><span class="line"><span class="type">int</span> subset = set;</span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="comment">// 处理当前子集subset</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    subset = (subset - <span class="number">1</span>) &amp; set;</span><br><span class="line">&#125; <span class="keyword">while</span> (subset != set);</span><br></pre></td></tr></table></figure>
+
+<p>通过<code>subset = (subset - 1) &amp; set</code>循环，可以无重复地遍历集合的所有子集。这个技巧在状态空间搜索、动态规划等算法中应用广泛，将指数级问题的实现变得简洁高效。</p>
+<h2 id="算术运算的位级优化"><a href="#算术运算的位级优化" class="headerlink" title="算术运算的位级优化"></a>算术运算的位级优化</h2><p>位运算可以实现某些算术运算的替代方案，有时能获得更好的性能。</p>
+<h3 id="2的幂次乘除"><a href="#2的幂次乘除" class="headerlink" title="2的幂次乘除"></a>2的幂次乘除</h3><p>这是位运算最常见的优化场景：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">multiplyByPowerOfTwo</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> n &lt;&lt; k;  <span class="comment">// n * 2^k</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">divideByPowerOfTwo</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> n &gt;&gt; k;  <span class="comment">// n / 2^k</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这些操作不仅避免了乘除法指令的开销，而且意图更明确，代码更简洁。不过需要注意的是，右移对于负数来说是算术右移，结果可能和预期不同。</p>
+<h3 id="平均值计算的位运算方法"><a href="#平均值计算的位运算方法" class="headerlink" title="平均值计算的位运算方法"></a>平均值计算的位运算方法</h3><p>计算两个数的平均值，有个巧妙的位运算方法可以避免整数溢出：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">average</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (a &amp; b) + ((a ^ b) &gt;&gt; <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个方法巧妙地避免了整数溢出的风险。前半部分<code>a &amp; b</code>提取了需要进位的位置，后半部分<code>(a ^ b) &gt;&gt; 1</code>计算了不需要进位的部分除以2。这种方法的正确性基于二进制加法的进位原理。</p>
+<h2 id="异或运算的巧妙应用"><a href="#异或运算的巧妙应用" class="headerlink" title="异或运算的巧妙应用"></a>异或运算的巧妙应用</h2><p>异或运算有几个很有意思的性质，在LeetCode中经常用到。</p>
+<h3 id="找唯一数字"><a href="#找唯一数字" class="headerlink" title="找唯一数字"></a>找唯一数字</h3><p>当数组中只有一个数字出现一次，其他数字都出现两次时，可以用异或快速找出这个唯一数字：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">findSingle</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> result = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> num : nums) &#123;</span><br><span class="line">        result ^= num;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>原理很简单：异或满足交换律和结合律，而且<code>a ^ a = 0</code>，<code>a ^ 0 = a</code>。所以所有出现两次的数字异或后都变成0，最后剩下的就是那个唯一出现一次的数字。</p>
+<p>这个技巧在LeetCode中非常经典，是很多位运算题目的基础。</p>
+<h3 id="条件交换"><a href="#条件交换" class="headerlink" title="条件交换"></a>条件交换</h3><p>有时候我们需要根据条件交换两个变量的值，用异或可以写得很简洁：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 如果x等于a，则x变为b；如果x等于b，则x变为a</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">conditionalSwap</span><span class="params">(<span class="type">int</span>&amp; x, <span class="type">int</span> a, <span class="type">int</span> b)</span> </span>&#123;</span><br><span class="line">    x = a ^ b ^ x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个技巧利用了异或的自反性质。当<code>x == a</code>时，<code>a ^ b ^ a = b</code>；当<code>x == b</code>时，<code>a ^ b ^ b = a</code>。在某些特定场景下，这种写法比if-else更简洁。</p>
+<h2 id="更多实用的位操作技巧"><a href="#更多实用的位操作技巧" class="headerlink" title="更多实用的位操作技巧"></a>更多实用的位操作技巧</h2><h3 id="提取最高位的1"><a href="#提取最高位的1" class="headerlink" title="提取最高位的1"></a>提取最高位的1</h3><p>有时候我们需要找到最高位的1，这在某些算法中很有用：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">highestBit</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 方法1：不断右移直到为0</span></span><br><span class="line">    <span class="type">int</span> pos = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (n) &#123;</span><br><span class="line">        n &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">        pos++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> pos - <span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 方法2：使用位运算技巧（需要知道位数）</span></span><br><span class="line">    <span class="comment">// 假设是32位整数</span></span><br><span class="line">    n |= n &gt;&gt; <span class="number">1</span>;</span><br><span class="line">    n |= n &gt;&gt; <span class="number">2</span>;</span><br><span class="line">    n |= n &gt;&gt; <span class="number">4</span>;</span><br><span class="line">    n |= n &gt;&gt; <span class="number">8</span>;</span><br><span class="line">    n |= n &gt;&gt; <span class="number">16</span>;</span><br><span class="line">    <span class="keyword">return</span> (n + <span class="number">1</span>) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第二种方法通过不断将最高位的1向右”扩散”，最终得到一个只有最高位为1的数，然后再右移一位加1，就能得到最高位的值。这个方法在常数时间内完成，但需要知道整数的位数。</p>
+<h3 id="位掩码的翻转操作"><a href="#位掩码的翻转操作" class="headerlink" title="位掩码的翻转操作"></a>位掩码的翻转操作</h3><p>除了设置和清除，翻转操作也很有用：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> mask = <span class="number">1</span> &lt;&lt; i;  <span class="comment">// 第i位的掩码</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 翻转第i位：原来是0变成1，原来是1变成0</span></span><br><span class="line">n ^= mask;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 判断第i位是否为1</span></span><br><span class="line"><span class="type">bool</span> isSet = (n &amp; mask) != <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将第i位设置为1</span></span><br><span class="line">n |= mask;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将第i位清除为0</span></span><br><span class="line">n &amp;= ~mask;</span><br></pre></td></tr></table></figure>
+
+<p>翻转操作在状态切换、权限管理、游戏状态等场景中经常用到。比如一个开关，每次操作都要翻转状态，用异或就非常方便。</p>
+<h3 id="n倍数补全（向上取整到2的幂）"><a href="#n倍数补全（向上取整到2的幂）" class="headerlink" title="n倍数补全（向上取整到2的幂）"></a>n倍数补全（向上取整到2的幂）</h3><p>有时候我们需要将一个数向上取整到最近的2的幂次方：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">roundUpToPowerOfTwo</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (n &lt;= <span class="number">0</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    n--;</span><br><span class="line">    n |= n &gt;&gt; <span class="number">1</span>;</span><br><span class="line">    n |= n &gt;&gt; <span class="number">2</span>;</span><br><span class="line">    n |= n &gt;&gt; <span class="number">4</span>;</span><br><span class="line">    n |= n &gt;&gt; <span class="number">8</span>;</span><br><span class="line">    n |= n &gt;&gt; <span class="number">16</span>;</span><br><span class="line">    <span class="keyword">return</span> n + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个技巧和提取最高位的方法类似，通过”扩散”操作将所有低位都设置为1，然后加1就能得到大于等于原数的最小2的幂。这在内存对齐、哈希表大小设置等场景中很有用。</p>
+<h3 id="反转二进制位"><a href="#反转二进制位" class="headerlink" title="反转二进制位"></a>反转二进制位</h3><p>有时候我们需要反转一个整数的所有二进制位：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">uint32_t</span> <span class="title">reverseBits</span><span class="params">(<span class="type">uint32_t</span> n)</span> </span>&#123;</span><br><span class="line">    n = ((n &amp; <span class="number">0x55555555</span>) &lt;&lt; <span class="number">1</span>) | ((n &amp; <span class="number">0xAAAAAAAA</span>) &gt;&gt; <span class="number">1</span>);  <span class="comment">// 交换相邻的1位</span></span><br><span class="line">    n = ((n &amp; <span class="number">0x33333333</span>) &lt;&lt; <span class="number">2</span>) | ((n &amp; <span class="number">0xCCCCCCCC</span>) &gt;&gt; <span class="number">2</span>);  <span class="comment">// 交换相邻的2位</span></span><br><span class="line">    n = ((n &amp; <span class="number">0x0F0F0F0F</span>) &lt;&lt; <span class="number">4</span>) | ((n &amp; <span class="number">0xF0F0F0F0</span>) &gt;&gt; <span class="number">4</span>);  <span class="comment">// 交换相邻的4位</span></span><br><span class="line">    n = ((n &amp; <span class="number">0x00FF00FF</span>) &lt;&lt; <span class="number">8</span>) | ((n &amp; <span class="number">0xFF00FF00</span>) &gt;&gt; <span class="number">8</span>);  <span class="comment">// 交换相邻的8位</span></span><br><span class="line">    n = ((n &amp; <span class="number">0x0000FFFF</span>) &lt;&lt; <span class="number">16</span>) | ((n &amp; <span class="number">0xFFFF0000</span>) &gt;&gt; <span class="number">16</span>); <span class="comment">// 交换相邻的16位</span></span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个方法采用了分治的思想，从交换相邻的1位开始，逐步扩大交换范围，最终完成整个32位的反转。虽然看起来复杂，但每一步都是简单的位操作，效率很高。</p>
+<h3 id="分治法统计1的个数"><a href="#分治法统计1的个数" class="headerlink" title="分治法统计1的个数"></a>分治法统计1的个数</h3><p>除了Brian Kernighan算法，还有一种分治的方法在某些场景下更高效：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">countOnes</span><span class="params">(<span class="type">uint32_t</span> n)</span> </span>&#123;</span><br><span class="line">    n = (n &amp; <span class="number">0x55555555</span>) + ((n &gt;&gt; <span class="number">1</span>) &amp; <span class="number">0x55555555</span>);  <span class="comment">// 每2位统计1的个数</span></span><br><span class="line">    n = (n &amp; <span class="number">0x33333333</span>) + ((n &gt;&gt; <span class="number">2</span>) &amp; <span class="number">0x33333333</span>);  <span class="comment">// 每4位统计1的个数</span></span><br><span class="line">    n = (n &amp; <span class="number">0x0F0F0F0F</span>) + ((n &gt;&gt; <span class="number">4</span>) &amp; <span class="number">0x0F0F0F0F</span>);  <span class="comment">// 每8位统计1的个数</span></span><br><span class="line">    n = (n &amp; <span class="number">0x00FF00FF</span>) + ((n &gt;&gt; <span class="number">8</span>) &amp; <span class="number">0x00FF00FF</span>);  <span class="comment">// 每16位统计1的个数</span></span><br><span class="line">    n = (n &amp; <span class="number">0x0000FFFF</span>) + ((n &gt;&gt; <span class="number">16</span>) &amp; <span class="number">0x0000FFFF</span>); <span class="comment">// 每32位统计1的个数</span></span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个方法通过分治的思想，将统计1的个数的问题逐步分解。每一步都将相邻的位组合起来，统计它们的1的个数之和。最终得到整个32位数中1的总数。这种方法虽然代码看起来复杂，但在某些CPU架构上可能比循环方法更快。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>位运算的这些技巧就像小甜品，这些技巧在位运算题目中经常出现，不过也要注意，虽然位运算很高效，但在普通业务逻辑中过度使用可能会损害代码的可读性。毕竟，代码是写给人看的，偶尔才是给机器执行的。这些”小甜品”虽然不能当主食，但偶尔尝一尝，还是挺有意思。</p>
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/01/26/new%E5%92%8Cdelete/">new和delete（一）new与构造函数与各种初始化大乱炖</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body twikoo'>
+      
+
+<div id="twikoo_container"><svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg></div>
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">baobobo</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%8D%E8%BF%90%E7%AE%97%E7%9A%84%E5%9F%BA%E7%A1%80%E5%8E%9F%E7%90%86%E4%B8%8E%E6%A0%B8%E5%BF%83%E6%93%8D%E4%BD%9C"><span class="toc-text">位运算的基础原理与核心操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E5%80%BC%E5%B1%9E%E6%80%A7%E7%9A%84%E5%BF%AB%E9%80%9F%E5%88%A4%E6%96%AD%E6%8A%80%E5%B7%A7"><span class="toc-text">数值属性的快速判断技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A5%87%E5%81%B6%E6%80%A7%E6%A3%80%E6%B5%8B"><span class="toc-text">奇偶性检测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E7%9A%84%E5%B9%82%E6%AC%A1%E6%96%B9%E5%88%A4%E6%96%AD"><span class="toc-text">2的幂次方判断</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E6%95%88%E4%BD%8D%E6%93%8D%E4%BD%9C%E6%8A%80%E5%B7%A7%E9%9B%86%E9%94%A6"><span class="toc-text">高效位操作技巧集锦</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E4%BD%8E%E4%BD%8D1%E7%9A%84%E6%8F%90%E5%8F%96%EF%BC%88lowbit%E6%93%8D%E4%BD%9C%EF%BC%89"><span class="toc-text">最低位1的提取（lowbit操作）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E7%9A%84%E4%B8%AA%E6%95%B0%E7%BB%9F%E8%AE%A1"><span class="toc-text">1的个数统计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E4%B8%B4%E6%97%B6%E5%8F%98%E9%87%8F%E7%9A%84%E4%BA%A4%E6%8D%A2"><span class="toc-text">无临时变量的交换</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E5%8E%8B%E7%BC%A9%E4%B8%8E%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C"><span class="toc-text">状态压缩与集合操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E7%9A%84%E4%BD%8D%E8%A1%A8%E7%A4%BA%E6%B3%95"><span class="toc-text">集合的位表示法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%90%E9%9B%86%E9%81%8D%E5%8E%86%E6%8A%80%E5%B7%A7"><span class="toc-text">子集遍历技巧</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E6%9C%AF%E8%BF%90%E7%AE%97%E7%9A%84%E4%BD%8D%E7%BA%A7%E4%BC%98%E5%8C%96"><span class="toc-text">算术运算的位级优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E7%9A%84%E5%B9%82%E6%AC%A1%E4%B9%98%E9%99%A4"><span class="toc-text">2的幂次乘除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B3%E5%9D%87%E5%80%BC%E8%AE%A1%E7%AE%97%E7%9A%84%E4%BD%8D%E8%BF%90%E7%AE%97%E6%96%B9%E6%B3%95"><span class="toc-text">平均值计算的位运算方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E6%88%96%E8%BF%90%E7%AE%97%E7%9A%84%E5%B7%A7%E5%A6%99%E5%BA%94%E7%94%A8"><span class="toc-text">异或运算的巧妙应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%BE%E5%94%AF%E4%B8%80%E6%95%B0%E5%AD%97"><span class="toc-text">找唯一数字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E4%BA%A4%E6%8D%A2"><span class="toc-text">条件交换</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E5%A4%9A%E5%AE%9E%E7%94%A8%E7%9A%84%E4%BD%8D%E6%93%8D%E4%BD%9C%E6%8A%80%E5%B7%A7"><span class="toc-text">更多实用的位操作技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E5%8F%96%E6%9C%80%E9%AB%98%E4%BD%8D%E7%9A%841"><span class="toc-text">提取最高位的1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%8D%E6%8E%A9%E7%A0%81%E7%9A%84%E7%BF%BB%E8%BD%AC%E6%93%8D%E4%BD%9C"><span class="toc-text">位掩码的翻转操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#n%E5%80%8D%E6%95%B0%E8%A1%A5%E5%85%A8%EF%BC%88%E5%90%91%E4%B8%8A%E5%8F%96%E6%95%B4%E5%88%B02%E7%9A%84%E5%B9%82%EF%BC%89"><span class="toc-text">n倍数补全（向上取整到2的幂）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E8%BD%AC%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%BD%8D"><span class="toc-text">反转二进制位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%B2%BB%E6%B3%95%E7%BB%9F%E8%AE%A11%E7%9A%84%E4%B8%AA%E6%95%B0"><span class="toc-text">分治法统计1的个数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089" clip-rule="evenodd"/><path fill="currentColor" d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js`,
+    marked: `https://cdn.jsdelivr.net/npm/marked@13.0.1/lib/marked.umd.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+
+<!-- required -->
+<script src="/js/main.js?v=1.29.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    applyThemeToGiscus(theme)
+  }
+
+  const applyThemeToGiscus = (theme) => {
+    theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    }
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.getElementById('twikoo_container');
+  util.viewportLazyload(el, load_twikoo, false);
+
+  function load_twikoo() {
+    if (!el) return;
+    utils.js('https://gcore.jsdelivr.net/npm/twikoo@1.6.8/dist/twikoo.all.min.js', {defer: true}).then(function () {
+      const path = el.getAttribute('comment_id') ?? decodeURI(window.location.pathname);
+      twikoo.init(Object.assign({"js":"https://gcore.jsdelivr.net/npm/twikoo@1.6.8/dist/twikoo.all.min.js","envId":"https://xxx"}, {
+        el: '#twikoo_container',
+        path: path,
+      }));
+    });
+  }
+</script>
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('ds-memos');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
