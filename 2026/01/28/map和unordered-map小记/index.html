@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
-  <meta name="robots" content="noindex,follow">
+  
   <meta name="generator" content="Hexo 5.4.2">
   <meta http-equiv='x-dns-prefetch-control' content='on' />
   
@@ -17,22 +17,26 @@
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
   
-  <title>标签：前端 - BaoboboboBao</title>
+  <title>map和unordered_map小记 - BaoboboboBao</title>
 
   
-    <meta name="description" content="���ڲ�����">
-<meta property="og:type" content="website">
-<meta property="og:title" content="BaoboboboBao">
-<meta property="og:url" content="http://example.com/tags/%E5%89%8D%E7%AB%AF/index.html">
+    <meta name="description" content="引言在C++标准库中，map和unordered_map是两个常用的关联容器，它们都提供了键值对的存储和查找功能，但在底层实现和使用特性上却有着本质的区别。map基于红黑树实现，保证了元素的有序性，而unordered_map基于哈希表实现，追求更快的查找速度。要深入理解这两种容器的差异，我们需要从它们底层的数据结构说起。《C++标准库》里把容器分为了三类：序列式容器，关联式容器，以及无序容器。虽">
+<meta property="og:type" content="article">
+<meta property="og:title" content="map和unordered_map小记">
+<meta property="og:url" content="http://example.com/2026/01/28/map%E5%92%8Cunordered-map%E5%B0%8F%E8%AE%B0/index.html">
 <meta property="og:site_name" content="BaoboboboBao">
-<meta property="og:description" content="���ڲ�����">
+<meta property="og:description" content="引言在C++标准库中，map和unordered_map是两个常用的关联容器，它们都提供了键值对的存储和查找功能，但在底层实现和使用特性上却有着本质的区别。map基于红黑树实现，保证了元素的有序性，而unordered_map基于哈希表实现，追求更快的查找速度。要深入理解这两种容器的差异，我们需要从它们底层的数据结构说起。《C++标准库》里把容器分为了三类：序列式容器，关联式容器，以及无序容器。虽">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-01-28T05:48:39.000Z">
+<meta property="article:modified_time" content="2026-01-28T06:29:10.546Z">
 <meta property="article:author" content="baobobo">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="DS">
 <meta name="twitter:card" content="summary">
   
   
   
-  
+  <meta name="keywords" content="C++,DS">
 
   <!-- feed -->
   
@@ -47,7 +51,7 @@
 </head>
 <body>
 
-<div class="l_body s:aa index tech" id="start" layout="undefined" ><aside class="l_left"><div class="leftbar-container">
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
 
 
 <header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://pic.imgdb.cn/item/66f22aeff21886ccc06a4cdd.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">BaoboboboBao</div><div class="sub cap">baobobo</div></a></div></header>
@@ -59,28 +63,102 @@
 <nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="关于" href="/about/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="日报" href="/Daily/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a></nav>
 </div>
 <div class="widgets">
+
+
 <widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/01/28/map%E5%92%8Cunordered-map%E5%B0%8F%E8%AE%B0/"><span class="title">map和unordered_map小记</span></a><a class="item title" href="/2026/01/27/%E4%BD%8D%E8%BF%90%E7%AE%97%E5%B0%8F%E7%94%9C%E5%93%81/"><span class="title">位运算小甜品</span></a><a class="item title" href="/2026/01/26/new%E5%92%8Cdelete/"><span class="title">new和delete（一）new与构造函数与各种初始化大乱炖</span></a><a class="item title" href="/2026/01/24/%E6%88%91%E7%9C%9F%E7%9A%84%E5%BE%88%E8%AE%A8%E5%8E%8Cmalloc%E5%A4%B1%E8%B4%A5%E5%81%87%E8%A3%85%E6%B2%A1%E4%BA%8B/"><span class="title">malloc失败假装没事谁信（malloc内存分配相关总结整理）</span></a><a class="item title" href="/2026/01/21/LRU%E6%8A%8A%E6%9C%80%E8%80%81%E7%9A%84%E8%B5%B6%E5%87%BA%E9%97%A8%E7%8A%AF%E6%B3%95%E5%90%97/"><span class="title">LRU把最老的赶出门犯法吗</span></a><a class="item title" href="/2026/01/20/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/"><span class="title">进程和线程到底有什么区别</span></a><a class="item title" href="/2026/01/20/%E5%A6%82%E4%BD%95%E5%8F%AA%E5%9C%A8%E6%A0%88%E4%B8%8A%E6%88%96%E5%8F%AA%E5%9C%A8%E5%A0%86%E4%B8%8A%E5%88%9B%E5%BB%BA%E7%B1%BB/"><span class="title">如何只在栈上或只在堆上创建类</span></a><a class="item title" href="/2026/01/12/%E5%A4%9A%E7%BB%A7%E6%89%BF%E7%B1%BB%E7%9A%84%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8%E4%BC%9A%E6%9C%89%E5%87%A0%E5%BC%A0%EF%BC%9F/"><span class="title">多继承类的虚函数表会有几张？</span></a><a class="item title" href="/2025/12/24/%E5%8F%88%E8%B0%88%E5%8F%B3%E5%80%BC%E4%B8%8E%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/"><span class="title">又谈右值引用与移动构造函数</span></a><a class="item title" href="/2025/10/25/%E7%BB%86%E6%8B%86%E4%BA%8C%E5%88%86%E6%B3%95/"><span class="title">细拆二分法</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" onclick="switchTheme()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><path fill="currentColor" fill-rule="evenodd" d="M582.4 326.4c-140.8 0-256 115.2-256 256s115.2 256 256 256 256-115.2 256-256-115.2-256-256-256z m0 448c-70.4 0-131.2-36.8-164.8-92.8 12.8 3.2 27.2 4.8 40 4.8 121.6 0 219.2-99.2 219.2-219.2 0-17.6-1.6-35.2-6.4-52.8 60.8 32 102.4 96 102.4 169.6 1.6 104-84.8 190.4-190.4 190.4zM582.4 262.4c17.6 0 32-14.4 32-32v-128c0-17.6-14.4-32-32-32s-32 14.4-32 32v128c0 17.6 14.4 32 32 32zM262.4 582.4c0-17.6-14.4-32-32-32h-128c-17.6 0-32 14.4-32 32s14.4 32 32 32h128c17.6 0 32-14.4 32-32zM310.4 356.8c6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6 12.8-12.8 12.8-32 0-44.8l-91.2-91.2c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l91.2 91.2zM944 220.8c-12.8-12.8-32-12.8-44.8 0l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-33.6 0-44.8zM310.4 808l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-32 0-44.8-11.2-11.2-32-11.2-44.8 0z"></path></svg></a></div></footer>
 </div></aside><div class="l_main" id="main">
 
-<header class="header mobile-only"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://pic.imgdb.cn/item/66f22aeff21886ccc06a4cdd.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">BaoboboboBao</div><div class="sub cap">baobobo</div></a></div></header>
-
- 
 
 
 
 
-<div class="navbar top"><nav class="post"><a href="/">近期发布</a><a class="active" href="/tags">标签：前端</a><a href="/archives">归档</a></nav></div>
-<div class="post-list post"><a class="post-card post" href="/2025/09/04/%E6%98%9F%E9%9C%B2%E8%B0%B7%E5%8D%A1%E7%89%87%E7%94%9F%E6%88%90%E5%99%A8%E6%8A%80%E6%9C%AF%E8%A6%81%E7%82%B9%E8%AE%B0%E5%BD%95%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">
-<article class="md-text"><h2 class="post-title">星露谷卡片生成器技术要点记录及解决方案</h2><div class="excerpt"><p>我开发了一个星露谷风格的卡片生成器小程序，遇到最麻烦的问题就是字体的处理。微信小程序的字体处理存在诸多限制，尤其是真机环境兼容性问题，有时候在开发工具上一切都好，一上手机啥效果也没了。为了解决这些问题，主要参考了https://juejin.cn/p...</p></div><div class="meta cap"><span class="cap" id="post-meta"><svg style="margin-bottom:2px" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M6.94 2c.416 0 .753.324.753.724v1.46c.668-.012 1.417-.012 2.26-.012h4.015c.842 0 1.591 0 2.259.013v-1.46c0-.4.337-.725.753-.725s.753.324.753.724V4.25c1.445.111 2.394.384 3.09 1.055c.698.67.982 1.582 1.097 2.972L22 9H2v-.724c.116-1.39.4-2.302 1.097-2.972c.697-.67 1.645-.944 3.09-1.055V2.724c0-.4.337-.724.753-.724"/><path fill="currentColor" d="M22 14v-2c0-.839-.004-2.335-.017-3H2.01c-.013.665-.01 2.161-.01 3v2c0 3.771 0 5.657 1.172 6.828C4.343 22 6.228 22 10 22h4c3.77 0 5.656 0 6.828-1.172C22 19.658 22 17.772 22 14" opacity=".5"/><path fill="currentColor" d="M18 17a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><time datetime="2025-09-04T06:51:20.000Z">2025-09-04</time></span></div></article>
-</a></div>
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-01-28T05:48:39.000Z">2026-01-28</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-01-28T06:29:10.546Z">2026-01-28</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>map和unordered_map小记</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在C++标准库中，<code>map</code>和<code>unordered_map</code>是两个常用的关联容器，它们都提供了键值对的存储和查找功能，但在底层实现和使用特性上却有着本质的区别。<code>map</code>基于红黑树实现，保证了元素的有序性，而<code>unordered_map</code>基于哈希表实现，追求更快的查找速度。要深入理解这两种容器的差异，我们需要从它们底层的数据结构说起。<br>《C++标准库》里把容器分为了三类：序列式容器，关联式容器，以及无序容器。虽然都叫map，但map和unordered_map的map经常被拿来比较可能也就是名字非常像的原因。map属于关联式容器，unordered_map是无序容器。我觉得不能说他们都是用key来查找value所以很像，那这些容器的基本功能不都是通过一个索引来查找访问数据吗？无非是这个key是简单的数字值还是我们自己想用的类型罢了。</p>
+<h2 id="红黑树：map的底层实现"><a href="#红黑树：map的底层实现" class="headerlink" title="红黑树：map的底层实现"></a>红黑树：map的底层实现</h2><p>红黑树是一种自平衡的二叉搜索树，它通过为每个节点添加颜色属性（红色或黑色）来维持树的平衡。红黑树的设计思想在于通过相对宽松的平衡条件来减少旋转操作的频率，从而在查找、插入和删除操作之间取得一个较好的平衡。</p>
+<p>红黑树的核心特点体现在它的五个约束条件上。首先，每个节点要么是红色，要么是黑色。其次，根节点必须是黑色。第三，所有叶子节点（空节点）都被视为黑色。第四，如果一个节点是红色的，那么它的两个子节点都必须是黑色的，这意味着红色节点不能连续出现。最后，从任意节点到其每个叶子节点的所有路径上，黑色节点的数量必须相同，这个特性保证了红黑树的高度不会过度增长。</p>
+<p>这些约束条件虽然不如AVL树那样严格，但足以保证红黑树的高度在最坏情况下也不会超过2倍的最小高度，从而保证了查找操作的时间复杂度为O(log n)。更重要的是，由于平衡条件相对宽松，红黑树在插入和删除操作时需要的旋转次数通常比AVL树少，这使得它在需要频繁修改的场景下表现更好。</p>
+<h2 id="AVL树：严格平衡的代表"><a href="#AVL树：严格平衡的代表" class="headerlink" title="AVL树：严格平衡的代表"></a>AVL树：严格平衡的代表</h2><p>AVL树是另一种自平衡二叉搜索树，它以发明者Adelson-Velsky和Landis的名字命名。AVL树的设计哲学是追求严格的平衡，它要求任何节点的左右子树高度差不能超过1。这种严格的平衡条件使得AVL树在任何时候都保持接近完全平衡的状态。</p>
+<p>AVL树通过旋转操作来维持平衡，当插入或删除操作导致某个节点的平衡因子（左右子树高度差）超过1时，就会触发相应的旋转操作。单旋转包括左旋和右旋，双旋转包括左右旋和右左旋。这些旋转操作能够有效地恢复树的平衡，但同时也带来了一定的性能开销。</p>
+<p>由于AVL树始终保持严格的平衡，它的查找性能在所有自平衡树中是最优的，查找操作的时间复杂度稳定在O(log n)，且常数因子较小。然而，这种严格的平衡也意味着在插入和删除操作时，AVL树可能需要执行更多的旋转操作来维持平衡，这使得它在需要频繁修改的场景下性能可能不如红黑树。</p>
+<h2 id="红黑树与AVL树的权衡"><a href="#红黑树与AVL树的权衡" class="headerlink" title="红黑树与AVL树的权衡"></a>红黑树与AVL树的权衡</h2><p>红黑树和AVL树在平衡策略上的差异，反映了在查找性能和修改性能之间的不同权衡。红黑树通过允许一定程度的不平衡来减少旋转操作的频率，这使得它在插入和删除操作时效率更高，但查找时可能需要更多的比较次数。而AVL树通过严格的平衡条件来优化查找性能，但代价是在修改操作时需要更多的平衡调整。</p>
+<p>从高度角度来看，AVL树的高度通常比红黑树更小，因为它的平衡条件更严格。红黑树虽然整体高度可能较大，但它有一个重要的特性：从根节点到任意叶子节点的路径上，黑色节点的数量是相同的。这个特性保证了红黑树的高度不会过度增长，同时减少了维护平衡的开销。</p>
+<p>在实际应用中，红黑树被广泛采用，特别是在C++标准库的<code>map</code>和<code>set</code>容器中。这是因为在实际场景中，容器往往需要同时支持查找和修改操作，而红黑树在两者之间取得了更好的平衡。AVL树则更适合那些查找操作远多于修改操作的场景。</p>
+<h2 id="哈希散列的实现方法"><a href="#哈希散列的实现方法" class="headerlink" title="哈希散列的实现方法"></a>哈希散列的实现方法</h2><p>哈希表是<code>unordered_map</code>的底层实现，它通过哈希函数将键映射到数组的特定位置，从而实现快速查找。哈希函数的设计直接影响哈希表的性能，不同的实现方法各有特点。</p>
+<p>开放定址法是最直观的哈希冲突解决方法之一。当发生冲突时，它会按照某种探测序列在哈希表中寻找下一个可用的位置。线性探测是最简单的形式，它按顺序检查下一个位置，直到找到空位。二次探测使用二次函数来生成探测序列，能够减少聚集现象。双重散列则使用第二个哈希函数来生成探测序列，进一步减少了冲突的可能性。开放定址法的优点是不需要额外的存储空间来存储链表，但缺点是删除操作比较复杂，且容易产生聚集现象。</p>
+<p>链地址法，也称为拉链法，是另一种常见的冲突解决方法。它将哈希表的每个位置都作为一个链表的头节点，当发生冲突时，将新元素插入到对应位置的链表中。这种方法实现简单，删除操作也很直接，但需要额外的空间来存储链表指针。当链表过长时，查找性能会下降，因此需要合理设计哈希函数和负载因子。</p>
+<p>再哈希法使用多个哈希函数，当第一个哈希函数发生冲突时，尝试使用第二个、第三个哈希函数，直到找到空位。这种方法能够有效减少冲突，但需要设计多个良好的哈希函数，实现复杂度较高。</p>
+<p>建立公共溢出区是另一种思路，它维护一个额外的区域来存储所有发生冲突的元素。这种方法实现简单，但当冲突较多时，溢出区会变得很大，查找性能会下降。</p>
+<h2 id="C-unordered-map的哈希实现"><a href="#C-unordered-map的哈希实现" class="headerlink" title="C++ unordered_map的哈希实现"></a>C++ unordered_map的哈希实现</h2><p>C++标准库的<code>unordered_map</code>主要采用链地址法来解决哈希冲突。这种选择有其合理性，因为链地址法实现相对简单，且能够很好地处理动态扩容和缩容的情况。当哈希表中的元素数量增加时，标准库会自动进行扩容操作，重新分配更大的桶数组，并将所有元素重新哈希到新的位置。</p>
+<p>在哈希函数的选择上，C++标准库为基本类型提供了默认的哈希函数，对于自定义类型，则需要用户提供哈希函数或者特化<code>std::hash</code>模板。对于字符串类型，一些实现可能会使用SipHash算法，这是一种密码学安全的哈希函数，能够有效防止哈希碰撞攻击，同时对于相近的字符串能够表现出良好的随机分布特性，从而减少哈希冲突的发生。</p>
+<h2 id="unordered-map的扩容与缩容机制"><a href="#unordered-map的扩容与缩容机制" class="headerlink" title="unordered_map的扩容与缩容机制"></a>unordered_map的扩容与缩容机制</h2><p><code>unordered_map</code>的扩容机制是自动的，当负载因子（元素数量与桶数量的比值）超过设定的最大值时，容器会自动进行扩容操作。默认情况下，最大负载因子为1.0，但可以通过<code>max_load_factor</code>成员函数进行调整。扩容时，容器会创建一个更大的桶数组，通常是当前大小的两倍左右，然后对所有元素进行重新哈希，这个过程称为rehash。</p>
+<p>然而，<code>unordered_map</code>默认情况下不会自动缩容。即使元素数量大幅减少，桶数组的大小也不会自动缩小，这可能导致内存浪费。不过，标准库提供了<code>rehash</code>和<code>reserve</code>等接口，允许用户手动控制桶的数量。如果我们在使用<code>erase</code>等操作大量删除元素后，希望减少内存占用，可以调用<code>rehash</code>函数来手动触发重新哈希，从而减少桶的数量。</p>
+<h2 id="unordered-map的性能优化"><a href="#unordered-map的性能优化" class="headerlink" title="unordered_map的性能优化"></a>unordered_map的性能优化</h2><p>要充分发挥<code>unordered_map</code>的性能优势，有几个关键的优化点需要注意。首先，如果我们能够预估元素的数量，应该在创建容器时就通过<code>reserve</code>函数设置合适的桶数量，这样可以避免多次自动扩容带来的性能开销。其次，选择合适的哈希函数至关重要，一个好的哈希函数应该能够将键均匀分布到各个桶中，减少冲突的发生。对于自定义类型，我们需要仔细设计哈希函数，确保它既快速又具有良好的分布特性。</p>
+<p>负载因子的设置也是一个重要的优化点。默认的负载因子为0.75，这是一个在内存占用和性能之间的折中选择。如果我们更注重查找性能，可以适当降低负载因子，这样每个桶中的元素会更少，查找速度会更快，但内存占用会增加。相反，如果内存紧张，可以适当提高负载因子，但要注意过高的负载因子会导致冲突增多，性能下降。</p>
+<h2 id="map与unordered-map的全面对比"><a href="#map与unordered-map的全面对比" class="headerlink" title="map与unordered_map的全面对比"></a>map与unordered_map的全面对比</h2><p><code>map</code>和<code>unordered_map</code>在多个方面都存在显著差异，这些差异决定了它们各自适用的场景。从数据结构的角度来看，<code>map</code>基于红黑树实现，是一种有序的数据结构，而<code>unordered_map</code>基于哈希表实现，元素之间没有特定的顺序关系。</p>
+<p>在查找性能方面，<code>map</code>的查找时间复杂度为O(log n)，这是一个稳定的性能保证。而<code>unordered_map</code>的平均查找时间复杂度为O(1)，但在最坏情况下可能退化到O(n)，这通常发生在哈希函数设计不当或发生大量冲突的情况下。因此，如果我们需要稳定的性能保证，<code>map</code>可能更合适；如果追求平均情况下的高性能，<code>unordered_map</code>是更好的选择。</p>
+<p>有序性是一个重要的区别。<code>map</code>中的元素按照键的大小自动排序，这使得范围查询变得非常高效，我们可以轻松地找到某个范围内的所有元素。而<code>unordered_map</code>中的元素是无序的，它不支持范围查询，但单点查询的性能通常更好。</p>
+<p>在内存占用方面，红黑树作为平衡二叉树，基本没有空间浪费，每个节点都存储实际的数据。而哈希表需要维护一个桶数组，即使某些桶为空也会占用内存，此外还需要额外的空间来存储链表指针等元数据。因此，<code>map</code>在内存使用上通常更加紧凑。</p>
+<p>从内存占用的另一个角度来看，红黑树节点需要存储颜色信息，这通常只需要一个比特位，但为了内存对齐，可能会占用更多空间。相比之下，AVL树节点需要存储平衡因子，通常也需要额外的空间。不过，这个差异相对较小，在实际应用中影响不大。</p>
+<h2 id="键类型的要求"><a href="#键类型的要求" class="headerlink" title="键类型的要求"></a>键类型的要求</h2><p><code>map</code>和<code>unordered_map</code>对键类型有不同的要求，这反映了它们底层实现的差异。<code>map</code>需要键类型支持比较操作，因为红黑树需要通过比较键的大小来维持有序性。具体来说，键类型需要实现小于运算符（<code>&lt;</code>），或者提供一个自定义的比较函数。这使得<code>map</code>可以处理任何定义了比较关系的类型。</p>
+<p><code>unordered_map</code>的要求则不同，它需要键类型支持两个操作：哈希和相等比较。键类型需要能够被哈希函数处理，生成一个哈希值，同时需要能够判断两个键是否相等。对于基本类型，标准库已经提供了默认的哈希函数和相等比较；对于自定义类型，我们需要提供自定义的哈希函数和相等比较函数，或者特化相应的模板。</p>
+<h2 id="一些面试题"><a href="#一些面试题" class="headerlink" title="一些面试题"></a>一些面试题</h2><p>在实际应用中，经常会遇到一些特殊的需求，比如需要不区分大小写的字符串作为键，或者使用自定义的结构体作为键。</p>
+<p>对于不区分大小写的字符串键，<code>map</code>可以通过提供自定义的比较函数来实现，这个比较函数会将字符串转换为统一的大小写后再进行比较。<code>unordered_map</code>则需要同时提供自定义的哈希函数和相等比较函数，哈希函数也需要基于统一大小写的字符串来计算，这样才能确保不区分大小写的特性。</p>
+<p>当键是结构体或类对象时，<code>map</code>需要为这个类型实现小于运算符，或者提供一个比较函数对象。这个比较函数需要定义一种全序关系，确保能够正确排序。<code>unordered_map</code>则需要同时实现哈希函数和相等比较函数。哈希函数的设计需要特别小心，它应该能够充分利用结构体的各个成员，生成良好的哈希值分布。相等比较函数则需要比较所有相关的成员，确保两个相等的对象能够被正确识别。</p>
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/01/27/%E4%BD%8D%E8%BF%90%E7%AE%97%E5%B0%8F%E7%94%9C%E5%93%81/">位运算小甜品</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body twikoo'>
+      
+
+<div id="twikoo_container"><svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg></div>
+    </section>
+  </div>
+
 
 
 <footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">baobobo</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
 </div></footer>
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
-</aside><div class='float-panel blur'>
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E8%A8%80"><span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%A2%E9%BB%91%E6%A0%91%EF%BC%9Amap%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0"><span class="toc-text">红黑树：map的底层实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AVL%E6%A0%91%EF%BC%9A%E4%B8%A5%E6%A0%BC%E5%B9%B3%E8%A1%A1%E7%9A%84%E4%BB%A3%E8%A1%A8"><span class="toc-text">AVL树：严格平衡的代表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%A2%E9%BB%91%E6%A0%91%E4%B8%8EAVL%E6%A0%91%E7%9A%84%E6%9D%83%E8%A1%A1"><span class="toc-text">红黑树与AVL树的权衡</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%93%88%E5%B8%8C%E6%95%A3%E5%88%97%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="toc-text">哈希散列的实现方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-unordered-map%E7%9A%84%E5%93%88%E5%B8%8C%E5%AE%9E%E7%8E%B0"><span class="toc-text">C++ unordered_map的哈希实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#unordered-map%E7%9A%84%E6%89%A9%E5%AE%B9%E4%B8%8E%E7%BC%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-text">unordered_map的扩容与缩容机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#unordered-map%E7%9A%84%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-text">unordered_map的性能优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#map%E4%B8%8Eunordered-map%E7%9A%84%E5%85%A8%E9%9D%A2%E5%AF%B9%E6%AF%94"><span class="toc-text">map与unordered_map的全面对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%94%AE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A6%81%E6%B1%82"><span class="toc-text">键类型的要求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E9%9D%A2%E8%AF%95%E9%A2%98"><span class="toc-text">一些面试题</span></a></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089" clip-rule="evenodd"/><path fill="currentColor" d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
   </button>
@@ -402,6 +480,22 @@
 
 
 <!-- optional -->
+
+  <script type="module">
+  const el = document.getElementById('twikoo_container');
+  util.viewportLazyload(el, load_twikoo, false);
+
+  function load_twikoo() {
+    if (!el) return;
+    utils.js('https://gcore.jsdelivr.net/npm/twikoo@1.6.8/dist/twikoo.all.min.js', {defer: true}).then(function () {
+      const path = el.getAttribute('comment_id') ?? decodeURI(window.location.pathname);
+      twikoo.init(Object.assign({"js":"https://gcore.jsdelivr.net/npm/twikoo@1.6.8/dist/twikoo.all.min.js","envId":"https://xxx"}, {
+        el: '#twikoo_container',
+        path: path,
+      }));
+    });
+  }
+</script>
 
 
 
