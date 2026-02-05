@@ -1,0 +1,917 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
+  
+  <meta name="generator" content="Hexo 5.4.2">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  
+  <title>虚！ - BaoboboboBao</title>
+
+  
+    <meta name="description" content="本来想让AI帮忙总结一下关于C++虚字辈的知识点。结果一看，确实是整理了，但是真的就是纯粹的知识点的堆砌。看了一遍毫无章法。我还是自己写吧，毕竟自己才知道自己对哪一部分比较模糊陌生。 我看了一些面试题，大多数就是让你阐述一下虚函数，然后开始以此深挖。我觉得可以把这些题分为以下这几个类型：  各种基本概念，各种实现实体的内存空间长什么样 在不同的情况下的调用过程 在哪些情况下，为什么要用它 在哪些情">
+<meta property="og:type" content="article">
+<meta property="og:title" content="虚！">
+<meta property="og:url" content="http://example.com/2026/01/28/%E8%99%9A%EF%BC%81%E7%AC%AC%E4%BA%8C%E7%89%88/index.html">
+<meta property="og:site_name" content="BaoboboboBao">
+<meta property="og:description" content="本来想让AI帮忙总结一下关于C++虚字辈的知识点。结果一看，确实是整理了，但是真的就是纯粹的知识点的堆砌。看了一遍毫无章法。我还是自己写吧，毕竟自己才知道自己对哪一部分比较模糊陌生。 我看了一些面试题，大多数就是让你阐述一下虚函数，然后开始以此深挖。我觉得可以把这些题分为以下这几个类型：  各种基本概念，各种实现实体的内存空间长什么样 在不同的情况下的调用过程 在哪些情况下，为什么要用它 在哪些情">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-01-28T05:48:39.000Z">
+<meta property="article:modified_time" content="2026-01-28T11:01:28.439Z">
+<meta property="article:author" content="baobobo">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="面向对象">
+<meta name="twitter:card" content="summary">
+  
+  
+  
+  <meta name="keywords" content="C++,面向对象">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.29.1">
+
+  
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://pic.imgdb.cn/item/66f22aeff21886ccc06a4cdd.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">BaoboboboBao</div><div class="sub cap">baobobo</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="关于" href="/about/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="日报" href="/Daily/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/02/05/C-%E6%8B%BE%E9%81%97%E5%BD%950205/"><span class="title">C++拾遗录0205</span></a><a class="item title" href="/2026/01/28/%E8%99%9A%EF%BC%81%E7%AC%AC%E4%BA%8C%E7%89%88/"><span class="title">虚！</span></a><a class="item title" href="/2026/01/28/%E8%99%9A%EF%BC%81%E7%AC%AC%E4%B8%80%E7%89%88/"><span class="title">虚！（第一版）</span></a><a class="item title" href="/2026/01/28/map%E5%92%8Cunordered-map%E5%B0%8F%E8%AE%B0/"><span class="title">map和unordered_map小记</span></a><a class="item title" href="/2026/01/27/%E4%BD%8D%E8%BF%90%E7%AE%97%E5%B0%8F%E7%94%9C%E5%93%81/"><span class="title">位运算小甜品</span></a><a class="item title" href="/2026/01/26/new%E5%92%8Cdelete/"><span class="title">new和delete（一）new与构造函数与各种初始化大乱炖</span></a><a class="item title" href="/2026/01/24/%E6%88%91%E7%9C%9F%E7%9A%84%E5%BE%88%E8%AE%A8%E5%8E%8Cmalloc%E5%A4%B1%E8%B4%A5%E5%81%87%E8%A3%85%E6%B2%A1%E4%BA%8B/"><span class="title">malloc失败假装没事谁信（malloc内存分配相关总结整理）</span></a><a class="item title" href="/2026/01/21/LRU%E6%8A%8A%E6%9C%80%E8%80%81%E7%9A%84%E8%B5%B6%E5%87%BA%E9%97%A8%E7%8A%AF%E6%B3%95%E5%90%97/"><span class="title">LRU把最老的赶出门犯法吗</span></a><a class="item title" href="/2026/01/20/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/"><span class="title">进程和线程到底有什么区别</span></a><a class="item title" href="/2026/01/20/%E5%A6%82%E4%BD%95%E5%8F%AA%E5%9C%A8%E6%A0%88%E4%B8%8A%E6%88%96%E5%8F%AA%E5%9C%A8%E5%A0%86%E4%B8%8A%E5%88%9B%E5%BB%BA%E7%B1%BB/"><span class="title">如何只在栈上或只在堆上创建类</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" onclick="switchTheme()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><path fill="currentColor" fill-rule="evenodd" d="M582.4 326.4c-140.8 0-256 115.2-256 256s115.2 256 256 256 256-115.2 256-256-115.2-256-256-256z m0 448c-70.4 0-131.2-36.8-164.8-92.8 12.8 3.2 27.2 4.8 40 4.8 121.6 0 219.2-99.2 219.2-219.2 0-17.6-1.6-35.2-6.4-52.8 60.8 32 102.4 96 102.4 169.6 1.6 104-84.8 190.4-190.4 190.4zM582.4 262.4c17.6 0 32-14.4 32-32v-128c0-17.6-14.4-32-32-32s-32 14.4-32 32v128c0 17.6 14.4 32 32 32zM262.4 582.4c0-17.6-14.4-32-32-32h-128c-17.6 0-32 14.4-32 32s14.4 32 32 32h128c17.6 0 32-14.4 32-32zM310.4 356.8c6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6 12.8-12.8 12.8-32 0-44.8l-91.2-91.2c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l91.2 91.2zM944 220.8c-12.8-12.8-32-12.8-44.8 0l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-33.6 0-44.8zM310.4 808l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-32 0-44.8-11.2-11.2-32-11.2-44.8 0z"></path></svg></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-01-28T05:48:39.000Z">2026-01-28</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-01-28T11:01:28.439Z">2026-01-28</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>虚！</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><p>本来想让AI帮忙总结一下关于C++虚字辈的知识点。结果一看，确实是整理了，但是真的就是纯粹的知识点的堆砌。看了一遍毫无章法。我还是自己写吧，毕竟自己才知道自己对哪一部分比较模糊陌生。</p>
+<p>我看了一些面试题，大多数就是让你阐述一下虚函数，然后开始以此深挖。我觉得可以把这些题分为以下这几个类型：</p>
+<ul>
+<li>各种基本概念，各种实现实体的内存空间长什么样</li>
+<li>在不同的情况下的调用过程</li>
+<li>在哪些情况下，为什么要用它</li>
+<li>在哪些情况下，为什么不用它</li>
+<li>其他零零散散的知识点</li>
+</ul>
+<p>我会按照我的思路，一点点复盘这些知识点。</p>
+<h2 id="一、各种基本概念和内存布局"><a href="#一、各种基本概念和内存布局" class="headerlink" title="一、各种基本概念和内存布局"></a>一、各种基本概念和内存布局</h2><h3 id="1-虚函数是什么"><a href="#1-虚函数是什么" class="headerlink" title="1. 虚函数是什么"></a>1. 虚函数是什么</h3><p>虚函数，是C++实现多态的一种重要机制，这里主要指的是动态多态。这种重要机制主要靠虚函数指针和虚函数表来实现（主流编译器的实现方式如此，C++的标准没有规定）。这时候就要想，为什么需要多态？主要想解决的问题就是想用基类的指针，去调用派生类的一些方法，能让代码简洁一些，管理起来也更方便，可扩展性也更高。实现呢就是在类里的成员函数前加上virtual关键字。派生类继承基类的时候，virtual成员函数会被自动继承为virtual，重写的时候即使不加override关键字它也是virtual虚函数。</p>
+<h3 id="2-虚函数表vtable是什么"><a href="#2-虚函数表vtable是什么" class="headerlink" title="2. 虚函数表vtable是什么"></a>2. 虚函数表vtable是什么</h3><p>虚函数表就是存储虚函数地址的一张表。由虚函数表指针vptr来指向这张表，来获取表里的虚函数地址，以此调用相应的虚函数。</p>
+<p>虚函数表又是什么时候生成的呢？这张表是在编译期就生成好的，所以这是个静态的表。存放在程序的只读数据段里（.rodata）。如果一个派生类重写了基类的虚函数，那么在编译期，我们的编译器就会用派生类重写好的虚函数的地址去替换掉原来虚函数表中对应的那个虚函数的地址。这里要注意，多继承里，虚函数表可不是只有一张。而是每一个被继承的类自己管理自己的虚函数表。关于这部分内容可以看我之前的博客：多继承的虚函数表有几张？</p>
+<p>这里要补充一点：虚函数表里只有一堆虚函数地址吗？并非如此。如果开启了RTTI（运行时类型识别），则可能还包含运行时类型信息RTTI的指针还有其他元数据，这个取决于编译器的实现。</p>
+<p>还有一个混淆的点：虚函数是存储在代码段的。虚函数表是一个存储函数指针的数据结构，所以存在只读数据段中。</p>
+<h3 id="3-虚函数表指针vptr是什么"><a href="#3-虚函数表指针vptr是什么" class="headerlink" title="3. 虚函数表指针vptr是什么"></a>3. 虚函数表指针vptr是什么</h3><p>这是个指针，存的就是虚函数表的地址。这个指针是由编译器为包含虚函数的类隐式插入的一个指针。这个指针有多大呢？系统有多少位就有多少位。32位系统就是4个字节，64位系统就是8个字节。这个指针通常存在对象内存的起始位置（C++标准并未规定）。<br>vptr是在对象构造的期间才被赋值的，在析构的时候被销毁。<br>但是对于多继承的情况下，一个对象内存里可能有多个虚函数表指针，详见我之前的博客：多继承的虚函数表有几张？我简单总结一下，多继承的派生类的内存布局可理解为：按照继承顺序，依次包含每个基类的完整子对象（包括各自的vptr和数据成员），最后是派生类自身新增的成员。<br>使用其中一个基类的指针或引用去指向派生类的对象的话，编译器会将这个对象的this指针更新为那个基类的起始地址，也就是那个基类的虚函数表指针那里。这样，调用起基类被重写的虚函数，this就直接访问到相应基类的虚函数表了。<br>这里要说一下多继承里，调整this时的offset是怎么来的。符号表会维护类的内存布局，生成代码的时候会硬编码在指令中。</p>
+<table>
+<thead>
+<tr>
+<th align="left">继承类型</th>
+<th align="left">offset确定时机</th>
+<th align="left">存储位置</th>
+<th align="left">使用方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>单继承</strong></td>
+<td align="left">编译期计算</td>
+<td align="left">硬编码在指令中</td>
+<td align="left">直接加减</td>
+</tr>
+<tr>
+<td align="left"><strong>多继承</strong></td>
+<td align="left">编译期计算</td>
+<td align="left">硬编码在指令中 也存储在vtable</td>
+<td align="left">向上转型时调整 虚函数调用时反向调整</td>
+</tr>
+<tr>
+<td align="left"><strong>虚继承</strong></td>
+<td align="left">部分运行时</td>
+<td align="left">虚基类表中</td>
+<td align="left">通过查表获取</td>
+</tr>
+</tbody></table>
+<p>对于一个多继承来说，比如下面这个代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Base1</span> &#123;<span class="keyword">public</span>: <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">a</span><span class="params">()</span> </span>= <span class="number">0</span>; &#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Base2</span> &#123;<span class="keyword">public</span>:<span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">b</span><span class="params">()</span> </span>= <span class="number">0</span>; &#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Derived</span> : <span class="keyword">public</span> Base1, <span class="keyword">public</span> Base2 &#123;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">a</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">b</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">c</span><span class="params">()</span> </span>&#123;&#125;  <span class="comment">// 只应在Base1的vtable中</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">Base2* pb = <span class="keyword">new</span> <span class="built_in">Derived</span>();</span><br><span class="line">pb-&gt;<span class="built_in">b</span>();  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我用MSVC的编译器编译出来，截一段：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">const Derived::`vftable&#x27;&#123;for `Base1`&#125; </span><br><span class="line">        DQ FLAT:const Derived::`RTTI Complete Object Locator&#x27;&#123;for `Base1`&#125;</span><br><span class="line">        DQ FLAT:virtual void Derived::a(void)  // 偏移0处：Derived::a</span><br><span class="line">        DQ FLAT:virtual void Derived::c(void)  // 偏移8处：Derived::c</span><br><span class="line"></span><br><span class="line">const Derived::`vftable&#x27;&#123;for `Base2`&#125;</span><br><span class="line">        DQ FLAT:const Derived::`RTTI Complete Object Locator&#x27;&#123;for `Base2`&#125;</span><br><span class="line">        DQ FLAT:virtual void Derived::b(void)  // 偏移0处：Derived::b</span><br></pre></td></tr></table></figure>
+
+<p>还有一段：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Derived::`RTTI Complete Object Locator&#x27;&#123;for `Base2`&#125;</span><br><span class="line">Derived::`RTTI Complete Object Locator&#x27;&#123;for `Base1`&#125;</span><br><span class="line">Base2::`RTTI Complete Object Locator`</span><br><span class="line">Base1::`RTTI Complete Object Locator`</span><br></pre></td></tr></table></figure>
+
+<p>每个虚函数表开头都有一个<strong>RTTI Complete Object Locator</strong>，用于：</p>
+<ol>
+<li><strong>dynamic_cast</strong>类型转换</li>
+<li><strong>typeid</strong>操作符</li>
+<li>异常处理（exception handling）</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">; main代码：</span><br><span class="line">mov     rax, QWORD PTR tv73[rsp]  ; rax = Derived* (新创建的对象)</span><br><span class="line">add     rax, 8                    ; rax += 8 ← 调整到Base2子对象,硬编码</span><br><span class="line">mov     QWORD PTR pb$[rsp], rax   ; 存储到pb (Base2*)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>我们再看看用gcc编译的，截取相关：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">vtable for Derived:</span><br><span class="line">        .quad   0</span><br><span class="line">        .quad   typeinfo for Derived</span><br><span class="line">        .quad   Derived::a()</span><br><span class="line">        .quad   Derived::b()</span><br><span class="line">        .quad   Derived::c()</span><br><span class="line">        .quad   -8</span><br><span class="line">        .quad   typeinfo for Derived</span><br><span class="line">        .quad   non-virtual thunk to Derived::b()</span><br><span class="line">vtable for Base2:</span><br><span class="line">        .quad   0</span><br><span class="line">        .quad   typeinfo for Base2</span><br><span class="line">        .quad   __cxa_pure_virtual</span><br><span class="line">vtable for Base1:</span><br><span class="line">        .quad   0</span><br><span class="line">        .quad   typeinfo for Base1</span><br><span class="line">        .quad   __cxa_pure_virtual</span><br></pre></td></tr></table></figure>
+
+<p>(太复杂了后面再说)</p>
+<h3 id="4-虚继承是什么"><a href="#4-虚继承是什么" class="headerlink" title="4. 虚继承是什么"></a>4. 虚继承是什么</h3><p>虚继承是C++中解决菱形继承问题的一种机制。什么是菱形继承呢？就是两个基类都继承自同一个基类，而派生类又同时继承这两个基类，形成一个菱形的继承结构。在普通继承中，派生类会包含两份最顶层基类的副本，这会导致数据冗余和二义性。</p>
+<p>举个例子，如果A是基类，B和C都继承自A，然后D同时继承B和C，那么普通继承下D会包含两份A的副本。当你通过D访问A的成员时，编译器不知道你要访问哪一份，就会报二义性错误。</p>
+<p>虚继承通过引入虚基类表（vbtable）和虚基类指针（vbptr），确保在菱形继承结构中，最顶层的基类只有一个实例被共享。使用虚继承时，在继承声明前加上virtual关键字，比如<code>class B : virtual public A</code>。</p>
+<h3 id="5-虚继承类的内存结构"><a href="#5-虚继承类的内存结构" class="headerlink" title="5. 虚继承类的内存结构"></a>5. 虚继承类的内存结构</h3><p>虚继承对内存布局的影响比较复杂。在虚继承的情况下，虚基类通常被放置在派生类对象的尾部，而不是按照继承顺序排列。这意味着访问虚基类成员需要通过多次间接寻址。</p>
+<p>具体来说，内存布局大致是：派生类数据成员在前，然后是各个非虚基类的数据成员，最后是虚基类的数据成员。每个虚继承的基类都会引入一个虚基类表指针（vbptr），这个指针指向虚基类表，用于存储虚基类在对象中的偏移量。</p>
+<p>访问虚基类成员的过程是：首先通过对象的vptr找到虚函数表，然后通过虚基类表指针找到虚基类表，最后通过虚基类表中的偏移量找到虚基类在对象中的实际位置。这种三次间接寻址的设计虽然保证了正确性，但也带来了一定的性能开销。</p>
+<h3 id="6-虚基类表是什么，长什么样"><a href="#6-虚基类表是什么，长什么样" class="headerlink" title="6. 虚基类表是什么，长什么样"></a>6. 虚基类表是什么，长什么样</h3><p>虚基类表（vbtable）是虚继承机制中用于存储虚基类偏移量的数据结构。当通过非最终派生类的指针访问虚基类成员时，需要通过虚基类表来找到虚基类在派生类对象中的实际位置。</p>
+<p>虚基类表存储的是虚基类相对于当前对象的偏移量信息。不同的继承路径可能需要不同的偏移量，因此虚基类表的存在使得编译器能够在运行时正确计算虚基类的地址。</p>
+<p>举个例子，在菱形继承中，如果D继承自B和C，而B和C都虚继承自A，那么B和C各自都会有一个虚基类表，表中存储着A在D对象中的偏移量。当通过B的指针访问A的成员时，编译器会通过B的虚基类表找到A的实际位置。</p>
+<h3 id="7-虚基类表指针是什么，存在哪"><a href="#7-虚基类表指针是什么，存在哪" class="headerlink" title="7. 虚基类表指针是什么，存在哪"></a>7. 虚基类表指针是什么，存在哪</h3><p>虚基类表指针（vbptr）是指向虚基类表的指针。这个指针是由编译器为每个虚继承的基类隐式插入的。vbptr的大小和vptr一样，32位系统4字节，64位系统8字节。</p>
+<p>vbptr通常存储在虚继承基类子对象的起始位置，但具体位置取决于编译器的实现。在MSVC中，vbptr可能存储在vtable的特定位置；在GCC/Clang中，vbptr可能作为独立的数据成员存储。</p>
+<p>每个虚继承的基类都会有自己的vbptr，指向自己的虚基类表。这样设计的好处是，不同的继承路径可以通过各自的虚基类表找到共享的虚基类实例，而不需要知道完整的继承层次结构。</p>
+<h3 id="8-纯虚函数又是什么"><a href="#8-纯虚函数又是什么" class="headerlink" title="8. 纯虚函数又是什么"></a>8. 纯虚函数又是什么</h3><p>纯虚函数是一种特殊的虚函数，它只有声明而没有实现，通过在函数声明后添加<code>= 0</code>来标识，比如<code>virtual void func() = 0;</code>。包含纯虚函数的类被称为抽象类，抽象类不能直接实例化对象，只能作为基类存在。</p>
+<p>纯虚函数的作用是为派生类提供接口规范，强制派生类必须实现特定的行为。派生类必须实现所有纯虚函数才能成为具体类，才能被实例化。如果派生类没有实现所有纯虚函数，那么派生类仍然是抽象类，无法创建对象。</p>
+<p>在基类的虚函数表中，纯虚函数的地址位置通常被设置为nullptr或特定占位值。当尝试调用纯虚函数时，程序会抛出异常或导致未定义行为。这确保了抽象类不能被实例化，因为调用未实现的纯虚函数会导致程序崩溃。</p>
+<p>有一个特殊情况：纯虚析构函数必须提供定义，即使它是纯虚的。这是因为即使基类是抽象类，派生类对象销毁时仍需要调用基类的析构函数。如果不提供纯虚析构函数的定义，链接器会报错。</p>
+<h2 id="二、各种调用的过程"><a href="#二、各种调用的过程" class="headerlink" title="二、各种调用的过程"></a>二、各种调用的过程</h2><h3 id="1-单继承里，虚函数被调用的过程"><a href="#1-单继承里，虚函数被调用的过程" class="headerlink" title="1. 单继承里，虚函数被调用的过程"></a>1. 单继承里，虚函数被调用的过程</h3><p>单继承情况下，虚函数调用的过程相对简单。当我们通过基类指针或引用调用虚函数时，编译器首先会获取对象的vptr，这个指针通常位于对象的起始位置。然后通过vptr找到对应的虚函数表，这是一个函数指针数组。</p>
+<p>接下来，编译器会根据函数在虚函数表中的偏移量，找到具体的函数地址。这个偏移量是在编译时确定的，因为函数在类中的声明顺序是固定的。最后，通过函数地址进行函数调用。</p>
+<p>如果派生类重写了基类的虚函数，那么虚函数表中对应位置的条目会被替换为派生类的函数地址。如果派生类没有重写，那么虚函数表中仍然保留基类的函数地址。调用时，无论哪种情况，都是通过同一个vptr和同一个虚函数表进行查找。</p>
+<p>这个调用过程的时间复杂度是O(1)，因为虚函数表是一个数组，函数地址通过编译期确定的偏移量直接访问，只需要一次指针解引用和一次跳转。</p>
+<h3 id="2-多继承里，虚函数被调用的过程"><a href="#2-多继承里，虚函数被调用的过程" class="headerlink" title="2. 多继承里，虚函数被调用的过程"></a>2. 多继承里，虚函数被调用的过程</h3><p>多继承情况下，调用过程会复杂一些。派生类对象可能包含多个vptr，分别对应不同的基类。当我们通过某个基类指针调用虚函数时，编译器会使用该基类对应的vptr和虚函数表。</p>
+<p>如果派生类重写了某个基类的虚函数，那么该基类的虚函数表中对应位置的条目会被更新。不同的基类可能有不同的虚函数表，即使它们包含相同的虚函数。</p>
+<p>当我们使用其中一个基类的指针或引用去指向派生类的对象时，编译器会将这个对象的this指针更新为那个基类的起始地址，也就是那个基类的虚函数表指针那里。这样，调用起基类被重写的虚函数，this就直接访问到相应基类的虚函数表了。</p>
+<p>这个this指针的调整是在编译期确定的，offset会被硬编码在指令中。比如前面看到的汇编代码中，<code>add rax, 8</code>就是硬编码的偏移量，将Derived<em>调整为Base2</em>。</p>
+<h3 id="3-虚继承里，虚函数被调用的过程"><a href="#3-虚继承里，虚函数被调用的过程" class="headerlink" title="3. 虚继承里，虚函数被调用的过程"></a>3. 虚继承里，虚函数被调用的过程</h3><p>虚继承情况下，调用过程更加复杂。除了虚函数表的查找，还需要考虑虚基类的访问。当我们通过非最终派生类的指针访问虚基类的成员时，编译器需要通过虚基类表来调整this指针。</p>
+<p>这个过程包括：首先通过对象的vptr找到虚函数表，然后通过虚基类表指针找到虚基类表，最后通过虚基类表中的偏移量计算虚基类的实际地址。这种三次间接寻址的设计虽然保证了正确性，但也带来了一定的性能开销。</p>
+<p>当通过非最终派生类的指针访问虚基类成员时，编译器会自动调整this指针。例如，在D类中访问B的A基类成员时，实际this指针会被调整为指向D对象中A的实例。这种调整是通过虚基类表中的偏移量来实现的，确保访问到正确的虚基类实例。</p>
+<h3 id="4-虚函数表指针的生命周期"><a href="#4-虚函数表指针的生命周期" class="headerlink" title="4. 虚函数表指针的生命周期"></a>4. 虚函数表指针的生命周期</h3><p>vptr是在对象构造的期间才被赋值的，在析构的时候被销毁。具体来说，在对象创建前，vptr未初始化；基类构造阶段，vptr指向基类vtable；派生类构造阶段，vptr更新为派生类vtable；对象销毁时，vptr仍指向派生类vtable（直到析构完成）。</p>
+<p>这解释了为什么在构造函数中调用虚函数不会跳转到派生类实现，因为此时vptr还没有更新为派生类的vtable。在基类构造函数中，vptr指向基类的虚函数表，因此调用的是基类的虚函数实现。只有当进入派生类构造函数后，vptr才会更新为派生类的虚函数表。</p>
+<p>在析构过程中，顺序相反：先执行派生类析构函数，此时vptr仍指向派生类的虚函数表；然后执行基类析构函数，vptr被更新为指向基类的虚函数表。这解释了为什么在析构函数中调用虚函数也不会产生多态行为。</p>
+<h3 id="5-虚基类表指针的生命周期"><a href="#5-虚基类表指针的生命周期" class="headerlink" title="5. 虚基类表指针的生命周期"></a>5. 虚基类表指针的生命周期</h3><p>虚基类表指针（vbptr）的生命周期和vptr类似，也是在对象构造期间被赋值，在析构时被销毁。但是虚继承的构造和析构顺序更加复杂，因为需要确保虚基类只被构造一次。</p>
+<p>在虚继承的情况下，虚基类的构造由最底层的派生类负责，而不是由中间层的基类负责。这意味着即使B和C都虚继承自A，当D继承B和C时，A的构造只会在D的构造函数中被调用一次，而不是在B和C的构造函数中各调用一次。</p>
+<p>vbptr的初始化也是在最底层的派生类构造函数中完成的。编译器会确保虚基类表在访问虚基类成员之前就已经正确设置，这样通过vbptr访问虚基类表时才能找到正确的偏移量。</p>
+<h3 id="new：菱形继承里，最底下的那个类的构造过程"><a href="#new：菱形继承里，最底下的那个类的构造过程" class="headerlink" title="new：菱形继承里，最底下的那个类的构造过程"></a>new：菱形继承里，最底下的那个类的构造过程</h3><p>菱形继承中最底层类的构造过程比较特殊，因为需要确保虚基类只被构造一次。我们用一个典型的例子来说明：A是基类，B和C都虚继承自A，D继承B和C（D是最底层的类）。</p>
+<p>构造顺序是这样的：首先构造虚基类A，而且只构造一次。然后按照继承顺序构造B和C，但B和C的构造函数中不会再去构造A，因为A已经在第一步构造好了。最后构造D本身。</p>
+<p>具体来说，当创建D的对象时，构造函数的调用顺序是：</p>
+<ol>
+<li>A的构造函数（虚基类，只调用一次）</li>
+<li>B的构造函数（跳过A的构造）</li>
+<li>C的构造函数（跳过A的构造）</li>
+<li>D的构造函数</li>
+</ol>
+<p>这个顺序是由编译器自动安排的，不需要我们手动控制。编译器会确保虚基类A在任何使用它的基类（B和C）之前就已经构造完成。</p>
+<p>在构造过程中，vbptr的初始化也很关键。B和C各自的vbptr会在它们的构造函数中被初始化，指向各自的虚基类表。这些虚基类表中存储着A在D对象中的偏移量，使得B和C能够通过各自的vbptr找到共享的A实例。</p>
+<p>析构的顺序正好相反：先析构D，然后析构C，再析构B，最后析构A。同样，A只会被析构一次，即使B和C都有析构函数，它们也不会再去析构A，因为A的析构由最底层的D负责。</p>
+<p>这种设计确保了在菱形继承中，虚基类只有一个实例，避免了数据冗余和二义性问题。但代价是构造和析构的顺序变得复杂，而且访问虚基类成员需要通过额外的间接寻址。</p>
+<h3 id="6-构造函数和析构函数中调用虚函数的行为"><a href="#6-构造函数和析构函数中调用虚函数的行为" class="headerlink" title="6. 构造函数和析构函数中调用虚函数的行为"></a>6. 构造函数和析构函数中调用虚函数的行为</h3><p>在构造函数和析构函数中调用虚函数不会产生多态行为，而是静态绑定到当前构造或析构阶段的类版本。这是因为对象类型在构造和析构过程中被视为”不完整”。</p>
+<p>构造时，派生类部分尚未构造完成，无法保证其虚函数的正确性。析构时，派生类部分已经销毁，其虚函数可能无法安全调用。C++标准明确禁止在构造/析构函数中通过动态绑定调用虚函数，这是为了确保对象状态的一致性。</p>
+<p>如果必须在构造或析构过程中使用多态行为，可以考虑使用初始化函数模式：在对象完全构造后调用一个初始化函数，此时对象已经完整，可以安全地调用虚函数。但一般来说，应该避免在构造函数和析构函数中调用虚函数。</p>
+<h2 id="虚继承"><a href="#虚继承" class="headerlink" title="虚继承"></a>虚继承</h2><p>在C++面向对象编程中，虚继承（virtual inheritance）是一种解决多重继承问题的高级机制，特别是针对菱形继承问题。本文将深入解析虚继承的底层实现原理，包括虚基类表、虚基类表指针的定义、产生时机、生命周期，以及虚继承类对象的构造过程，特别是菱形继承结构中底层类的构造顺序，同时分析通过不同基类调用派生类虚函数的实现机制。通过这些底层原理的剖析，我们可以更好地理解C++虚继承的工作方式及其在实际应用中的影响。</p>
+<p>一、虚基类表(vbtable)与虚基类表指针(vbptr)机制</p>
+<p><strong>1. 虚基类表(vbtable)的定义与作用</strong></p>
+<p>虚基类表是C++编译器为支持虚继承而自动生成的一种数据结构。它的核心功能是存储虚基类子对象在派生类对象中的偏移地址。在标准的Itanium C++ ABI中，每个虚基类表包含以下信息：</p>
+<ul>
+<li><strong>虚基类的类型信息</strong>：标识该虚基类的类型</li>
+<li><strong>虚基类子对象的偏移地址</strong>：记录虚基类子对象在最终派生类对象中的相对位置</li>
+<li><strong>虚函数表指针</strong>：指向最终派生类中覆盖虚基类虚函数的虚函数表</li>
+</ul>
+<p><strong>2. 虚基类表(vbtable)的产生时机与生命周期</strong></p>
+<p>虚基类表的产生和生命周期遵循以下规则：</p>
+<ul>
+<li><strong>产生时机</strong>：当且仅当一个类使用virtual关键字继承某个基类时，编译器才会为该继承关系生成对应的虚基类表。例如在以下代码中：</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123; <span class="comment">/* ... */</span> &#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> : <span class="keyword">virtual</span> <span class="keyword">public</span> A &#123; <span class="comment">/* ... */</span> &#125;; <span class="comment">// B继承A为虚基类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> : <span class="keyword">public</span> B &#123; <span class="comment">/* ... */</span> &#125;; <span class="comment">// C继承B，此时B的虚基类A也会影响C的内存布局</span></span><br></pre></td></tr></table></figure>
+
+<p>编译器会在编译阶段为B生成一个虚基类表。</p>
+<ul>
+<li><strong>生命周期</strong>：虚基类表是静态存储的，其生命周期与整个程序一致。这些表在程序加载时被初始化，驻留在只读内存区域，所有对象共享同一份虚基类表数据。当对象被创建或销毁时，不会影响虚基类表的存在，它只在对象构造和析构时被引用以确定虚基类子对象的位置。</li>
+</ul>
+<p><strong>3. 虚基类表指针(vbptr)的定义与作用</strong></p>
+<p>虚基类表指针是虚继承机制的关键实现组件。每个虚继承的子类（如上述代码中的B）都会包含一个指向其虚基类表的指针成员，称为vbptr（virtual base pointer）。</p>
+<ul>
+<li><strong>存储位置</strong>：vbptr作为隐式成员存储在虚继承的子类对象中。例如，类B的对象布局会包含一个指向A的虚基类表的vbptr。</li>
+<li><strong>核心功能</strong>：vbptr存储虚基类表的地址，通过该地址可以查询到虚基类子对象在最终派生类中的偏移量，从而正确地访问虚基类的成员。</li>
+</ul>
+<p><strong>4. 虚基类表指针(vbptr)的构造时机与生命周期</strong></p>
+<ul>
+<li><strong>构造时机</strong>：vbptr在对象构造过程中被初始化。在虚继承的类层次中，<strong>只有最底层的派生类</strong>负责设置所有虚基类的vbptr。例如，在菱形继承结构中：</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123; <span class="comment">/* ... */</span> &#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> : <span class="keyword">virtual</span> <span class="keyword">public</span> A &#123; <span class="comment">/* ... */</span> &#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> : <span class="keyword">virtual</span> <span class="keyword">public</span> A &#123; <span class="comment">/* ... */</span> &#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">D</span> : <span class="keyword">public</span> B, <span class="keyword">public</span> C &#123; <span class="comment">/* ... */</span> &#125;; <span class="comment">// 最底层派生类</span></span><br></pre></td></tr></table></figure>
+
+<p>当构造D对象时，D的构造函数会初始化B和C中的vbptr，指向正确的虚基类表。而B和C的构造函数本身不会初始化自己的vbptr，因为虚基类的初始化责任已经被转移到了最底层派生类。</p>
+<ul>
+<li><strong>生命周期</strong>：vbptr的生命周期与包含它的对象完全一致。它在对象构造时被初始化，指向正确的虚基类表；在对象析构时，随着对象内存的释放而失效。值得注意的是，<strong>即使虚基类本身没有虚函数</strong>，只要存在虚继承关系，编译器也会为该继承路径生成vbptr和对应的虚基类表。</li>
+</ul>
+<p>二、虚继承类对象的构造过程</p>
+<p><strong>1. 虚继承对象的构造顺序</strong></p>
+<p>虚继承类对象的构造遵循严格的顺序规则，这是确保虚基类正确共享的关键：</p>
+<ol>
+<li><strong>虚基类优先构造</strong>：首先构造所有虚基类，按照它们在继承层次中被声明的顺序进行。</li>
+<li><strong>非虚基类按声明顺序构造</strong>：然后构造非虚基类，同样按照它们在继承列表中声明的顺序。</li>
+<li><strong>成员对象按声明顺序构造</strong>：接下来构造派生类中声明的成员对象，按照它们在类体中声明的顺序。</li>
+<li><strong>派生类自身构造</strong>：最后执行派生类自身的构造函数。</li>
+</ol>
+<p><strong>构造顺序示例</strong>：考虑以下继承结构：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123; <span class="comment">/* ... */</span> &#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> : <span class="keyword">virtual</span> <span class="keyword">public</span> A &#123; <span class="comment">/* ... */</span> &#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> : <span class="keyword">virtual</span> <span class="keyword">public</span> A &#123; <span class="comment">/* ... */</span> &#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">D</span> : <span class="keyword">public</span> B, <span class="keyword">public</span> C &#123; <span class="comment">/* ... */</span> &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>构造D对象的顺序为：A → B → C → D的成员 → D自身的构造函数。</p>
+<p><strong>2. 虚基类初始化权的转移</strong></p>
+<p>在虚继承结构中，<strong>虚基类的初始化责任被转移到了最底层派生类</strong>。这是虚继承区别于普通继承的关键特性：</p>
+<ul>
+<li>在普通继承中，中间派生类（如B和C）负责初始化它们直接继承的基类（如A）。</li>
+<li>在虚继承中，中间派生类不再初始化其虚基类，而是由最底层派生类（如D）统一初始化所有虚基类。这意味着在D的构造函数初始化列表中，必须显式调用所有虚基类的构造函数，否则会导致编译错误。</li>
+</ul>
+<p>例如，D的构造函数必须显式初始化A：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">D</span> : <span class="keyword">public</span> B, <span class="keyword">public</span> C &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">D</span>() : <span class="built_in">A</span>(), <span class="built_in">B</span>(), <span class="built_in">C</span>() &#123; <span class="comment">/* ... */</span> &#125; <span class="comment">// 必须显式初始化A</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>3. 虚基类表指针(vbptr)的初始化过程</strong></p>
+<p>在构造过程中，vbptr的初始化是确保虚基类正确共享的关键步骤：</p>
+<ul>
+<li>当构造最底层派生类（如D）时，编译器会首先为所有虚基类（如A）分配内存空间并执行构造。</li>
+<li>然后，编译器会计算每个虚基类子对象相对于最终派生类对象的偏移量。</li>
+<li>接着，编译器会为每个虚继承的中间类（如B和C）初始化其vbptr，使其指向包含正确偏移量的虚基类表。</li>
+<li>最后，当构造非虚基类（如B和C）时，它们的虚函数表指针（vptr）会被设置为指向最终派生类中的虚函数表，以确保虚函数的正确动态绑定。</li>
+</ul>
+<p><strong>4. 菱形继承结构中的构造过程</strong></p>
+<p>菱形继承（Diamond Inheritance）是C++中典型的多重继承场景，也是虚继承的主要应用场景：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  A</span><br><span class="line"> / \</span><br><span class="line">B   C</span><br><span class="line"> \ /</span><br><span class="line">  D</span><br></pre></td></tr></table></figure>
+
+<p>在菱形继承结构中，若没有使用虚继承，D对象将包含A的两个独立副本，导致数据冗余和访问歧义。通过在中间层使用虚继承，可以确保D中仅保留一个A实例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123; <span class="comment">/* ... */</span> &#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> : <span class="keyword">virtual</span> <span class="keyword">public</span> A &#123; <span class="comment">/* ... */</span> &#125;; <span class="comment">// 虚继承</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> : <span class="keyword">virtual</span> <span class="keyword">public</span> A &#123; <span class="comment">/* ... */</span> &#125;; <span class="comment">// 虚继承</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">D</span> : <span class="keyword">public</span> B, <span class="keyword">public</span> C &#123; <span class="comment">/* ... */</span> &#125;; <span class="comment">// 底层派生类</span></span><br></pre></td></tr></table></figure>
+
+<p>D对象的构造过程如下：</p>
+<ol>
+<li>首先构造虚基类A。</li>
+<li>然后构造B，此时B的vbptr被设置为指向包含A偏移量的虚基类表。</li>
+<li>接着构造C，其vbptr同样指向虚基类表，但由于A已经被构造，C的A子对象不会被再次构造。</li>
+<li>最后构造D的成员对象和执行D自身的构造函数。</li>
+</ol>
+<p><strong>内存布局示例</strong>：D对象的典型内存布局为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[ B的vbptr ] → 指向B的虚基类表</span><br><span class="line">[ B的成员变量 ]</span><br><span class="line">[ C的vbptr ] → 指向C的虚基类表</span><br><span class="line">[ C的成员变量 ]</span><br><span class="line">[ D的成员变量 ]</span><br><span class="line">[ A的成员变量 ] → 虚基类A的共享实例</span><br></pre></td></tr></table></figure>
+
+<p>虚基类A的成员变量位于对象的末尾，通过B和C的vbptr指向的虚基类表中的偏移信息，可以正确访问该共享实例。</p>
+<p>三、虚函数调用机制与this指针调整</p>
+<p><strong>1. 虚函数表(vtable)与虚函数指针(vptr)的关系</strong></p>
+<p>在C++中，虚函数的多态性通过虚函数表和虚函数指针实现：</p>
+<ul>
+<li>**虚函数表(vtable)**：每个包含虚函数的类都有一个或多个虚函数表，存储该类中所有虚函数的地址。</li>
+<li>**虚函数指针(vptr)**：每个对象包含一个指向其类虚函数表的指针，用于动态绑定到正确的函数实现。</li>
+</ul>
+<p>在虚继承结构中，<strong>虚函数表和虚函数指针的管理更为复杂</strong>：</p>
+<ul>
+<li>每个虚继承的中间类（如B和C）都包含一个vptr，指向自己的虚函数表。</li>
+<li>最底层派生类（如D）的虚函数表会覆盖所有继承路径上的虚函数实现。</li>
+<li>当通过中间基类（如B或C）的指针调用虚函数时，需要调整this指针以指向正确的虚函数表。</li>
+</ul>
+<p><strong>2. this指针调整技术</strong></p>
+<p>在虚继承结构中，<strong>this指针调整（this pointer adjustment）</strong> 是确保正确虚函数调用的关键机制：</p>
+<ul>
+<li><strong>thunk技术</strong>：当通过一个中间基类（如B）的指针调用虚函数时，编译器会生成一个短小的适配代码段（称为thunk），负责调整this指针，使其指向最终派生类对象的正确位置。</li>
+</ul>
+<p>例如，考虑以下继承结构：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> : <span class="keyword">virtual</span> <span class="keyword">public</span> A &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">func</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> : <span class="keyword">virtual</span> <span class="keyword">public</span> A &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">func</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">D</span> : <span class="keyword">public</span> B, <span class="keyword">public</span> C &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">func</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>当通过B*指针调用func()时，实际调用的路径如下：</p>
+<ol>
+<li>首先通过B的vptr找到B的虚函数表。</li>
+<li>若D重写了func()，则B的虚函数表中存储的不是B::func的地址，而是一个指向thunk的指针。</li>
+<li>thunk代码执行后，会将this指针调整为指向D对象的正确位置。</li>
+<li>调整后的this指针被用来访问D的虚函数表，最终调用D::func()。</li>
+</ol>
+<p><strong>3. 菱形继承中虚函数调用的路径分析</strong></p>
+<p>在菱形继承结构中，虚函数调用的路径分析如下：</p>
+<ul>
+<li><p><strong>通过虚基类（A）调用</strong>：当通过A*指针调用D的虚函数时，由于A是虚基类，其虚函数表已被D覆盖。因此，调用会直接跳转到D的虚函数实现，无需this指针调整。</p>
+</li>
+<li><p><strong>通过中间基类（B或C）调用</strong>：当通过B<em>或C</em>指针调用D的虚函数时，需要执行以下步骤：</p>
+<ol>
+<li>根据当前指针类型（B<em>或C</em>）找到对应的虚函数表。</li>
+<li>通过虚函数表中的条目找到对应的thunk代码。</li>
+<li>thunk代码通过虚基类表中的偏移信息，计算出D对象中A子对象的正确地址。</li>
+<li>将this指针调整为指向该地址后，再通过调整后的this指针访问D的虚函数表。</li>
+<li>最终调用D中覆盖的虚函数实现。</li>
+</ol>
+</li>
+</ul>
+<p><strong>4. 虚继承与虚函数的内存开销</strong></p>
+<p>虚继承和虚函数都会引入额外的内存开销：</p>
+<ul>
+<li><p><strong>空间开销</strong>：</p>
+<ul>
+<li>每个虚继承的中间类（如B和C）需要额外的vbptr存储空间（通常是4或8字节）。</li>
+<li>虚基类表和虚函数表是静态存储的，驻留在只读内存区域，不占用对象空间。</li>
+<li>在最终派生类中，虚基类的成员变量仅存储一次，减少了内存占用。</li>
+</ul>
+</li>
+<li><p><strong>时间开销</strong>：</p>
+<ul>
+<li>访问虚基类成员需要三次间接寻址：首先通过vptr找到虚函数表，再通过虚函数表找到thunk，最后通过thunk找到最终派生类的虚函数表。</li>
+<li>构造和析构过程中需要执行复杂的虚基类初始化和this指针调整逻辑。</li>
+<li>虚继承的构造顺序管理比普通继承更复杂，增加了编译时和运行时的开销。</li>
+</ul>
+</li>
+</ul>
+<p>四、实际案例分析</p>
+<p><strong>1. 菱形继承构造过程示例</strong></p>
+<p>考虑以下菱形继承结构：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Base</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Base</span>(<span class="type">int</span> x) : <span class="built_in">value</span>(x) &#123; std::cout &lt;&lt; <span class="string">&quot;Base构造: &quot;</span> &lt;&lt; value &lt;&lt; std::endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> : <span class="keyword">public</span> Base &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">A</span>(<span class="type">int</span> x) : <span class="built_in">Base</span>(x) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123; std::cout &lt;&lt; <span class="string">&quot;A::show&quot;</span> &lt;&lt; std::endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> : <span class="keyword">virtual</span> <span class="keyword">public</span> A &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">B</span>(<span class="type">int</span> x) : <span class="built_in">A</span>(x) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">show</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123; std::cout &lt;&lt; <span class="string">&quot;B::show&quot;</span> &lt;&lt; std::endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> : <span class="keyword">virtual</span> <span class="keyword">public</span> A &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">C</span>(<span class="type">int</span> x) : <span class="built_in">A</span>(x) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">show</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123; std::cout &lt;&lt; <span class="string">&quot;C::show&quot;</span> &lt;&lt; std::endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">D</span> : <span class="keyword">public</span> B, <span class="keyword">public</span> C &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">D</span>(<span class="type">int</span> x) : <span class="built_in">A</span>(x), <span class="built_in">B</span>(x), <span class="built_in">C</span>(x) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">show</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123; std::cout &lt;&lt; <span class="string">&quot;D::show&quot;</span> &lt;&lt; std::endl; &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>2. 虚函数调用示例</strong></p>
+<p>通过不同基类指针调用D的虚函数：</p>
+<ul>
+<li><code>A* a = new D(1); a-&gt;show();</code> → 输出”D::show”</li>
+<li><code>B* b = new D(1); b-&gt;show();</code> → 输出”D::show”</li>
+<li><code>C* c = new D(1); c-&gt;show();</code> → 输出”D::show”</li>
+</ul>
+<p><strong>3. this指针调整的实现机制</strong></p>
+<p>在上述案例中，当通过B*指针调用D的show()函数时，实际的底层实现如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 假设B的虚函数表中存储的是以下内容</span></span><br><span class="line"><span class="comment">// B的虚函数表：</span></span><br><span class="line"><span class="comment">// [0] = B的析构函数地址</span></span><br><span class="line"><span class="comment">// [1] = B::show的地址 → 实际是一个thunk指针</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// B::show的thunk实现（伪代码）：</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">B::show_thunk</span><span class="params">(A* <span class="keyword">this</span>调整)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 计算D对象中A子对象的正确地址</span></span><br><span class="line">    A* correctThis = <span class="keyword">this</span>调整 + 虚基类表中的偏移量;</span><br><span class="line">    <span class="comment">// 调用D实际的show函数</span></span><br><span class="line">    D::<span class="built_in">show</span>(correctThis);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过这种thunk技术，编译器能够确保无论通过哪个基类指针调用，最终都能正确地调用到派生类的虚函数实现。</p>
+<p>五、虚继承的优化与权衡</p>
+<p><strong>1. 虚继承的适用场景</strong></p>
+<p>虚继承虽然强大，但应谨慎使用，仅在以下场景中考虑：</p>
+<ul>
+<li><strong>解决菱形继承问题</strong>：当一个类需要同时继承多个继承自同一基类的中间类时，使用虚继承可以避免数据冗余和访问歧义。</li>
+<li><strong>接口继承</strong>：当多个中间类需要继承同一接口基类时，使用虚继承可以确保最终派生类只保留一个接口实现。</li>
+<li><strong>共享基类状态</strong>：当多个继承路径需要共享同一基类的状态时，虚继承提供了这一机制。</li>
+</ul>
+<p><strong>2. 虚继承的性能优化建议</strong></p>
+<p>为减少虚继承带来的性能开销，可考虑以下优化：</p>
+<ul>
+<li><strong>避免不必要的虚继承</strong>：仅在真正需要解决菱形继承问题时使用虚继承。</li>
+<li><strong>使用接口类</strong>：将虚基类设计为不包含数据成员的纯接口类，减少内存占用。</li>
+<li><strong>减少虚函数调用频率</strong>：将频繁调用的虚函数改为非虚函数，或通过其他方式（如模板或策略模式）实现多态。</li>
+<li><strong>合理设计继承层次</strong>：避免过深的虚继承层次，减少this指针调整的复杂度。</li>
+</ul>
+<p><strong>3. 虚继承与组合模式的比较</strong></p>
+<p>在解决类似问题时，组合模式（Composition）可以作为虚继承的替代方案：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 虚继承方案</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123; <span class="comment">/* ... */</span> &#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> : <span class="keyword">virtual</span> <span class="keyword">public</span> A &#123; <span class="comment">/* ... */</span> &#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> : <span class="keyword">virtual</span> <span class="keyword">public</span> A &#123; <span class="comment">/* ... */</span> &#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">D</span> : <span class="keyword">public</span> B, <span class="keyword">public</span> C &#123; <span class="comment">/* ... */</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 组合方案</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123; <span class="comment">/* ... */</span> &#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">B</span>(A* a) : <span class="built_in">a</span>(a) &#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    A* a;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">C</span>(A* a) : <span class="built_in">a</span>(a) &#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    A* a;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">D</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">D</span>(<span class="type">int</span> x) : <span class="built_in">a</span>(x), <span class="built_in">b</span>(&amp;a), <span class="built_in">c</span>(&amp;a) &#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    A a;</span><br><span class="line">    B b;</span><br><span class="line">    C c;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>组合模式避免了虚继承的内存和时间开销，但牺牲了部分面向对象的特性（如类型转换和多态继承）。<strong>在性能敏感的场景中，组合模式可能是更优选择</strong>。</p>
+<p>六、总结</p>
+<p>虚继承是C++中解决多重继承问题的重要机制，其核心实现依赖于虚基类表（vbtable）和虚基类表指针（vbptr）。<strong>虚基类表是静态存储的只读数据结构，存储虚基类子对象的偏移信息；而虚基类表指针是对象的隐式成员，指向对应的虚基类表</strong>。虚基类表指针的生命周期与对象一致，但其初始化责任被转移到了最底层派生类。</p>
+<p><strong>虚继承类对象的构造遵循严格的顺序规则：虚基类优先构造，非虚基类按声明顺序构造，成员对象按声明顺序构造，最后执行派生类自身的构造函数</strong>。最底层派生类负责初始化所有虚基类，并设置中间基类的vbptr。</p>
+<p><strong>在菱形继承结构中，虚函数调用的正确性依赖于this指针调整机制</strong>。编译器通过生成thunk代码，根据虚基类表中的偏移信息，修正this指针指向，确保无论通过哪个基类指针调用，最终都能正确地动态绑定到派生类的虚函数实现。</p>
+<p><strong>虚继承虽然解决了数据冗余和访问歧义问题，但也带来了额外的内存和时间开销</strong>。在实际应用中，应根据具体需求权衡虚继承的语义优势与性能开销，必要时考虑组合模式等替代方案。</p>
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2026/01/28/%E8%99%9A%EF%BC%81%E7%AC%AC%E4%B8%80%E7%89%88/">虚！（第一版）</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/01/27/%E4%BD%8D%E8%BF%90%E7%AE%97%E5%B0%8F%E7%94%9C%E5%93%81/">位运算小甜品</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body twikoo'>
+      
+
+<div id="twikoo_container"><svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg></div>
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">baobobo</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%90%84%E7%A7%8D%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E5%92%8C%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80"><span class="toc-text">一、各种基本概念和内存布局</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%99%9A%E5%87%BD%E6%95%B0%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-text">1. 虚函数是什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8vtable%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-text">2. 虚函数表vtable是什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8%E6%8C%87%E9%92%88vptr%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-text">3. 虚函数表指针vptr是什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%99%9A%E7%BB%A7%E6%89%BF%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-text">4. 虚继承是什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E8%99%9A%E7%BB%A7%E6%89%BF%E7%B1%BB%E7%9A%84%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84"><span class="toc-text">5. 虚继承类的内存结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E8%99%9A%E5%9F%BA%E7%B1%BB%E8%A1%A8%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%8C%E9%95%BF%E4%BB%80%E4%B9%88%E6%A0%B7"><span class="toc-text">6. 虚基类表是什么，长什么样</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E8%99%9A%E5%9F%BA%E7%B1%BB%E8%A1%A8%E6%8C%87%E9%92%88%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%8C%E5%AD%98%E5%9C%A8%E5%93%AA"><span class="toc-text">7. 虚基类表指针是什么，存在哪</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E7%BA%AF%E8%99%9A%E5%87%BD%E6%95%B0%E5%8F%88%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-text">8. 纯虚函数又是什么</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%90%84%E7%A7%8D%E8%B0%83%E7%94%A8%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-text">二、各种调用的过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%8D%95%E7%BB%A7%E6%89%BF%E9%87%8C%EF%BC%8C%E8%99%9A%E5%87%BD%E6%95%B0%E8%A2%AB%E8%B0%83%E7%94%A8%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-text">1. 单继承里，虚函数被调用的过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%A4%9A%E7%BB%A7%E6%89%BF%E9%87%8C%EF%BC%8C%E8%99%9A%E5%87%BD%E6%95%B0%E8%A2%AB%E8%B0%83%E7%94%A8%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-text">2. 多继承里，虚函数被调用的过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%99%9A%E7%BB%A7%E6%89%BF%E9%87%8C%EF%BC%8C%E8%99%9A%E5%87%BD%E6%95%B0%E8%A2%AB%E8%B0%83%E7%94%A8%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-text">3. 虚继承里，虚函数被调用的过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8%E6%8C%87%E9%92%88%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">4. 虚函数表指针的生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E8%99%9A%E5%9F%BA%E7%B1%BB%E8%A1%A8%E6%8C%87%E9%92%88%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">5. 虚基类表指针的生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#new%EF%BC%9A%E8%8F%B1%E5%BD%A2%E7%BB%A7%E6%89%BF%E9%87%8C%EF%BC%8C%E6%9C%80%E5%BA%95%E4%B8%8B%E7%9A%84%E9%82%A3%E4%B8%AA%E7%B1%BB%E7%9A%84%E6%9E%84%E9%80%A0%E8%BF%87%E7%A8%8B"><span class="toc-text">new：菱形继承里，最底下的那个类的构造过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%92%8C%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0%E4%B8%AD%E8%B0%83%E7%94%A8%E8%99%9A%E5%87%BD%E6%95%B0%E7%9A%84%E8%A1%8C%E4%B8%BA"><span class="toc-text">6. 构造函数和析构函数中调用虚函数的行为</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9A%E7%BB%A7%E6%89%BF"><span class="toc-text">虚继承</span></a></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089" clip-rule="evenodd"/><path fill="currentColor" d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js`,
+    marked: `https://cdn.jsdelivr.net/npm/marked@13.0.1/lib/marked.umd.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+
+<!-- required -->
+<script src="/js/main.js?v=1.29.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    applyThemeToGiscus(theme)
+  }
+
+  const applyThemeToGiscus = (theme) => {
+    theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    }
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.getElementById('twikoo_container');
+  util.viewportLazyload(el, load_twikoo, false);
+
+  function load_twikoo() {
+    if (!el) return;
+    utils.js('https://gcore.jsdelivr.net/npm/twikoo@1.6.8/dist/twikoo.all.min.js', {defer: true}).then(function () {
+      const path = el.getAttribute('comment_id') ?? decodeURI(window.location.pathname);
+      twikoo.init(Object.assign({"js":"https://gcore.jsdelivr.net/npm/twikoo@1.6.8/dist/twikoo.all.min.js","envId":"https://xxx"}, {
+        el: '#twikoo_container',
+        path: path,
+      }));
+    });
+  }
+</script>
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('ds-memos');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
