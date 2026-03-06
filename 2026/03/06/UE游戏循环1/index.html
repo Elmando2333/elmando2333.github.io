@@ -1,0 +1,727 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
+  
+  <meta name="generator" content="Hexo 5.4.2">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  
+  <title>深入理解游戏循环、DeltaTime与时间膨胀的控制机制——基于UE5 - BaoboboboBao</title>
+
+  
+    <meta name="description" content="UE5：深入理解游戏循环、Tick()、DeltaTime与时间膨胀的控制机制相关源码的路径是： 12Engine&#x2F;Source&#x2F;Runtime&#x2F;Engine&#x2F;Private&#x2F;World.cppEngine&#x2F;Source&#x2F;Runtime&#x2F;Engine&#x2F;Private&#x2F;LevelTick.cpp  UWorld::Tick() 函数在 LevelTick.cpp 中实现，而不是 World.cpp。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解游戏循环、DeltaTime与时间膨胀的控制机制——基于UE5">
+<meta property="og:url" content="http://example.com/2026/03/06/UE%E6%B8%B8%E6%88%8F%E5%BE%AA%E7%8E%AF1/index.html">
+<meta property="og:site_name" content="BaoboboboBao">
+<meta property="og:description" content="UE5：深入理解游戏循环、Tick()、DeltaTime与时间膨胀的控制机制相关源码的路径是： 12Engine&#x2F;Source&#x2F;Runtime&#x2F;Engine&#x2F;Private&#x2F;World.cppEngine&#x2F;Source&#x2F;Runtime&#x2F;Engine&#x2F;Private&#x2F;LevelTick.cpp  UWorld::Tick() 函数在 LevelTick.cpp 中实现，而不是 World.cpp。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://dev.epicgames.com/community/api/learning/image/3d7db621-c5b6-40a5-957d-3b31fcd438bf?resizing_type=fit">
+<meta property="article:published_time" content="2026-03-06T15:38:25.000Z">
+<meta property="article:modified_time" content="2026-03-06T16:26:17.223Z">
+<meta property="article:author" content="baobobo">
+<meta property="article:tag" content="UE">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="引擎">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dev.epicgames.com/community/api/learning/image/3d7db621-c5b6-40a5-957d-3b31fcd438bf?resizing_type=fit">
+  
+  
+  
+  <meta name="keywords" content="UE,C++,引擎">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.29.1">
+
+  
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://pic.imgdb.cn/item/66f22aeff21886ccc06a4cdd.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">BaoboboboBao</div><div class="sub cap">baobobo</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="关于" href="/about/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/02/27/%E6%8E%A2%E7%A9%B6TArray/"><span class="title">探究TArray</span></a><a class="item title" href="/2026/03/06/UE%E6%B8%B8%E6%88%8F%E5%BE%AA%E7%8E%AF1/"><span class="title">深入理解游戏循环、DeltaTime与时间膨胀的控制机制——基于UE5</span></a><a class="item title" href="/2026/02/18/C-%E6%8B%BE%E9%81%97%E5%BD%954/"><span class="title">C++拾遗录4</span></a><a class="item title" href="/2026/02/12/%E5%88%9D%E6%8E%A2%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/"><span class="title">初探异常处理</span></a><a class="item title" href="/2026/02/13/%E5%BF%AB%E6%8E%92%E5%B0%8F%E8%AE%B0/"><span class="title">快排小记</span></a><a class="item title" href="/2026/02/12/%E7%A0%81%E8%82%8C%E7%BB%83%E4%B9%A0day1/"><span class="title">码肌练习day1</span></a><a class="item title" href="/2026/01/28/%E8%99%9A%EF%BC%81%E7%AC%AC%E4%BA%8C%E7%89%88/"><span class="title">虚！</span></a><a class="item title" href="/2026/02/12/type-id%E4%B8%8Edynamic-cast/"><span class="title">typeid与dynamic_cast</span></a><a class="item title" href="/2026/02/12/%E5%A4%9A%E7%BB%B4%E6%95%B0%E7%BB%84%E6%8B%8D%E6%89%81%E6%80%BB%E7%BB%93/"><span class="title">多维数组拍扁总结</span></a><a class="item title" href="/2026/02/09/C-%E6%8B%BE%E9%81%97%E5%BD%953/"><span class="title">C++拾遗录3</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" onclick="switchTheme()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><path fill="currentColor" fill-rule="evenodd" d="M582.4 326.4c-140.8 0-256 115.2-256 256s115.2 256 256 256 256-115.2 256-256-115.2-256-256-256z m0 448c-70.4 0-131.2-36.8-164.8-92.8 12.8 3.2 27.2 4.8 40 4.8 121.6 0 219.2-99.2 219.2-219.2 0-17.6-1.6-35.2-6.4-52.8 60.8 32 102.4 96 102.4 169.6 1.6 104-84.8 190.4-190.4 190.4zM582.4 262.4c17.6 0 32-14.4 32-32v-128c0-17.6-14.4-32-32-32s-32 14.4-32 32v128c0 17.6 14.4 32 32 32zM262.4 582.4c0-17.6-14.4-32-32-32h-128c-17.6 0-32 14.4-32 32s14.4 32 32 32h128c17.6 0 32-14.4 32-32zM310.4 356.8c6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6 12.8-12.8 12.8-32 0-44.8l-91.2-91.2c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l91.2 91.2zM944 220.8c-12.8-12.8-32-12.8-44.8 0l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-33.6 0-44.8zM310.4 808l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-32 0-44.8-11.2-11.2-32-11.2-44.8 0z"></path></svg></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-03-06T15:38:25.000Z">2026-03-06</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-03-06T16:26:17.223Z">2026-03-07</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>深入理解游戏循环、DeltaTime与时间膨胀的控制机制——基于UE5</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h1 id="UE5：深入理解游戏循环、Tick-、DeltaTime与时间膨胀的控制机制"><a href="#UE5：深入理解游戏循环、Tick-、DeltaTime与时间膨胀的控制机制" class="headerlink" title="UE5：深入理解游戏循环、Tick()、DeltaTime与时间膨胀的控制机制"></a>UE5：深入理解游戏循环、Tick()、DeltaTime与时间膨胀的控制机制</h1><p>相关源码的路径是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Engine/Source/Runtime/Engine/Private/World.cpp</span><br><span class="line">Engine/Source/Runtime/Engine/Private/LevelTick.cpp</span><br></pre></td></tr></table></figure>
+
+<p>UWorld::Tick() 函数在 LevelTick.cpp 中实现，而不是 World.cpp。</p>
+<p>这篇文章讲得很好：</p>
+<p><a target="_blank" rel="noopener" href="https://dev.epicgames.com/community/learning/tutorials/qpZ3/unreal-engine-ca0ed0">关于虚幻引擎“最佳做法”的真相</a></p>
+<blockquote>
+<p>Tick真的问题重重？所有网格体都要用Nanite？ChildActorComponent真有那么糟糕？永远别用Cast？ 你之前可能听到过许多这样的“最佳做法”。那我们不妨亲测一下，看看哪些是正解，哪些是谬误。</p>
+</blockquote>
+<p>在游戏引擎开发的诸多核心要素中，游戏循环的设计无疑占据着基石般的地位。它不仅是驱动整个游戏世界运转的心脏，更是决定游戏逻辑、物理模拟和渲染管线如何与时间交互，以及如何在追求极致性能的同时保持绝对一致性的关键。本文将深入Unreal Engine 5的内部实现，详细剖析其游戏循环的控制流程、DeltaTime的产生与应用、时间膨胀这一强大机制，以及探讨为何以及如何选择非每帧更新的策略。</p>
+<p>在传统的C++程序或早期的游戏开发中，开发者们习惯于使用一个简单的无限循环来驱动游戏。这个循环的运行速度完全取决于CPU的处理能力，就像一个不知疲倦但缺乏时间观念的工人，不停地执行着“更新逻辑”和“渲染画面”这两个任务。其伪代码大致如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) </span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">UpdateGameLogic</span>();</span><br><span class="line">    <span class="built_in">RenderFrame</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>这种“竭尽全力”的循环模式在现代游戏开发中显然是不可取的。它无法适应不同性能的硬件，也无法精确控制游戏的进程。现代游戏引擎，如UE5，需要基于一个精确的、与现实世界同步的时钟来构建其循环。这个循环的核心不再是简单的迭代，而是对时间的精细管理。</p>
+<p>UE5的游戏循环起始于一个高精度计时器的采样。在每一帧的开始，引擎会获取一个极其精确的当前时间戳，并与上一帧记录的时间戳相减，从而得出从上一帧到当前帧所经过的真实时间，这个时间差就是我们所说的 <strong>DeltaTime</strong>。这个小小的数值，成为了驱动整个游戏世界前进的标尺。其简化后的控制流可以用以下伪代码清晰展现：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">double</span> LastTime = <span class="built_in">GetHighPrecisionTime</span>();</span><br><span class="line"><span class="keyword">while</span>(GameRunning) </span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">double</span> CurrentTime = <span class="built_in">GetHighPrecisionTime</span>();</span><br><span class="line">    <span class="type">double</span> DeltaTime = CurrentTime - LastTime;</span><br><span class="line">    LastTime = CurrentTime;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// 应用时间膨胀效果，调整全局时间流速</span></span><br><span class="line">    DeltaTime *= <span class="built_in">GetEffectiveTimeDilation</span>(); </span><br><span class="line"> </span><br><span class="line">    <span class="comment">// 将经过的时间增量传递给世界进行更新</span></span><br><span class="line">    UWorld.<span class="built_in">Tick</span>(DeltaTime); </span><br><span class="line">    </span><br><span class="line">    <span class="built_in">RenderFrame</span>();</span><br><span class="line">    <span class="built_in">ProcessInputAndNetworking</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>这里，<code>GetHighPrecisionTime()</code> 函数扮演着至关重要的角色。它通常封装了平台层最底层的、最高精度的计时API，例如Windows平台上的<code>QueryPerformanceCounter</code>或macOS上的<code>mach_absolute_time</code>。这些API能够提供毫秒级甚至纳秒级的计时精度，确保DeltaTime计算的准确性。而 <code>UWorld.Tick(DeltaTime)</code> 则是整个游戏逻辑更新的总入口，它接收这个经过时间处理的DeltaTime，并将其分发给世界中的每一个Actor、每一个组件以及每一个子系统，让它们知道在这一帧里，时间前进了多少。</p>
+<p>DeltaTime的本质，就是一把连接“现实时间”与“游戏时间”的标尺。它解决了游戏开发中最基础也最核心的挑战：如何让游戏在不同性能的硬件上运行时，都能保持一致的体验速度。</p>
+<p>想象一个简单的场景：一个游戏角色需要以每秒10米的速度移动。在一台性能强悍、每秒能跑1000帧的顶级PC上，如果直接按帧移动，每帧需要移动的距离是10 / 1000 = 0.01米。而在另一台性能普通、每秒只能跑100帧的设备上，每帧则需要移动10 / 100 = 0.1米。（100帧也不普通）</p>
+<p>通过引入DeltaTime，这个逻辑就变成了：每帧移动的距离 = 速度 * DeltaTime。在高帧率设备上，DeltaTime约为0.001秒，因此每帧移动0.01米；在低帧率设备上，DeltaTime约为0.01秒，每帧移动0.1米。两者相加，在一秒钟的真实时间内，角色都恰好移动了10米。正是这个精妙的计算，保证了无论玩家的硬件配置如何，游戏世界的节奏、角色的移动速度、动画的播放进度都是同步且一致的，从而奠定了公平性和流畅性的基础。</p>
+<p>DeltaTime的另一个高阶应用，便是实现时间膨胀。这是一种对整个游戏世界时间流速进行全局缩放的能力。当游戏需要实现子弹时间、慢动作回放、加速效果或全局暂停时，时间膨胀机制便派上了用场。</p>
+<p>在UE5中，<code>AWorldSettings</code> 类管理着一个全局的时间膨胀系数。<code>GetEffectiveTimeDilation()</code> 函数会返回这个系数，并将其与原始的DeltaTime相乘。其影响是立竿见影且全局性的：</p>
+<ul>
+<li><strong>时间膨胀 = 1.0</strong>：游戏世界以正常速度运行。</li>
+<li><strong>时间膨胀 = 0.5</strong>：时间流速减半，所有基于DeltaTime的更新，如角色移动、动画播放、物理模拟，都会以慢一倍的速度进行，营造出慢镜头效果。</li>
+<li><strong>时间膨胀 = 2.0</strong>：时间流速加倍，世界中的一切动作都会加速。</li>
+</ul>
+<p>一个游戏帧的更新远不止是“运行所有逻辑”那么简单。它涉及到游戏逻辑（如AI决策、角色移动）、物理模拟（碰撞检测、刚体运动）、渲染管线、输入处理和网络同步等多个复杂系统。这些系统之间存在天然的依赖关系，如果执行顺序不当，就会导致数据竞争和逻辑错误。</p>
+<p>为了解决这个问题，UE5引入了 <strong>Tick Group</strong> 机制。它将一个Tick周期划分为多个阶段，如 <code>TG_PrePhysics</code>（物理前更新）、<code>TG_DuringPhysics</code>（物理中更新）、<code>TG_PostPhysics</code>（物理后更新）等。开发者可以为不同的Actor或组件指定它们所属的Tick Group，从而精确控制其更新时机。</p>
+<p>例如，一个角色的移动逻辑可能需要在物理模拟之前执行，以便将最新的位置信息传递给物理引擎用于碰撞检测。而一个附着在角色身上的视觉效果，则可能在物理模拟之后、渲染之前进行更新。通过这种分阶段的执行方式，UE5确保了各系统间的数据依赖清晰、有序，避免了并发问题。</p>
+<p>此外，UE5的架构还巧妙地利用了多线程。逻辑线程（Game Thread）负责驱动所有游戏逻辑的Tick，而渲染线程（Rendering Thread）则并行地处理上一帧的渲染指令。它们之间通过帧同步机制进行协作，确保渲染线程看到的是一份完整且一致的逻辑世界状态。</p>
+<p>看一下Tick调用链：</p>
+<h2 id="主循环的启动"><a href="#主循环的启动" class="headerlink" title="主循环的启动"></a>主循环的启动</h2><p>游戏循环的入口在 <code>Launch.cpp</code> 的 <code>GuardedMain()</code> 函数中。初始化完成后，程序进入一个简单的 while 循环：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>( !<span class="built_in">IsEngineExitRequested</span>() )</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">EngineTick</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>只要未请求退出，就会持续调用 <code>EngineTick()</code>。该函数将控制权交给全局的 <code>GEngineLoop</code> 对象，执行 <code>FEngineLoop::Tick()</code>。</p>
+<h2 id="FEngineLoop-Tick-的职责"><a href="#FEngineLoop-Tick-的职责" class="headerlink" title="FEngineLoop::Tick 的职责"></a>FEngineLoop::Tick 的职责</h2><p><code>FEngineLoop::Tick()</code> 是每帧的起点，负责帧级基础设施的初始化与协调。它首先进行诊断与监控，向诊断线程发送心跳，检测线程卡顿，并更新低级别内存追踪器的状态。随后处理热修复系统更新，确保运行时配置能及时生效。</p>
+<p>在非多线程渲染模式下，<code>FEngineLoop::Tick()</code> 会同步渲染线程配置，确保游戏线程与渲染线程的配置一致。接着生成帧事件字符串，用于性能分析工具标记帧边界，并执行控制台变量的回调，处理运行时配置变更。</p>
+<p>时间管理是 <code>FEngineLoop::Tick()</code> 的关键职责之一。它调用 <code>GEngine-&gt;UpdateTimeAndHandleMaxTickRate()</code> 来计算 DeltaTime 并控制帧率。该函数会获取当前真实时间，计算与上一帧的时间差，根据最大帧率设置计算是否需要等待，并在需要时通过 <code>FPlatformProcess::SleepNoStats()</code> 进行精确等待，确保帧率稳定。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GEngine-&gt;<span class="built_in">UpdateTimeAndHandleMaxTickRate</span>();</span><br></pre></td></tr></table></figure>
+
+<p>时间计算完成后，<code>FEngineLoop::Tick()</code> 向渲染线程发送帧开始命令，通知渲染线程新帧开始。对于每个已分配的 Scene，它都会发送 <code>StartFrame</code> 命令，让渲染线程准备新帧的渲染工作。</p>
+<p>输入处理在时间管理之后进行。<code>FEngineLoop::Tick()</code> 通过 <code>FSlateApplication::Get().PollGameDeviceState()</code> 轮询游戏设备状态，获取键盘、鼠标、手柄等输入，然后调用 <code>FinishedInputThisFrame()</code> 让 UI 组件处理累积的输入事件。</p>
+<p>完成这些准备工作后，<code>FEngineLoop::Tick()</code> 调用 <code>GEngine-&gt;Tick(FApp::GetDeltaTime(), bIdleMode)</code>，将控制权传递给游戏引擎层。这里传入的 DeltaTime 是经过帧率控制调整后的时间间隔，<code>bIdleMode</code> 表示是否处于空闲模式。</p>
+<h2 id="UGameEngine-Tick-的世界管理"><a href="#UGameEngine-Tick-的世界管理" class="headerlink" title="UGameEngine::Tick 的世界管理"></a>UGameEngine::Tick 的世界管理</h2><p><code>UGameEngine::Tick()</code> 负责管理所有 World 的更新。它首先进行非 World 相关的引擎级任务，包括验证 DeltaTime 的有效性、记录慢帧日志、清理已关闭的视口、检查退出条件等。</p>
+<p>对于媒体框架，如果没有 World 会触发 MediaFramework 的更新，<code>UGameEngine::Tick()</code> 会提前调用 <code>MediaModule-&gt;TickPreEngine()</code>，确保媒体状态在游戏逻辑更新前已更新。异步加载处理通过 <code>UObject::StaticTick()</code> 进行，该方法会处理异步资源加载，确保资源在需要时可用。</p>
+<p><code>UGameEngine::Tick()</code> 的核心是遍历 <code>WorldList</code>，对每个有效的 World Context 执行更新。它首先检查 World 是否存在且需要更新，然后将当前 World 设置为全局的 <code>GWorld</code>，这样后续代码可以通过 <code>GWorld</code> 访问当前世界。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (int32 WorldIdx = <span class="number">0</span>; WorldIdx &lt; WorldList.<span class="built_in">Num</span>(); ++WorldIdx)</span><br><span class="line">&#123;</span><br><span class="line">    FWorldContext &amp;Context = WorldList[WorldIdx];</span><br><span class="line">    <span class="keyword">if</span> (Context.<span class="built_in">World</span>() == <span class="literal">NULL</span> || !Context.<span class="built_in">World</span>()-&gt;<span class="built_in">ShouldTick</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    GWorld = Context.<span class="built_in">World</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">TickWorldTravel</span>(Context, DeltaSeconds);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (!bIdleMode)</span><br><span class="line">    &#123;</span><br><span class="line">        Context.<span class="built_in">World</span>()-&gt;<span class="built_in">Tick</span>( LEVELTICK_All, DeltaSeconds );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在处理 World 更新前，<code>UGameEngine::Tick()</code> 会调用 <code>TickWorldTravel()</code> 处理无缝切换和服务器切换。这确保在切换地图时，World 状态能正确过渡。完成这些处理后，它调用 <code>Context.World()-&gt;Tick()</code>，将 DeltaTime 传递给 World 层，开始世界级别的更新。</p>
+<h2 id="UWorld-Tick-的游戏逻辑核心"><a href="#UWorld-Tick-的游戏逻辑核心" class="headerlink" title="UWorld::Tick 的游戏逻辑核心"></a>UWorld::Tick 的游戏逻辑核心</h2><p><code>UWorld::Tick()</code> 是游戏逻辑更新的核心。它首先进行初始化与验证，更新性能追踪器，通知 XR 系统帧开始，并更新碰撞分析器状态。</p>
+<p>网络更新是 <code>UWorld::Tick()</code> 的第一个重要阶段。它通过 <code>BroadcastTickDispatch()</code> 分发网络包，让网络系统处理接收到的数据包，然后通过 <code>BroadcastPostTickDispatch()</code> 处理网络包的后处理工作。如果是客户端，它会调用 <code>TickNetClient()</code> 处理与服务器的连接状态。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">BroadcastTickDispatch</span>(DeltaSeconds);</span><br><span class="line"><span class="built_in">BroadcastPostTickDispatch</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( NetDriver &amp;&amp; NetDriver-&gt;ServerConnection )</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">TickNetClient</span>( DeltaSeconds );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>时间管理是 <code>UWorld::Tick()</code> 的另一个重要职责。它首先更新真实时间，将 DeltaSeconds 累加到 <code>RealTimeSeconds</code>。对于音频系统，它会单独更新 <code>AudioTimeSeconds</code>，因为音频播放不受时间膨胀影响，始终以真实时间播放。</p>
+<p>接下来，<code>UWorld::Tick()</code> 应用时间膨胀。它从 <code>WorldSettings</code> 获取 <code>TimeDilation</code> 值，将 DeltaTime 乘以该系数。例如，如果 <code>TimeDilation</code> 为 0.5，游戏时间会以真实时间的一半速度流逝。应用时间膨胀后，它通过 <code>FixupDeltaSeconds()</code> 处理过大的 DeltaTime，防止单帧时间过长导致物理模拟不稳定。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">RealTimeSeconds += DeltaSeconds;</span><br><span class="line"><span class="keyword">if</span>( !bIsPaused )</span><br><span class="line">&#123;</span><br><span class="line">    AudioTimeSeconds += DeltaSeconds;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">float</span> RealDeltaSeconds = DeltaSeconds;</span><br><span class="line">DeltaSeconds *= Info-&gt;<span class="built_in">GetEffectiveTimeDilation</span>();</span><br><span class="line"><span class="type">const</span> <span class="type">float</span> GameDeltaSeconds = Info-&gt;<span class="built_in">FixupDeltaSeconds</span>(DeltaSeconds, RealDeltaSeconds);</span><br><span class="line">DeltaSeconds = GameDeltaSeconds;</span><br></pre></td></tr></table></figure>
+
+<p>子系统更新在时间管理之后进行。<code>UWorld::Tick()</code> 会更新导航系统，让 AI 系统能够进行路径查找。如果正在进行高优先级加载或无缝切换，它会处理异步资源加载，确保关键资源及时加载完成。</p>
+<p>在开始 Actor Tick 前，<code>UWorld::Tick()</code> 会进行一系列准备工作。它重置延迟动作管理器，清理上一帧的处理记录，重置异步追踪系统，然后广播 <code>OnWorldPreActorTick</code> 委托，让订阅者有机会在 Actor Tick 前执行逻辑。对于 Sequencer 控制的序列，它会提前更新，确保动画和事件在正确的时机触发。</p>
+<h2 id="Tick-Group-系统的执行机制"><a href="#Tick-Group-系统的执行机制" class="headerlink" title="Tick Group 系统的执行机制"></a>Tick Group 系统的执行机制</h2><p><code>UWorld::Tick()</code> 的核心是 Tick Group 系统的执行。它首先调用 <code>SetupPhysicsTickFunctions()</code> 设置物理 Tick 函数，然后调用 <code>FTickTaskManagerInterface::Get().StartFrame()</code> 初始化帧，准备所有需要执行的 Tick 函数列表。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">SetupPhysicsTickFunctions</span>(DeltaSeconds);</span><br><span class="line">TickGroup = TG_PrePhysics;</span><br><span class="line">FTickTaskManagerInterface::<span class="built_in">Get</span>().<span class="built_in">StartFrame</span>(<span class="keyword">this</span>, DeltaSeconds, TickType, LevelsToTick);</span><br></pre></td></tr></table></figure>
+
+<p>Tick Group 系统将 Actor 和 Component 的 Tick 函数组织成不同的组，按顺序执行。第一个执行的是 <code>TG_PrePhysics</code>，包含物理模拟前的逻辑更新，如角色移动、输入处理等。<code>UWorld::Tick()</code> 调用 <code>RunTickGroup(TG_PrePhysics)</code> 执行该组的所有 Tick 函数。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">RunTickGroup</span>(TG_PrePhysics);</span><br></pre></td></tr></table></figure>
+
+<p>执行完 <code>TG_PrePhysics</code> 后，<code>UWorld::Tick()</code> 会确保碰撞树已构建，然后执行 <code>TG_StartPhysics</code>。该组包含物理模拟的准备工作，如设置物理约束、准备物理数据等。</p>
+<p>接下来是 <code>TG_DuringPhysics</code>，这是物理模拟期间执行的组。该组支持并行执行，<code>RunTickGroup()</code> 的第二个参数为 <code>false</code>，表示不等待该组完成就继续执行。这是因为物理模拟是异步的，可以在后台进行，不需要阻塞游戏线程。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">RunTickGroup</span>(TG_DuringPhysics, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+
+<p>物理模拟完成后，<code>UWorld::Tick()</code> 执行 <code>TG_EndPhysics</code>，处理物理模拟的结果，如碰撞通知、物理事件等。最后执行 <code>TG_PostPhysics</code>，包含物理模拟后的逻辑更新，如摄像机更新、UI 更新等。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">RunTickGroup</span>(TG_EndPhysics);</span><br><span class="line"><span class="built_in">RunTickGroup</span>(TG_PostPhysics);</span><br></pre></td></tr></table></figure>
+
+<p>每个 Tick Group 的执行都通过 <code>FTickTaskManager</code> 进行调度。该管理器维护所有注册的 Tick 函数，根据它们的 Tick Group 和依赖关系进行排序，确保执行顺序正确。对于支持并行的 Tick Group，它会使用任务图系统将 Tick 函数分配到不同的线程执行，提高性能。</p>
+<h2 id="Actor-和-Component-的-Tick-执行"><a href="#Actor-和-Component-的-Tick-执行" class="headerlink" title="Actor 和 Component 的 Tick 执行"></a>Actor 和 Component 的 Tick 执行</h2><p>当 <code>RunTickGroup()</code> 执行某个 Tick Group 时，它会遍历该组中所有注册的 Tick 函数，依次调用它们的执行函数。对于 Actor，它会调用 <code>AActor::Tick()</code>，对于 Component，它会调用 <code>UActorComponent::TickComponent()</code>。</p>
+<p>每个 Tick 函数在执行前都会进行条件检查，包括是否启用 Tick、是否暂停、是否满足其他条件等。只有满足所有条件的 Tick 函数才会执行，这样可以避免不必要的计算，提高性能。</p>
+<p>Tick 函数执行时，会接收 DeltaTime 作为参数。这个 DeltaTime 已经经过了时间膨胀的处理，所以 Actor 和 Component 可以直接使用它进行时间相关的计算，如移动、动画播放等。使用 DeltaTime 而不是固定值，可以确保游戏逻辑在不同帧率下表现一致。</p>
+<blockquote>
+<p>引用自：<a target="_blank" rel="noopener" href="https://dev.epicgames.com/community/learning/tutorials/qpZ3/unreal-engine-ca0ed0">https://dev.epicgames.com/community/learning/tutorials/qpZ3/unreal-engine-ca0ed0</a></p>
+<h3 id="Tick开销"><a href="#Tick开销" class="headerlink" title="Tick开销"></a>Tick开销</h3><p>Tick的开销指的是游戏中每帧调用对象Tick函数所消耗的CPU时间成本。这包括调度Tick函数的准备时间（排队、管理Tick顺序）和执行每个Tick函数本身的计算量。虽然单个对象的Tick开销通常很小（微秒级），但当大量对象同时Tick时，这些开销会累积，增加游戏线程负载。</p>
+<p>UE5中，Tick开销主要分为两个部分：一是Tick函数调用的调度开销，二是Tick函数内部逻辑运算开销。使用Blueprint的Tick一般开销高于纯C++实现，因为Blueprint调用存在额外解释和桥接成本。相比之下，C++ Tick更高效且更低延迟。</p>
+<p>不过，Tick本身的固定开销在正常范围内通常远小于Tick函数中处理的游戏逻辑（如角色移动、AI计算、物理驱动）。因此，优化重点一般在于缩减每个Tick执行的逻辑复杂度和合理控制Tick对象数量，而非Tick函数本身的调用机制。</p>
+<p>Tick确实会产生轻微的开销，但微乎其微。只有存在大量执行Tick的Actor时，才会有明显的开销。但与Tick期间执行的实际工作量相比，这样开销通常可以忽略不计。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://dev.epicgames.com/community/api/learning/image/3d7db621-c5b6-40a5-957d-3b31fcd438bf?resizing_type=fit"></p>
+<h3 id="Tick的问题"><a href="#Tick的问题" class="headerlink" title="Tick的问题"></a>Tick的问题</h3><p>人们常说：“Tick会拖慢游戏！”但真正的问题其实是“每个Actor每帧要做大量工作”拖慢了游戏。</p>
+<p>这跟你用Tick、时间轴、计时器还是动画通知还是别的都没关系。通常开销不是问题，工作量才是症结。如果你需要Actor每帧都执行某些工作，那就尽管用Tick！如果你刻意去做每帧的时间轴，只是为了“避免使用Tick”，那反而是本末倒置了。</p>
+<p>你的项目中依然要使用Tick。举个例子，《Fortnite》客户端会在许多不同的平台上运行，比如Switch和Android，并且平均会有80 Tick。而《Fortnite》服务器一次会话每帧平均会有700 Tick。</p>
+<p>但不管你用什么方法，都不要在每帧积累太多工作量。你可以减少Tick Actor数量和/或优化单次Tick的工作量。</p>
+<p>另外，也要避免不合理地给Actor加Tick。比如你要做一个弹幕游戏，屏幕里会出现1000个子弹，那这时候就不要让每个子弹作为独立的Actor，还让它们都有单独的Tick函数。因为这样的话，光这1000个带Tick的Actor就会产生3.5毫秒的开销。所以这时候不要滥用Tick，你可以尝试创建BP_BulletManager来计算子弹的位置，然后把子弹的图形放到实例化静态网格体组件里。</p>
+<p>如果数据量非常大，那可以试试海量系统。但这样会比较复杂，所以还要酌情考虑。你可以尝试减少每帧的开销，去掉屏幕外Actor的Tick，或者降低远处Actor的Tick频率。</p>
+</blockquote>
+<h2 id="调用链的完整流程"><a href="#调用链的完整流程" class="headerlink" title="调用链的完整流程"></a>调用链的完整流程</h2><p>从 <code>FEngineLoop::Tick()</code> 到 Actor/Component 的 Tick 函数，整个调用链形成了一个完整的更新流程。每一层都有明确的职责，通过参数传递和全局状态管理，确保信息能够正确传递。</p>
+<p>时间信息从 <code>FEngineLoop::Tick()</code> 开始计算，经过 <code>UGameEngine::Tick()</code> 传递给 <code>UWorld::Tick()</code>，在 World 层应用时间膨胀后，最终传递给 Actor 和 Component 的 Tick 函数。这个过程确保了整个系统使用一致的时间基准，避免了时间不同步导致的问题。</p>
+<p>执行顺序通过 Tick Group 系统保证。每个 Tick Group 都有明确的执行时机，Actor 和 Component 可以根据自己的需求选择合适的 Tick Group，确保在正确的时机执行更新。这种设计避免了竞态条件，保证了游戏逻辑的正确性。</p>
+<p>性能优化贯穿整个调用链。每一层都使用性能统计系统监控执行时间，使用条件检查避免不必要的计算，使用并行执行提高性能。这些优化措施确保了系统在高负载下仍能保持稳定的性能。</p>
+<p>在游戏引擎的主循环中，每一帧的执行时间由所需处理的逻辑复杂度直接决定。当游戏世界中有大量需要更新的对象时，Tick函数会被层层调用，逐一处理这些对象的状态、动画、物理以及各种子系统，这无疑增加了这一帧的计算开销。如果更新负载过重，当前帧的执行时间将显著拉长，从而导致下一帧计算出来的DeltaTime值变得异常巨大。</p>
+<p>这种DeltaTime的异常增大，意味着游戏逻辑在下一帧需要跨越更长的时间跨度进行状态更新，游戏画面则表现为明显的卡顿和跳帧现象，俗称“卡成PPT”。本质上，这种现象是性能瓶颈的直接反映：帧时间被拖长导致游戏无法保持持续、平滑的更新速度。DeltaTime作为时间间隔的度量，本身只是客观反映了帧间经过的真实时间，并不会主动造成卡顿，卡顿的根因在于每帧重负载计算无法及时完成，导致渲染和逻辑错开步调。</p>
+<p>仔细看一看关于Deltatime异常和相关优化的代码：</p>
+<p>在 UWorld::Tick() 中，时间膨胀应用后会调用 AWorldSettings::FixupDeltaSeconds() 限制 DeltaTime 的范围。该函数将 DeltaTime 限制在 MinUndilatedFrameTime 和 MaxUndilatedFrameTime 之间，防止过小或过大的值。</p>
+<p><code>const float GameDeltaSeconds = Info-&gt;FixupDeltaSeconds(DeltaSeconds, RealDeltaSeconds);</code></p>
+<p>FixupDeltaSeconds() 的实现考虑了时间膨胀。它先获取有效时间膨胀系数，然后将最小和最大帧时间按该系数缩放，最后将 DeltaTime 限制在该范围内。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">float</span> <span class="title">AWorldSettings::FixupDeltaSeconds</span><span class="params">(<span class="type">float</span> *DeltaSeconds*, <span class="type">float</span> *RealDeltaSeconds*)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="type">float</span> <span class="type">const</span> Dilation = <span class="built_in">GetEffectiveTimeDilation</span>();</span><br><span class="line"></span><br><span class="line">  <span class="type">float</span> <span class="type">const</span> MinFrameTime = MinUndilatedFrameTime * Dilation;</span><br><span class="line"></span><br><span class="line">  <span class="type">float</span> <span class="type">const</span> MaxFrameTime = MaxUndilatedFrameTime * Dilation;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> FMath::<span class="built_in">Clamp</span>(DeltaSeconds, MinFrameTime, MaxFrameTime);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样即使真实 DeltaTime 很大，传递给游戏逻辑的值也会被限制在合理范围内，避免物理模拟和动画系统因时间步长过大而失稳。</p>
+<p>在 Unreal Engine 的游戏循环中，DeltaTime 表示两帧之间真实经过的时间，是驱动游戏逻辑和物理更新的核心参数。为了保障游戏运行的稳定性和连贯性，UE5在 <code>UWorld::Tick()</code> 中引入了对DeltaTime的上下限限制，即通过 <code>AWorldSettings::FixupDeltaSeconds()</code> 将DeltaTime约束在 <code>MinUndilatedFrameTime</code> 和 <code>MaxUndilatedFrameTime</code> 范围内。这样的设计初衷并非削弱时间的真实性，而是为了防止极端帧时间对游戏状态的破坏。</p>
+<p>当游戏运行正常时，DeltaTime准确反映了每帧之间的时间差，世界的时间推进自然顺畅，游戏体验真实且连贯。然而，现实环境中可能会因各种原因出现极端帧时长，比如系统卡顿、加载阻塞或硬件性能突降，导致一帧耗时远远超出预期。直接将这一不正常的巨大DeltaTime用于游戏状态更新，会让游戏中的物体、动画或物理模拟在短时间内跳跃式前进，产生穿透、错乱和视觉突变等严重问题。这不仅使游戏逻辑变得不稳定，也极大地破坏了玩家的沉浸感和操作反馈。</p>
+<p>为了避免这种现象，UE5使用限制机制对DeltaTime进行“折返”，将其限定在合理区间内，避免单帧时间过小或过大所带来的副作用。限制最大DeltaTime的存在，确保即便遇到卡顿，游戏也能以可控步长连贯地推进状态，减少瞬时跳跃所带来的不良体验。同样，限制最小DeltaTime避免因帧率过高或计时抖动导致的极短步长，使更新循环保持高效且稳定。</p>
+<p>关于限制会否影响单位时间内游戏进度的问题，这种调整只在极端异常情况下介入，对于日常稳定运行毫无影响。游戏整体的时间尺度依然基于真实的时间流逝，玩家感知到的世界移动和事件发生保持自然和一致。DeltaTime限制正是为了在保证时间真实性的基础上，兼顾游戏的鲁棒性和用户体验，防止极端时间跳跃破坏游戏节奏和逻辑连续性，从而实现更平滑、更可靠的游戏运行效果。</p>
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/02/27/%E6%8E%A2%E7%A9%B6TArray/">探究TArray</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body twikoo'>
+      
+
+<div id="twikoo_container"><svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg></div>
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">baobobo</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#UE5%EF%BC%9A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%B8%B8%E6%88%8F%E5%BE%AA%E7%8E%AF%E3%80%81Tick-%E3%80%81DeltaTime%E4%B8%8E%E6%97%B6%E9%97%B4%E8%86%A8%E8%83%80%E7%9A%84%E6%8E%A7%E5%88%B6%E6%9C%BA%E5%88%B6"><span class="toc-text">UE5：深入理解游戏循环、Tick()、DeltaTime与时间膨胀的控制机制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E5%BE%AA%E7%8E%AF%E7%9A%84%E5%90%AF%E5%8A%A8"><span class="toc-text">主循环的启动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FEngineLoop-Tick-%E7%9A%84%E8%81%8C%E8%B4%A3"><span class="toc-text">FEngineLoop::Tick 的职责</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UGameEngine-Tick-%E7%9A%84%E4%B8%96%E7%95%8C%E7%AE%A1%E7%90%86"><span class="toc-text">UGameEngine::Tick 的世界管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UWorld-Tick-%E7%9A%84%E6%B8%B8%E6%88%8F%E9%80%BB%E8%BE%91%E6%A0%B8%E5%BF%83"><span class="toc-text">UWorld::Tick 的游戏逻辑核心</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tick-Group-%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%89%A7%E8%A1%8C%E6%9C%BA%E5%88%B6"><span class="toc-text">Tick Group 系统的执行机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Actor-%E5%92%8C-Component-%E7%9A%84-Tick-%E6%89%A7%E8%A1%8C"><span class="toc-text">Actor 和 Component 的 Tick 执行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Tick%E5%BC%80%E9%94%80"><span class="toc-text">Tick开销</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Tick%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">Tick的问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E7%94%A8%E9%93%BE%E7%9A%84%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B"><span class="toc-text">调用链的完整流程</span></a></li></ol></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089" clip-rule="evenodd"/><path fill="currentColor" d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js`,
+    marked: `https://cdn.jsdelivr.net/npm/marked@13.0.1/lib/marked.umd.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+
+<!-- required -->
+<script src="/js/main.js?v=1.29.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    applyThemeToGiscus(theme)
+  }
+
+  const applyThemeToGiscus = (theme) => {
+    theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    }
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.getElementById('twikoo_container');
+  util.viewportLazyload(el, load_twikoo, false);
+
+  function load_twikoo() {
+    if (!el) return;
+    utils.js('https://gcore.jsdelivr.net/npm/twikoo@1.6.8/dist/twikoo.all.min.js', {defer: true}).then(function () {
+      const path = el.getAttribute('comment_id') ?? decodeURI(window.location.pathname);
+      twikoo.init(Object.assign({"js":"https://gcore.jsdelivr.net/npm/twikoo@1.6.8/dist/twikoo.all.min.js","envId":"https://xxx"}, {
+        el: '#twikoo_container',
+        path: path,
+      }));
+    });
+  }
+</script>
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('ds-memos');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
