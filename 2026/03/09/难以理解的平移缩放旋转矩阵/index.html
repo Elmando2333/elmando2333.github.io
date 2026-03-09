@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
-  <meta name="robots" content="noindex,follow">
+  
   <meta name="generator" content="Hexo 5.4.2">
   <meta http-equiv='x-dns-prefetch-control' content='on' />
   
@@ -17,22 +17,27 @@
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
   
-  <title>归档 - BaoboboboBao</title>
+  <title>难以理解的平移缩放旋转矩阵 - BaoboboboBao</title>
 
   
-    <meta name="description" content="���ڲ�����">
-<meta property="og:type" content="website">
-<meta property="og:title" content="归档">
-<meta property="og:url" content="http://example.com/archives/2026/page/2/index.html">
+    <meta name="description" content="我的理解能力很差劲。看了多次的图形学基础章节，每次看到最基本的变换矩阵，我都觉得反人类。我得先在脑子里给它乘开，就这一步我的脑子就得先旋转90度去操作（第n行乘上第n列这种）。我觉得是不是我的心智模型搭建错了，既然发明了矩阵这个工具，我何必还要反向拆出来呢。 感觉要建立一种直觉，死记硬背数字排列实在是难为自己。  下面是push 千问爱卿给我的答案。谢谢千问。  如何辨识是AI写的还是我自己写的非">
+<meta property="og:type" content="article">
+<meta property="og:title" content="难以理解的平移缩放旋转矩阵">
+<meta property="og:url" content="http://example.com/2026/03/09/%E9%9A%BE%E4%BB%A5%E7%90%86%E8%A7%A3%E7%9A%84%E5%B9%B3%E7%A7%BB%E7%BC%A9%E6%94%BE%E6%97%8B%E8%BD%AC%E7%9F%A9%E9%98%B5/index.html">
 <meta property="og:site_name" content="BaoboboboBao">
-<meta property="og:description" content="���ڲ�����">
+<meta property="og:description" content="我的理解能力很差劲。看了多次的图形学基础章节，每次看到最基本的变换矩阵，我都觉得反人类。我得先在脑子里给它乘开，就这一步我的脑子就得先旋转90度去操作（第n行乘上第n列这种）。我觉得是不是我的心智模型搭建错了，既然发明了矩阵这个工具，我何必还要反向拆出来呢。 感觉要建立一种直觉，死记硬背数字排列实在是难为自己。  下面是push 千问爱卿给我的答案。谢谢千问。  如何辨识是AI写的还是我自己写的非">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-03-09T09:12:04.000Z">
+<meta property="article:modified_time" content="2026-03-09T09:32:01.105Z">
 <meta property="article:author" content="baobobo">
+<meta property="article:tag" content="引擎">
+<meta property="article:tag" content="数学">
+<meta property="article:tag" content="图形学">
 <meta name="twitter:card" content="summary">
   
   
   
-  
+  <meta name="keywords" content="引擎,数学,图形学">
 
   <!-- feed -->
   
@@ -47,7 +52,7 @@
 </head>
 <body>
 
-<div class="l_body s:aa index tech" id="start" layout="undefined" ><aside class="l_left"><div class="leftbar-container">
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
 
 
 <header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://pic.imgdb.cn/item/66f22aeff21886ccc06a4cdd.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">BaoboboboBao</div><div class="sub cap">baobobo</div></a></div></header>
@@ -59,21 +64,145 @@
 <nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="关于" href="/about/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a></nav>
 </div>
 <div class="widgets">
+
+
 <widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/03/09/%E9%9A%BE%E4%BB%A5%E7%90%86%E8%A7%A3%E7%9A%84%E5%B9%B3%E7%A7%BB%E7%BC%A9%E6%94%BE%E6%97%8B%E8%BD%AC%E7%9F%A9%E9%98%B5/"><span class="title">难以理解的平移缩放旋转矩阵</span></a><a class="item title" href="/2026/03/08/%E5%BC%80%E7%BC%B8%E5%85%BB%E5%B0%8F%E9%BE%99%E8%99%BE/"><span class="title">开缸养小龙虾</span></a><a class="item title" href="/2026/02/27/%E6%8E%A2%E7%A9%B6TArray/"><span class="title">探究TArray</span></a><a class="item title" href="/2026/03/06/UE%E6%B8%B8%E6%88%8F%E5%BE%AA%E7%8E%AF1/"><span class="title">深入理解游戏循环、DeltaTime与时间膨胀的控制机制——基于UE5</span></a><a class="item title" href="/2026/02/18/C-%E6%8B%BE%E9%81%97%E5%BD%954/"><span class="title">C++拾遗录4</span></a><a class="item title" href="/2026/02/12/%E5%88%9D%E6%8E%A2%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/"><span class="title">初探异常处理</span></a><a class="item title" href="/2026/02/13/%E5%BF%AB%E6%8E%92%E5%B0%8F%E8%AE%B0/"><span class="title">快排小记</span></a><a class="item title" href="/2026/02/12/%E7%A0%81%E8%82%8C%E7%BB%83%E4%B9%A0day1/"><span class="title">码肌练习day1</span></a><a class="item title" href="/2026/01/28/%E8%99%9A%EF%BC%81%E7%AC%AC%E4%BA%8C%E7%89%88/"><span class="title">虚！</span></a><a class="item title" href="/2026/02/12/type-id%E4%B8%8Edynamic-cast/"><span class="title">typeid与dynamic_cast</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" onclick="switchTheme()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><path fill="currentColor" fill-rule="evenodd" d="M582.4 326.4c-140.8 0-256 115.2-256 256s115.2 256 256 256 256-115.2 256-256-115.2-256-256-256z m0 448c-70.4 0-131.2-36.8-164.8-92.8 12.8 3.2 27.2 4.8 40 4.8 121.6 0 219.2-99.2 219.2-219.2 0-17.6-1.6-35.2-6.4-52.8 60.8 32 102.4 96 102.4 169.6 1.6 104-84.8 190.4-190.4 190.4zM582.4 262.4c17.6 0 32-14.4 32-32v-128c0-17.6-14.4-32-32-32s-32 14.4-32 32v128c0 17.6 14.4 32 32 32zM262.4 582.4c0-17.6-14.4-32-32-32h-128c-17.6 0-32 14.4-32 32s14.4 32 32 32h128c17.6 0 32-14.4 32-32zM310.4 356.8c6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6 12.8-12.8 12.8-32 0-44.8l-91.2-91.2c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l91.2 91.2zM944 220.8c-12.8-12.8-32-12.8-44.8 0l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-33.6 0-44.8zM310.4 808l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-32 0-44.8-11.2-11.2-32-11.2-44.8 0z"></path></svg></a></div></footer>
 </div></aside><div class="l_main" id="main">
 
-<header class="header mobile-only"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://pic.imgdb.cn/item/66f22aeff21886ccc06a4cdd.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">BaoboboboBao</div><div class="sub cap">baobobo</div></a></div></header>
-
- 
 
 
-<div class="navbar top"><nav class="post"><a href="/">近期发布</a><a href="/tags">标签</a><a class="active" href="/archives">归档</a></nav></div><div class="post-list archives"><article class="" id="archive"><div class='archive-header h4'>2026</div><div class="archive-list"><a class='post fs14' href="/2026/03/09/%E9%9A%BE%E4%BB%A5%E7%90%86%E8%A7%A3%E7%9A%84%E5%B9%B3%E7%A7%BB%E7%BC%A9%E6%94%BE%E6%97%8B%E8%BD%AC%E7%9F%A9%E9%98%B5/"><time>03-09</time><span>难以理解的平移缩放旋转矩阵</span></a></div><div class="archive-list"><a class='post fs14' href="/2026/03/08/%E5%BC%80%E7%BC%B8%E5%85%BB%E5%B0%8F%E9%BE%99%E8%99%BE/"><time>03-08</time><span>开缸养小龙虾</span></a></div><div class="archive-list"><a class='post fs14' href="/2026/03/06/UE%E6%B8%B8%E6%88%8F%E5%BE%AA%E7%8E%AF1/"><time>03-06</time><span>深入理解游戏循环、DeltaTime与时间膨胀的控制机制——基于UE5</span></a></div><div class="archive-list"><a class='post fs14' href="/2026/02/27/%E6%8E%A2%E7%A9%B6TArray/"><time>02-27</time><span>探究TArray</span></a></div><div class="archive-list"><a class='post fs14' href="/2026/02/18/C-%E6%8B%BE%E9%81%97%E5%BD%954/"><time>02-18</time><span>C++拾遗录4</span></a></div><div class="archive-list"><a class='post fs14' href="/2026/02/13/%E5%BF%AB%E6%8E%92%E5%B0%8F%E8%AE%B0/"><time>02-13</time><span>快排小记</span></a></div><div class="archive-list"><a class='post fs14' href="/2026/02/12/%E7%A0%81%E8%82%8C%E7%BB%83%E4%B9%A0day1/"><time>02-12</time><span>码肌练习day1</span></a></div><div class="archive-list"><a class='post fs14' href="/2026/02/12/%E5%88%9D%E6%8E%A2%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/"><time>02-12</time><span>初探异常处理</span></a></div><div class="archive-list"><a class='post fs14' href="/2026/02/12/type-id%E4%B8%8Edynamic-cast/"><time>02-12</time><span>typeid与dynamic_cast</span></a></div><div class="archive-list"><a class='post fs14' href="/2026/02/12/%E5%A4%9A%E7%BB%B4%E6%95%B0%E7%BB%84%E6%8B%8D%E6%89%81%E6%80%BB%E7%BB%93/"><time>02-12</time><span>多维数组拍扁总结</span></a></div><div class="archive-list"><a class='post fs14' href="/2026/02/09/C-%E6%8B%BE%E9%81%97%E5%BD%953/"><time>02-09</time><span>C++拾遗录3</span></a></div><div class="archive-list"><a class='post fs14' href="/2026/02/08/C-%E6%8B%BE%E9%81%97%E5%BD%952/"><time>02-08</time><span>C++拾遗录2</span></a></div><div class="archive-list"><a class='post fs14' href="/2026/02/05/C-%E6%8B%BE%E9%81%97%E5%BD%951/"><time>02-05</time><span>C++拾遗录1</span></a></div><div class="archive-list"><a class='post fs14' href="/2026/01/28/map%E5%92%8Cunordered-map%E5%B0%8F%E8%AE%B0/"><time>01-28</time><span>map和unordered_map小记</span></a></div><div class="archive-list"><a class='post fs14' href="/2026/01/28/%E8%99%9A%EF%BC%81%E7%AC%AC%E4%BA%8C%E7%89%88/"><time>01-28</time><span>虚！</span></a></div><div class="archive-list"><a class='post fs14' href="/2026/01/27/%E4%BD%8D%E8%BF%90%E7%AE%97%E5%B0%8F%E7%94%9C%E5%93%81/"><time>01-27</time><span>位运算小甜品</span></a></div><div class="archive-list"><a class='post fs14' href="/2026/01/26/new%E5%92%8Cdelete/"><time>01-26</time><span>new和delete（一）new与构造函数与各种初始化大乱炖</span></a></div><div class="archive-list"><a class='post fs14' href="/2026/01/24/%E6%88%91%E7%9C%9F%E7%9A%84%E5%BE%88%E8%AE%A8%E5%8E%8Cmalloc%E5%A4%B1%E8%B4%A5%E5%81%87%E8%A3%85%E6%B2%A1%E4%BA%8B/"><time>01-24</time><span>malloc失败假装没事谁信（malloc内存分配相关总结整理）</span></a></div><div class="archive-list"><a class='post fs14' href="/2026/01/21/LRU%E6%8A%8A%E6%9C%80%E8%80%81%E7%9A%84%E8%B5%B6%E5%87%BA%E9%97%A8%E7%8A%AF%E6%B3%95%E5%90%97/"><time>01-21</time><span>LRU把最老的赶出门犯法吗</span></a></div><div class="archive-list"><a class='post fs14' href="/2026/01/20/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/"><time>01-20</time><span>进程和线程到底有什么区别</span></a></div><div class="archive-list"><a class='post fs14' href="/2026/01/20/%E5%A6%82%E4%BD%95%E5%8F%AA%E5%9C%A8%E6%A0%88%E4%B8%8A%E6%88%96%E5%8F%AA%E5%9C%A8%E5%A0%86%E4%B8%8A%E5%88%9B%E5%BB%BA%E7%B1%BB/"><time>01-20</time><span>如何只在栈上或只在堆上创建类</span></a></div><div class="archive-list"><a class='post fs14' href="/2026/01/12/%E5%A4%9A%E7%BB%A7%E6%89%BF%E7%B1%BB%E7%9A%84%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8%E4%BC%9A%E6%9C%89%E5%87%A0%E5%BC%A0%EF%BC%9F/"><time>01-12</time><span>多继承类的虚函数表会有几张？</span></a></div></article><article class="" id="archive"><div class='archive-header h4'>2025</div><div class="archive-list"><a class='post fs14' href="/2025/12/24/%E5%8F%88%E8%B0%88%E5%8F%B3%E5%80%BC%E4%B8%8E%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/"><time>12-24</time><span>又谈右值引用与移动构造函数</span></a></div><div class="archive-list"><a class='post fs14' href="/2025/10/25/%E7%BB%86%E6%8B%86%E4%BA%8C%E5%88%86%E6%B3%95/"><time>10-25</time><span>细拆二分法</span></a></div><div class="archive-list"><a class='post fs14' href="/2025/10/10/%E8%B0%88%E8%B0%88%E5%8F%B3%E5%80%BC/"><time>10-10</time><span>谈谈右值与右值引用</span></a></div><div class="archive-list"><a class='post fs14' href="/2025/10/09/%E9%A1%B6%E5%B1%82const%E4%B8%8E%E5%BA%95%E5%B1%82const/"><time>10-09</time><span>顶层const与底层const</span></a></div><div class="archive-list"><a class='post fs14' href="/2025/09/04/%E6%98%9F%E9%9C%B2%E8%B0%B7%E5%8D%A1%E7%89%87%E7%94%9F%E6%88%90%E5%99%A8%E6%8A%80%E6%9C%AF%E8%A6%81%E7%82%B9%E8%AE%B0%E5%BD%95%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"><time>09-04</time><span>星露谷卡片生成器技术要点记录及解决方案</span></a></div><div class="archive-list"><a class='post fs14' href="/2025/08/29/C-%E5%B7%A6%E5%8F%B3%E5%80%BC%E4%B8%8E%E5%BC%95%E7%94%A8/"><time>08-29</time><span>C++左右值与引用</span></a></div><div class="archive-list"><a class='post fs14' href="/2025/08/24/%E9%A5%BC%E5%9B%BE%E7%BB%83%E4%B9%A0/"><time>08-24</time><span>饼图练习</span></a></div><div class="archive-list"><a class='post fs14' href="/2025/08/17/%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E4%B8%8E%E5%BA%8F%E5%88%97%E5%8C%96/"><time>08-17</time><span>反射机制与序列化</span></a></div></article><article class="" id="archive"><div class='archive-header h4'>2024</div><div class="archive-list"><a class='post fs14' href="/2024/10/01/plantuml%E5%92%8Cgpt%E7%BB%93%E5%90%88%E5%BF%AB%E9%80%9F%E7%94%BB%E5%9B%BE/"><time>10-01</time><span>plantuml和gpt结合快速画图技巧</span></a></div></article></div>
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-03-09T09:12:04.000Z">2026-03-09</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-03-09T09:32:01.105Z">2026-03-09</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>难以理解的平移缩放旋转矩阵</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><p>我的理解能力很差劲。看了多次的图形学基础章节，每次看到最基本的变换矩阵，我都觉得反人类。我得先在脑子里给它乘开，就这一步我的脑子就得先旋转90度去操作（第n行乘上第n列这种）。我觉得是不是我的心智模型搭建错了，既然发明了矩阵这个工具，我何必还要反向拆出来呢。</p>
+<p>感觉要建立一种直觉，死记硬背数字排列实在是难为自己。</p>
+<blockquote>
+<p>下面是push 千问爱卿给我的答案。谢谢千问。</p>
+</blockquote>
+<p>如何辨识是AI写的还是我自己写的非常简单，我说话已经不太遵循标准中文语法了。但有时候看到AI写的博客又觉得差点意思，在知乎上和CSDN上看到明显的AI生成的博客看一眼我就走了。可能是因为我自己也能问出来？我觉得如果要和AI一起写博客，应该补充一些自己的理解模型和学习期间的心路历程，说白了最后是写给自己看的。这些混乱的、自嘲的、带着个人体温的东西，可能才是最想留下的，知识的堆砌AI们已经做得太好了。</p>
+<p>下面就是知识堆砌（）</p>
+<h2 id="核心视角：齐次坐标与矩阵拆解"><a href="#核心视角：齐次坐标与矩阵拆解" class="headerlink" title="核心视角：齐次坐标与矩阵拆解"></a>核心视角：齐次坐标与矩阵拆解</h2><p>在图形学（特别是 OpenGL、DirectX 或 UE 引擎）中，我们引入**齐次坐标 (Homogeneous Coordinates)**，将 3D 点 $(x, y, z)$ 扩展为 $(x, y, z, 1)$。这个看似多余的 $1$，正是让 $4 \times 4$ 矩阵能够统一处理平移的关键。</p>
+<p>我们可以将一个标准的变换矩阵拆解为四个部分来理解：</p>
+<p>$$<br>\begin{bmatrix}<br>\text{旋转/缩放} &amp; \text{旋转/缩放} &amp; \text{旋转/缩放} &amp; \mathbf{\text{平移 (Translation)}} \<br>(X\text{轴新方向}) &amp; (Y\text{轴新方向}) &amp; (Z\text{轴新方向}) &amp; (X,Y,Z \text{位移}) \<br>\hline<br>0 &amp; 0 &amp; 0 &amp; 1<br>\end{bmatrix}<br>$$</p>
+<p>记忆的逻辑非常清晰：前三列决定了物体的朝向和胖瘦（即旋转与缩放），第四列决定了物体的位置（即平移），而最后一行永远是 $0, 0, 0, 1$，这是为了维持齐次坐标的数学性质，通常不需要额外关注。</p>
+<h3 id="1-平移矩阵-Translation-：最简单的位置移动"><a href="#1-平移矩阵-Translation-：最简单的位置移动" class="headerlink" title="1. 平移矩阵 (Translation)：最简单的位置移动"></a>1. 平移矩阵 (Translation)：最简单的位置移动</h3><p>平移的直觉非常直接：让物体在 $X, Y, Z$ 轴上分别移动 $T_x, T_y, T_z$。因为平移只跟位置有关，跟方向无关，所以它只出现在矩阵的<strong>第四列</strong>。这是因为点是 $(x,y,z,1)$，只有乘以第四列的数值，那个常数 $1$ 才能把平移量“带进去”加到坐标上。</p>
+<p>其矩阵形态是单位矩阵的基础上，仅在最后一列填入移动距离：<br>$$<br>T = \begin{bmatrix}<br>1 &amp; 0 &amp; 0 &amp; \mathbf{T_x} \<br>0 &amp; 1 &amp; 0 &amp; \mathbf{T_y} \<br>0 &amp; 0 &amp; 1 &amp; \mathbf{T_z} \<br>0 &amp; 0 &amp; 0 &amp; 1<br>\end{bmatrix}<br>$$<br>验证一下就会发现，对角线的 $1$ 保持了原坐标不变，而最后一列的数值通过乘以 $w=1$ 直接加到了 $x, y, z$ 上，实现了 $x+T_x$ 的效果。</p>
+<h3 id="2-缩放矩阵-Scaling-：改变坐标轴长度"><a href="#2-缩放矩阵-Scaling-：改变坐标轴长度" class="headerlink" title="2. 缩放矩阵 (Scaling)：改变坐标轴长度"></a>2. 缩放矩阵 (Scaling)：改变坐标轴长度</h3><p>缩放的直觉是改变坐标轴的“刻度”。如果想让 $X$ 轴拉长 $S_x$ 倍，只需修改对角线上对应的数字即可。因此，缩放矩阵的特征是<strong>只有对角线有值</strong>，其余全为 $0$（最后一行除外）。</p>
+<p>$$<br>S = \begin{bmatrix}<br>\mathbf{S_x} &amp; 0 &amp; 0 &amp; 0 \<br>0 &amp; \mathbf{S_y} &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; \mathbf{S_z} &amp; 0 \<br>0 &amp; 0 &amp; 0 &amp; 1<br>\end{bmatrix}<br>$$<br>这里还有一个有趣的特例：如果某个轴向的缩放值为 $-1$（例如 $S_x = -1$），那就意味着物体沿该轴的垂直平面进行了镜像翻转。</p>
+<h3 id="3-旋转矩阵-Rotation-：最难但有套路"><a href="#3-旋转矩阵-Rotation-：最难但有套路" class="headerlink" title="3. 旋转矩阵 (Rotation)：最难但有套路"></a>3. 旋转矩阵 (Rotation)：最难但有套路</h3><p>旋转矩阵之所以难记，是因为涉及 $\sin$ 和 $\cos$ 的位置以及正负号的变化。但只要掌握核心心法，就能化繁为简：</p>
+<ul>
+<li>  <strong>绕谁转，谁不变</strong>：绕 $Z$ 轴旋转，$Z$ 轴所在的行和列就保持 $0,0,1,0$ 的状态（除了对角线是 $1$），这相当于把 3D 问题降维成了 2D 问题。</li>
+<li>  <strong>剩下的 $2 \times 2$ 就是标准 2D 旋转</strong>：形式通常为 $\begin{bmatrix} \cos\theta &amp; -\sin\theta \ \sin\theta &amp; \cos\theta \end{bmatrix}$。</li>
+</ul>
+<p>具体的旋转矩阵如下（以左手坐标系为例，如 UE/DirectX）：</p>
+<ul>
+<li>  <strong>绕 Z 轴旋转</strong>：就像在桌面上转纸片，$X$ 和 $Y$ 变，$Z$ 不变。负号位于右上角（第一行第二列），记忆口诀是“像转盘子，负号在上”。</li>
+<li>  <strong>绕 X 轴旋转</strong>：$Y$ 和 $Z$ 变，$X$ 不变。右下角的 $2 \times 2$ 结构与绕 $Z$ 轴类似，负号依然在上方（相对于该 $2 \times 2$ 子矩阵），口诀是“像翻书，负号在上”。</li>
+<li>  <strong>绕 Y 轴旋转（最容易错）</strong>：$X$ 和 $Z$ 变，$Y$ 不变。注意 $Y$ 轴在中间，其对应的 2D 平面是 $X-Z$，顺序发生了变化。为了保持手性定则的连续性，$\sin$ 的负号跑到了<strong>左下角</strong>（第三行第一列）。口诀是“只有 $Y$ 轴反转了，负号在下”。</li>
+</ul>
+<h2 id="终极记忆表格与结构总结"><a href="#终极记忆表格与结构总结" class="headerlink" title="终极记忆表格与结构总结"></a>终极记忆表格与结构总结</h2><p>为了方便复习，我们可以将上述规律浓缩为一张表（基于左手坐标系）：</p>
+<table>
+<thead>
+<tr>
+<th align="left">变换类型</th>
+<th align="left">矩阵形态特征</th>
+<th align="left">关键数字位置</th>
+<th align="left">一句话记忆</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>平移</strong></td>
+<td align="left">单位矩阵 + 最后一列</td>
+<td align="left">$M_{14}, M_{24}, M_{34}$</td>
+<td align="left">只有最后一列有非 0 非 1 的数</td>
+</tr>
+<tr>
+<td align="left"><strong>缩放</strong></td>
+<td align="left">对角线矩阵</td>
+<td align="left">$M_{11}, M_{22}, M_{33}$</td>
+<td align="left">只有对角线有数</td>
+</tr>
+<tr>
+<td align="left"><strong>绕 Z 转</strong></td>
+<td align="left">Z 轴锁死</td>
+<td align="left">$-\sin$ 在右上 ($M_{12}$)</td>
+<td align="left">像转盘子，负号在上</td>
+</tr>
+<tr>
+<td align="left"><strong>绕 X 转</strong></td>
+<td align="left">X 轴锁死</td>
+<td align="left">$-\sin$ 在右上 ($M_{23}$)</td>
+<td align="left">像翻书，负号在上</td>
+</tr>
+<tr>
+<td align="left"><strong>绕 Y 转</strong></td>
+<td align="left">Y 轴锁死</td>
+<td align="left">$-\sin$ 在左下 ($M_{31}$)</td>
+<td align="left">中间轴特殊，负号在下</td>
+</tr>
+</tbody></table>
+<p>总结来说，别再去背那 16 个数字了。只要记住：<strong>左上 $3 \times 3$ 管旋转缩放，右侧 $3 \times 1$ 管平移，底部 $1 \times 4$ 固定不变</strong>。对于旋转，只需区分 $Y$ 轴的负号位置与其他两轴不同即可。</p>
+<h2 id="深度思考：为什么必须是-4x4？"><a href="#深度思考：为什么必须是-4x4？" class="headerlink" title="深度思考：为什么必须是 4x4？"></a>深度思考：为什么必须是 4x4？</h2><p>你可能会问，为什么不能用 $3 \times 3$ 矩阵？如果是 $3 \times 3$ 矩阵，它只能做旋转和缩放这类线性变换，<strong>做不到平移</strong>。因为在数学上，线性变换必须保持原点不动（$A \times \vec{0} = \vec{0}$），你无法通过 $3 \times 3$ 矩阵乘法让 $(0,0,0)$ 变成 $(1,1,1)$。</p>
+<p>引入第 4 个维度 $w=1$ 后，我们将 3D 空间嵌入到了 4D 空间的一个切片里。此时，平移变成了 4D 空间里的“剪切 (Shear)”变换。这样做的好处是巨大的：我们可以把平移、旋转、缩放全部乘在一起，合并成一个巨大的矩阵 $M = T \times R \times S$。在计算时，顶点 $V$ 只需要算一次 $V’ = M \times V$，这种统一的操作极大地迎合了 GPU 的计算偏好。</p>
+<h2 id="实战中的顺序陷阱"><a href="#实战中的顺序陷阱" class="headerlink" title="实战中的顺序陷阱"></a>实战中的顺序陷阱</h2><p>最后，在实际编程（如 UE 的 C++ 或 HLSL）中，矩阵乘法的顺序至关重要，因为矩阵乘法不满足交换律（$A \times B \neq B \times A$）。</p>
+<p>在列向量习惯（OpenGL, GLSL, UE5 默认数学库）中，运算顺序是<strong>从右往左</strong>读的。如果我们构造矩阵 $M = T \times R \times S$，那么对顶点 $v$ 的变换过程实际上是 $v’ = T \times (R \times (S \times v))$。这意味着执行顺序是：**先缩放 (Scale)，再旋转 (Rotate)，最后平移 (Translate)**。</p>
+<p>这个顺序符合我们的直觉：想象你是一个角色，你应该先原地蹲下或长高（缩放），然后原地转身（旋转），最后沿着现在的朝向走出去（平移）。如果你颠倒了顺序，比如先平移再旋转，你就会绕着世界原点转圈，而不是原地转身了。而在行向量习惯中，顺序则是从左往右，先写的先执行。理解这一点，能避免很多调试时的诡异 Bug。</p>
+<p>通过以上梳理，希望你对 $4 \times 4$ 矩阵不再感到恐惧。只要理解了其背后的几何意义和结构逻辑，这些矩阵就不再是冷冰冰的数字堆砌，而是操控虚拟世界的强大指令。</p>
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/03/08/%E5%BC%80%E7%BC%B8%E5%85%BB%E5%B0%8F%E9%BE%99%E8%99%BE/">开缸养小龙虾</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body twikoo'>
+      
+
+<div id="twikoo_container"><svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg></div>
+    </section>
+  </div>
+
+
+
 <footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">baobobo</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
 </div></footer>
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
-</aside><div class='float-panel blur'>
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E8%A7%86%E8%A7%92%EF%BC%9A%E9%BD%90%E6%AC%A1%E5%9D%90%E6%A0%87%E4%B8%8E%E7%9F%A9%E9%98%B5%E6%8B%86%E8%A7%A3"><span class="toc-text">核心视角：齐次坐标与矩阵拆解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%B9%B3%E7%A7%BB%E7%9F%A9%E9%98%B5-Translation-%EF%BC%9A%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84%E4%BD%8D%E7%BD%AE%E7%A7%BB%E5%8A%A8"><span class="toc-text">1. 平移矩阵 (Translation)：最简单的位置移动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%BC%A9%E6%94%BE%E7%9F%A9%E9%98%B5-Scaling-%EF%BC%9A%E6%94%B9%E5%8F%98%E5%9D%90%E6%A0%87%E8%BD%B4%E9%95%BF%E5%BA%A6"><span class="toc-text">2. 缩放矩阵 (Scaling)：改变坐标轴长度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%97%8B%E8%BD%AC%E7%9F%A9%E9%98%B5-Rotation-%EF%BC%9A%E6%9C%80%E9%9A%BE%E4%BD%86%E6%9C%89%E5%A5%97%E8%B7%AF"><span class="toc-text">3. 旋转矩阵 (Rotation)：最难但有套路</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%88%E6%9E%81%E8%AE%B0%E5%BF%86%E8%A1%A8%E6%A0%BC%E4%B8%8E%E7%BB%93%E6%9E%84%E6%80%BB%E7%BB%93"><span class="toc-text">终极记忆表格与结构总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%B1%E5%BA%A6%E6%80%9D%E8%80%83%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BF%85%E9%A1%BB%E6%98%AF-4x4%EF%BC%9F"><span class="toc-text">深度思考：为什么必须是 4x4？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E6%88%98%E4%B8%AD%E7%9A%84%E9%A1%BA%E5%BA%8F%E9%99%B7%E9%98%B1"><span class="toc-text">实战中的顺序陷阱</span></a></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089" clip-rule="evenodd"/><path fill="currentColor" d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
   </button>
@@ -395,6 +524,22 @@
 
 
 <!-- optional -->
+
+  <script type="module">
+  const el = document.getElementById('twikoo_container');
+  util.viewportLazyload(el, load_twikoo, false);
+
+  function load_twikoo() {
+    if (!el) return;
+    utils.js('https://gcore.jsdelivr.net/npm/twikoo@1.6.8/dist/twikoo.all.min.js', {defer: true}).then(function () {
+      const path = el.getAttribute('comment_id') ?? decodeURI(window.location.pathname);
+      twikoo.init(Object.assign({"js":"https://gcore.jsdelivr.net/npm/twikoo@1.6.8/dist/twikoo.all.min.js","envId":"https://xxx"}, {
+        el: '#twikoo_container',
+        path: path,
+      }));
+    });
+  }
+</script>
 
 
 
