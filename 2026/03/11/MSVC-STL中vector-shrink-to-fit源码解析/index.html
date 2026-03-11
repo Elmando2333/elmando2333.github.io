@@ -1,0 +1,656 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
+  
+  <meta name="generator" content="Hexo 5.4.2">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  
+  <title>MSVC STL中vector::shrink_to_fit及扩容与缩容源码解析 - BaoboboboBao</title>
+
+  
+    <meta name="description" content="我看了一堆相关文章，都把读者当聪明人。提到shrink_to_fit只提一嘴会收缩内存。初学的时候我天真的以为把原来持有的内存后半段不用的释放掉。但是如果经常这么释放的话难道不会造成一堆夹在中间的小内存碎片吗？还是看看源码来得实在。 随便写一个vector，ctrl一下都能导航到标准库的源码（win所以看的是MSVC）。 搜索shrink，发现shrink出现在了两个地方： 12345678910">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MSVC STL中vector::shrink_to_fit及扩容与缩容源码解析">
+<meta property="og:url" content="http://example.com/2026/03/11/MSVC-STL%E4%B8%ADvector-shrink-to-fit%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/index.html">
+<meta property="og:site_name" content="BaoboboboBao">
+<meta property="og:description" content="我看了一堆相关文章，都把读者当聪明人。提到shrink_to_fit只提一嘴会收缩内存。初学的时候我天真的以为把原来持有的内存后半段不用的释放掉。但是如果经常这么释放的话难道不会造成一堆夹在中间的小内存碎片吗？还是看看源码来得实在。 随便写一个vector，ctrl一下都能导航到标准库的源码（win所以看的是MSVC）。 搜索shrink，发现shrink出现在了两个地方： 12345678910">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-03-11T08:28:36.000Z">
+<meta property="article:modified_time" content="2026-03-11T09:16:05.397Z">
+<meta property="article:author" content="baobobo">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="STL">
+<meta name="twitter:card" content="summary">
+  
+  
+  
+  <meta name="keywords" content="C++,STL">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.29.1">
+
+  
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://pic.imgdb.cn/item/66f22aeff21886ccc06a4cdd.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">BaoboboboBao</div><div class="sub cap">baobobo</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="关于" href="/about/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/03/11/MSVC-STL%E4%B8%ADvector-shrink-to-fit%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"><span class="title">MSVC STL中vector::shrink_to_fit及扩容与缩容源码解析</span></a><a class="item title" href="/2026/03/09/%E9%9A%BE%E4%BB%A5%E7%90%86%E8%A7%A3%E7%9A%84%E5%B9%B3%E7%A7%BB%E7%BC%A9%E6%94%BE%E6%97%8B%E8%BD%AC%E7%9F%A9%E9%98%B5/"><span class="title">难以理解的平移缩放旋转矩阵</span></a><a class="item title" href="/2026/03/08/%E5%BC%80%E7%BC%B8%E5%85%BB%E5%B0%8F%E9%BE%99%E8%99%BE/"><span class="title">开缸养小龙虾</span></a><a class="item title" href="/2026/02/27/%E6%8E%A2%E7%A9%B6TArray/"><span class="title">探究TArray</span></a><a class="item title" href="/2026/03/06/UE%E6%B8%B8%E6%88%8F%E5%BE%AA%E7%8E%AF1/"><span class="title">深入理解游戏循环、DeltaTime与时间膨胀的控制机制——基于UE5</span></a><a class="item title" href="/2026/02/18/C-%E6%8B%BE%E9%81%97%E5%BD%954/"><span class="title">C++拾遗录4</span></a><a class="item title" href="/2026/02/12/%E5%88%9D%E6%8E%A2%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/"><span class="title">初探异常处理</span></a><a class="item title" href="/2026/02/13/%E5%BF%AB%E6%8E%92%E5%B0%8F%E8%AE%B0/"><span class="title">快排小记</span></a><a class="item title" href="/2026/02/12/%E7%A0%81%E8%82%8C%E7%BB%83%E4%B9%A0day1/"><span class="title">码肌练习day1</span></a><a class="item title" href="/2026/01/28/%E8%99%9A%EF%BC%81%E7%AC%AC%E4%BA%8C%E7%89%88/"><span class="title">虚！</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" onclick="switchTheme()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><path fill="currentColor" fill-rule="evenodd" d="M582.4 326.4c-140.8 0-256 115.2-256 256s115.2 256 256 256 256-115.2 256-256-115.2-256-256-256z m0 448c-70.4 0-131.2-36.8-164.8-92.8 12.8 3.2 27.2 4.8 40 4.8 121.6 0 219.2-99.2 219.2-219.2 0-17.6-1.6-35.2-6.4-52.8 60.8 32 102.4 96 102.4 169.6 1.6 104-84.8 190.4-190.4 190.4zM582.4 262.4c17.6 0 32-14.4 32-32v-128c0-17.6-14.4-32-32-32s-32 14.4-32 32v128c0 17.6 14.4 32 32 32zM262.4 582.4c0-17.6-14.4-32-32-32h-128c-17.6 0-32 14.4-32 32s14.4 32 32 32h128c17.6 0 32-14.4 32-32zM310.4 356.8c6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6 12.8-12.8 12.8-32 0-44.8l-91.2-91.2c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l91.2 91.2zM944 220.8c-12.8-12.8-32-12.8-44.8 0l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-33.6 0-44.8zM310.4 808l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-32 0-44.8-11.2-11.2-32-11.2-44.8 0z"></path></svg></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-03-11T08:28:36.000Z">2026-03-11</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-03-11T09:16:05.397Z">2026-03-11</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>MSVC STL中vector::shrink_to_fit及扩容与缩容源码解析</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><p>我看了一堆相关文章，都把读者当聪明人。提到shrink_to_fit只提一嘴会收缩内存。初学的时候我天真的以为把原来持有的内存后半段不用的释放掉。但是如果经常这么释放的话难道不会造成一堆夹在中间的小内存碎片吗？还是看看源码来得实在。</p>
+<p>随便写一个vector，ctrl一下都能导航到标准库的源码（win所以看的是MSVC）。</p>
+<p>搜索shrink，发现shrink出现在了两个地方：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">_CONSTEXPR20 <span class="type">void</span> <span class="title">shrink_to_fit</span><span class="params">()</span> </span>&#123; <span class="comment">// reduce capacity to size, provide strong guarantee</span></span><br><span class="line">        <span class="keyword">auto</span>&amp; _My_data         = _Mypair._Myval2;</span><br><span class="line">        <span class="type">const</span> pointer _Oldlast = _My_data._Mylast;</span><br><span class="line">        <span class="keyword">if</span> (_Oldlast != _My_data._Myend) &#123; <span class="comment">// something to do</span></span><br><span class="line">            <span class="type">const</span> pointer _Oldfirst = _My_data._Myfirst;</span><br><span class="line">            <span class="keyword">if</span> (_Oldfirst == _Oldlast) &#123;</span><br><span class="line">                _Tidy();</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                size_type _Newcapacity = <span class="built_in">static_cast</span>&lt;size_type&gt;(_Oldlast - _Oldfirst);</span><br><span class="line">                _Reallocate&lt;_Reallocation_policy::_Exactly&gt;(_Newcapacity);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">_CONSTEXPR20 <span class="type">void</span> <span class="title">shrink_to_fit</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>-&gt;_Myvec.<span class="built_in">capacity</span>() != <span class="keyword">this</span>-&gt;_Myvec.<span class="built_in">size</span>()) &#123;</span><br><span class="line">            <span class="keyword">this</span>-&gt;_Orphan_all();</span><br><span class="line">            <span class="keyword">this</span>-&gt;_Myvec.<span class="built_in">shrink_to_fit</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>第二个shrink_to_fit很明显是在调用第一个之前去做了一些检查或者通知的操作。</p>
+<p>让我们仔细看看第一个实际实现：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">_CONSTEXPR20 <span class="type">void</span> <span class="title">shrink_to_fit</span><span class="params">()</span> </span>&#123; <span class="comment">// reduce capacity to size, provide strong guarantee</span></span><br><span class="line">        <span class="keyword">auto</span>&amp; _My_data         = _Mypair._Myval2;</span><br><span class="line">        <span class="type">const</span> pointer _Oldlast = _My_data._Mylast;</span><br><span class="line">    <span class="comment">//这里会先检查当前大小是否已经等于容器容量，如果已经满了就不用操作</span></span><br><span class="line">        <span class="keyword">if</span> (_Oldlast != _My_data._Myend) &#123; <span class="comment">// something to do</span></span><br><span class="line">            <span class="type">const</span> pointer _Oldfirst = _My_data._Myfirst;</span><br><span class="line">            <span class="keyword">if</span> (_Oldfirst == _Oldlast) &#123;</span><br><span class="line">                <span class="comment">//如果空了，那就不保留任何内存块了，释放所有资源（暂时没看Tidy的实现）</span></span><br><span class="line">                _Tidy();</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">//如果不空，且存在冗余的容量</span></span><br><span class="line">                <span class="comment">//先计算目标容量：注意要等于当前元素个数size</span></span><br><span class="line">                <span class="comment">//然后重新分配！去强制分配器只申请之前元素个数容量大小的内存</span></span><br><span class="line">                size_type _Newcapacity = <span class="built_in">static_cast</span>&lt;size_type&gt;(_Oldlast - _Oldfirst);</span><br><span class="line">                _Reallocate&lt;_Reallocation_policy::_Exactly&gt;(_Newcapacity);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里的实现细节值得注意。通常 <code>vector</code> 的扩容（如 <code>push_back</code> 触发）会采用几何级数增长（例如 1.5 倍），以减少未来的分配次数。但在 <code>shrink_to_fit</code> 中，通过模板参数 <code>_Reallocation_policy::_Exactly</code> 显式覆盖了这一默认行为。这意味着 <code>_Reallocate</code> 内部会执行一次标准的“分配新块 -&gt; 移动/拷贝元素 -&gt; 释放旧块”流程，且新块的大小被严格限制为 <code>size()</code>。注释中提到的 “strong guarantee” 意味着如果在移动构造元素过程中抛出异常，原 <code>vector</code> 的状态保持不变，不会丢失数据。</p>
+<p>注意到了这一行：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_Reallocate&lt;_Reallocation_policy::_Exactly&gt;(_Newcapacity);</span><br></pre></td></tr></table></figure>
+
+<p>_Reallocation_policy意味着还有别的策略，进去看一眼：</p>
+<p>会发现这么一段代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum class</span> <span class="title class_">_Reallocation_policy</span> &#123; _At_least, _Exactly &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">template</span> &lt;_Reallocation_policy _Policy&gt;</span><br><span class="line">    _CONSTEXPR20 <span class="type">void</span> _Reallocate(size_type&amp; _Newcapacity) &#123;</span><br><span class="line">        <span class="comment">// set capacity to _Newcapacity (without geometric growth), provide strong guarantee</span></span><br><span class="line">        <span class="keyword">auto</span>&amp; _Al         = _Getal();</span><br><span class="line">        <span class="keyword">auto</span>&amp; _My_data    = _Mypair._Myval2;</span><br><span class="line">        pointer&amp; _Myfirst = _My_data._Myfirst;</span><br><span class="line">        pointer&amp; _Mylast  = _My_data._Mylast;</span><br><span class="line"></span><br><span class="line">        <span class="type">const</span> <span class="keyword">auto</span> _Size = <span class="built_in">static_cast</span>&lt;size_type&gt;(_Mylast - _Myfirst);</span><br><span class="line"></span><br><span class="line">        pointer _Newvec;</span><br><span class="line">       	<span class="comment">//这里执行判断逻辑</span></span><br><span class="line">        <span class="function"><span class="keyword">if</span> <span class="title">constexpr</span> <span class="params">(_Policy == _Reallocation_policy::_At_least)</span> </span>&#123;</span><br><span class="line">            _Newvec = _Allocate_at_least_helper(_Al, _Newcapacity);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            _STL_INTERNAL_STATIC_ASSERT(_Policy == _Reallocation_policy::_Exactly);</span><br><span class="line">            _Newvec = _Al.<span class="built_in">allocate</span>(_Newcapacity);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        _Simple_reallocation_guard _Guard&#123;_Al, _Newvec, _Newcapacity&#125;;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">if</span> <span class="title">constexpr</span> <span class="params">(is_nothrow_move_constructible_v&lt;_Ty&gt; || !is_copy_constructible_v&lt;_Ty&gt;)</span> </span>&#123;</span><br><span class="line">            _Uninitialized_move(_Myfirst, _Mylast, _Newvec, _Al);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            _Uninitialized_copy(_Myfirst, _Mylast, _Newvec, _Al);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        _Guard._New_begin = <span class="literal">nullptr</span>;</span><br><span class="line">        _Change_array(_Newvec, _Size, _Newcapacity);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>看来有两种策略：<code>_At_least</code> <strong>与</strong> <code>_Exactly</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">if</span> <span class="title">constexpr</span> <span class="params">(_Policy == _Reallocation_policy::_At_least)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 策略A：至少分配这么多</span></span><br><span class="line">    _Newvec = _Allocate_at_least_helper(_Al, _Newcapacity);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 策略B：精确分配这么多</span></span><br><span class="line">    _STL_INTERNAL_STATIC_ASSERT(_Policy == _Reallocation_policy::_Exactly);</span><br><span class="line">    _Newvec = _Al.<span class="built_in">allocate</span>(_Newcapacity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这时候好奇在至少分配模式的时候，这个_Newcapacity是不是会被修改。</p>
+<p>应该是push_back的时候就应该已经预分配好了容量了吧。验证一下：</p>
+<p>找push_back:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">_CONSTEXPR20 <span class="type">void</span> <span class="title">push_back</span><span class="params">(<span class="type">const</span> _Ty&amp; _Val)</span> </span>&#123; <span class="comment">// insert element at end, provide strong guarantee</span></span><br><span class="line">        _Emplace_one_at_back(_Val);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">_CONSTEXPR20 <span class="type">void</span> <span class="title">push_back</span><span class="params">(_Ty&amp;&amp; _Val)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// insert by moving into element at end, provide strong guarantee</span></span><br><span class="line">        _Emplace_one_at_back(_STD <span class="built_in">move</span>(_Val));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这应该是两个实现，一个接收左值引用一个接收右值引用以启用移动构造。</p>
+<p>看一下_Emplace_one_at_back的右值引用版本</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span>... _Valty&gt;</span><br><span class="line">    _CONSTEXPR20 _Ty&amp; _Emplace_one_at_back(_Valty&amp;&amp;... _Val) &#123;</span><br><span class="line">        <span class="comment">// insert by perfectly forwarding into element at end, provide strong guarantee</span></span><br><span class="line">        <span class="keyword">auto</span>&amp; _My_data   = _Mypair._Myval2;</span><br><span class="line">        pointer&amp; _Mylast = _My_data._Mylast;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (_Mylast != _My_data._Myend) &#123;</span><br><span class="line">            <span class="comment">//容量足够，直接构造</span></span><br><span class="line">            <span class="keyword">return</span> _Emplace_back_with_unused_capacity(_STD forward&lt;_Valty&gt;(_Val)...);</span><br><span class="line">        &#125;</span><br><span class="line">		<span class="comment">//不够的话需要扩容了</span></span><br><span class="line">        <span class="keyword">return</span> *_Emplace_reallocate(_Mylast, _STD forward&lt;_Valty&gt;(_Val)...);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>看一下_Emplace_reallocate</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span>... _Valty&gt;</span><br><span class="line">    _CONSTEXPR20 pointer _Emplace_reallocate(<span class="type">const</span> pointer _Whereptr, _Valty&amp;&amp;... _Val) &#123;</span><br><span class="line">        <span class="comment">// reallocate and insert by perfectly forwarding _Val at _Whereptr</span></span><br><span class="line">        _Alty&amp; _Al        = _Getal();</span><br><span class="line">        <span class="keyword">auto</span>&amp; _My_data    = _Mypair._Myval2;</span><br><span class="line">        pointer&amp; _Myfirst = _My_data._Myfirst;</span><br><span class="line">        pointer&amp; _Mylast  = _My_data._Mylast;</span><br><span class="line"></span><br><span class="line">        _STL_INTERNAL_CHECK(_Mylast == _My_data._Myend); <span class="comment">// check that we have no unused capacity</span></span><br><span class="line"></span><br><span class="line">        <span class="type">const</span> <span class="keyword">auto</span> _Whereoff = <span class="built_in">static_cast</span>&lt;size_type&gt;(_Whereptr - _Myfirst);</span><br><span class="line">        <span class="type">const</span> <span class="keyword">auto</span> _Oldsize  = <span class="built_in">static_cast</span>&lt;size_type&gt;(_Mylast - _Myfirst);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (_Oldsize == <span class="built_in">max_size</span>()) &#123;</span><br><span class="line">            _Xlength();</span><br><span class="line">        &#125;</span><br><span class="line"><span class="comment">//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!这里在增长</span></span><br><span class="line">        <span class="type">const</span> size_type _Newsize = _Oldsize + <span class="number">1</span>;</span><br><span class="line">        size_type _Newcapacity   = _Calculate_growth(_Newsize);</span><br><span class="line"></span><br><span class="line">    	<span class="type">const</span> pointer _Newvec           = _STD _Allocate_at_least_helper(_Al, _Newcapacity);</span><br><span class="line">        <span class="type">const</span> pointer _Constructed_last = _Newvec + _Whereoff + <span class="number">1</span>;</span><br><span class="line">        ...</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">        _Guard._New_begin = <span class="literal">nullptr</span>;</span><br><span class="line">        _Change_array(_Newvec, _Newsize, _Newcapacity);</span><br><span class="line">        <span class="keyword">return</span> _Newvec + _Whereoff;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>终于找到了</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> size_type _Newsize = _Oldsize + <span class="number">1</span>;</span><br><span class="line">size_type _Newcapacity   = _Calculate_growth(_Newsize);</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> pointer _Newvec           = _STD _Allocate_at_least_helper(_Al, _Newcapacity);</span><br><span class="line"><span class="type">const</span> pointer _Constructed_last = _Newvec + _Whereoff + <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>那么增长逻辑就在：size_type _Newcapacity   = _Calculate_growth(_Newsize);里，计算完新Newcapacity直接传给刚刚已经看过的_Allocate_at_least_helper(_Al, _Newcapacity)。</p>
+<p>继续打开看看_Calculate_growth(_Newsize)：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">_CONSTEXPR20 size_type _Calculate_growth(<span class="type">const</span> size_type _Newsize) <span class="type">const</span> &#123;</span><br><span class="line">        <span class="comment">// given _Oldcapacity and _Newsize, calculate geometric growth</span></span><br><span class="line">        <span class="type">const</span> size_type _Oldcapacity = <span class="built_in">capacity</span>();</span><br><span class="line">        <span class="type">const</span> <span class="keyword">auto</span> _Max              = <span class="built_in">max_size</span>();</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (_Oldcapacity &gt; _Max - _Oldcapacity / <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> _Max; <span class="comment">// geometric growth would overflow</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">const</span> size_type _Geometric = _Oldcapacity + _Oldcapacity / <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (_Geometric &lt; _Newsize) &#123;</span><br><span class="line">            <span class="keyword">return</span> _Newsize; <span class="comment">// geometric growth would be insufficient</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> _Geometric; <span class="comment">// geometric growth is sufficient</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>着急下班吃饭懒得写注释了，交给AI老师帮忙解析：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">_CONSTEXPR20 size_type _Calculate_growth(<span class="type">const</span> size_type _Newsize) <span class="type">const</span> &#123;</span><br><span class="line">    <span class="comment">// 目标：给定当前容量和目标大小 (_Newsize)，计算新的几何增长容量。</span></span><br><span class="line">    <span class="comment">// 核心策略：MSVC STL 采用 1.5 倍增长因子 (Old + Old/2)。</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 1. 获取当前状态</span></span><br><span class="line">    <span class="type">const</span> size_type _Oldcapacity = <span class="built_in">capacity</span>(); <span class="comment">// 当前已分配的容量</span></span><br><span class="line">    <span class="type">const</span> <span class="keyword">auto</span> _Max              = <span class="built_in">max_size</span>(); <span class="comment">// 理论上的最大容量 (通常是 size_t 极限 / 元素大小)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 溢出保护检查 (Overflow Check)</span></span><br><span class="line">    <span class="comment">// 问题：如果 _Oldcapacity 很大，直接计算 &quot;_Oldcapacity + _Oldcapacity / 2&quot; 可能会导致整数溢出（变成一个小数）。</span></span><br><span class="line">    <span class="comment">// 解法：将加法变换为减法来判断。</span></span><br><span class="line">    <span class="comment">// 逻辑：如果 当前容量 &gt; (最大值 - 增量)，说明加上增量后会超过最大值。</span></span><br><span class="line">    <span class="keyword">if</span> (_Oldcapacity &gt; _Max - _Oldcapacity / <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> _Max; <span class="comment">// 既然几何增长会溢出，那就直接返回允许的最大值，顶格处理。</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 计算几何增长值 (Geometric Growth)</span></span><br><span class="line">    <span class="comment">// 核心公式：NewCap = OldCap + floor(OldCap / 2)</span></span><br><span class="line">    <span class="comment">// 这就是著名的 1.5 倍增长策略。</span></span><br><span class="line">    <span class="comment">// 例如：10 -&gt; 15, 100 -&gt; 150, 1000 -&gt; 1500.</span></span><br><span class="line">    <span class="comment">// 为什么是 1.5 而不是 2.0？</span></span><br><span class="line">    <span class="comment">// - 2.0 倍 (GCC/libstdc++): 扩容更激进，realloc 次数少，但内存浪费严重 (空闲内存=已用内存)。</span></span><br><span class="line">    <span class="comment">// - 1.5 倍 (MSVC/Clang libc++): 在“减少 realloc 次数”和“内存利用率”之间取得平衡。</span></span><br><span class="line">    <span class="comment">//   数学上，1.5 倍增长使得旧的空闲内存块有机会被后续的更大分配复用，减少堆碎片。</span></span><br><span class="line">    <span class="type">const</span> size_type _Geometric = _Oldcapacity + _Oldcapacity / <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 4. 需求充足性检查 (Sufficiency Check)</span></span><br><span class="line">    <span class="comment">// 场景：用户可能一次性请求大量空间 (如 reserve(10000))，或者 insert 大量元素。</span></span><br><span class="line">    <span class="comment">// 此时，按部就班的 1.5 倍增长可能远远不够 (例如当前 100，1.5 倍是 150，但用户需要 10000)。</span></span><br><span class="line">    <span class="comment">// 逻辑：如果计算出的几何增长值 &lt; 用户实际需要的最小值 (_Newsize)，</span></span><br><span class="line">    <span class="comment">//       则抛弃几何增长，直接以用户需求为准。</span></span><br><span class="line">    <span class="keyword">if</span> (_Geometric &lt; _Newsize) &#123;</span><br><span class="line">        <span class="keyword">return</span> _Newsize; <span class="comment">// 几何增长不足以满足需求，直接扩容到需求大小。</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 5. 返回最终结果</span></span><br><span class="line">    <span class="comment">// 如果既没有溢出，且 1.5 倍增长也足够大，那就采用这个几何增长值。</span></span><br><span class="line">    <span class="keyword">return</span> _Geometric; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>注意到</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (_Geometric &lt; _Newsize) &#123;</span><br><span class="line">        <span class="keyword">return</span> _Newsize; </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>扩容也不是无限制的，1.5倍不够就直接按需分配了。</p>
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/03/09/%E9%9A%BE%E4%BB%A5%E7%90%86%E8%A7%A3%E7%9A%84%E5%B9%B3%E7%A7%BB%E7%BC%A9%E6%94%BE%E6%97%8B%E8%BD%AC%E7%9F%A9%E9%98%B5/">难以理解的平移缩放旋转矩阵</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body twikoo'>
+      
+
+<div id="twikoo_container"><svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg></div>
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">baobobo</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+</aside><div class='float-panel blur'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js`,
+    marked: `https://cdn.jsdelivr.net/npm/marked@13.0.1/lib/marked.umd.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+
+<!-- required -->
+<script src="/js/main.js?v=1.29.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    applyThemeToGiscus(theme)
+  }
+
+  const applyThemeToGiscus = (theme) => {
+    theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    }
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.getElementById('twikoo_container');
+  util.viewportLazyload(el, load_twikoo, false);
+
+  function load_twikoo() {
+    if (!el) return;
+    utils.js('https://gcore.jsdelivr.net/npm/twikoo@1.6.8/dist/twikoo.all.min.js', {defer: true}).then(function () {
+      const path = el.getAttribute('comment_id') ?? decodeURI(window.location.pathname);
+      twikoo.init(Object.assign({"js":"https://gcore.jsdelivr.net/npm/twikoo@1.6.8/dist/twikoo.all.min.js","envId":"https://xxx"}, {
+        el: '#twikoo_container',
+        path: path,
+      }));
+    });
+  }
+</script>
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('ds-memos');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
