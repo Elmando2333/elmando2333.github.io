@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
-  <meta name="robots" content="noindex,follow">
+  
   <meta name="generator" content="Hexo 5.4.2">
   <meta http-equiv='x-dns-prefetch-control' content='on' />
   
@@ -17,22 +17,26 @@
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
   
-  <title>标签：C++ - BaoboboboBao</title>
+  <title>伤害系统更新日志 - BaoboboboBao</title>
 
   
-    <meta name="description" content="���ڲ�����">
-<meta property="og:type" content="website">
-<meta property="og:title" content="BaoboboboBao">
-<meta property="og:url" content="http://example.com/tags/C/page/3/index.html">
+    <meta name="description" content="今天更新一下moba游戏demo的伤害系统。目前的伤害计算函数实现如下： 123456789101112131415161718192021float UMMC_BaseAttackDamage::CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec&amp; Spec) const&amp;#123;    FAggregator">
+<meta property="og:type" content="article">
+<meta property="og:title" content="伤害系统更新日志">
+<meta property="og:url" content="http://example.com/2026/03/11/%E4%BC%A4%E5%AE%B3%E7%B3%BB%E7%BB%9F%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97/index.html">
 <meta property="og:site_name" content="BaoboboboBao">
-<meta property="og:description" content="���ڲ�����">
+<meta property="og:description" content="今天更新一下moba游戏demo的伤害系统。目前的伤害计算函数实现如下： 123456789101112131415161718192021float UMMC_BaseAttackDamage::CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec&amp; Spec) const&amp;#123;    FAggregator">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-03-11T13:40:50.000Z">
+<meta property="article:modified_time" content="2026-03-11T15:04:54.756Z">
 <meta property="article:author" content="baobobo">
+<meta property="article:tag" content="UE">
+<meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
   
   
   
-  
+  <meta name="keywords" content="UE,C++">
 
   <!-- feed -->
   
@@ -47,7 +51,7 @@
 </head>
 <body>
 
-<div class="l_body s:aa index tech" id="start" layout="undefined" ><aside class="l_left"><div class="leftbar-container">
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
 
 
 <header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://pic.imgdb.cn/item/66f22aeff21886ccc06a4cdd.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">BaoboboboBao</div><div class="sub cap">baobobo</div></a></div></header>
@@ -59,36 +63,82 @@
 <nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="关于" href="/about/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a></nav>
 </div>
 <div class="widgets">
+
+
 <widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/03/11/%E4%BC%A4%E5%AE%B3%E7%B3%BB%E7%BB%9F%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97/"><span class="title">伤害系统更新日志</span></a><a class="item title" href="/2026/03/11/MSVC-STL%E4%B8%ADvector-shrink-to-fit%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"><span class="title">MSVC STL中vector::shrink_to_fit及扩容与缩容源码解析</span></a><a class="item title" href="/2026/03/09/%E9%9A%BE%E4%BB%A5%E7%90%86%E8%A7%A3%E7%9A%84%E5%B9%B3%E7%A7%BB%E7%BC%A9%E6%94%BE%E6%97%8B%E8%BD%AC%E7%9F%A9%E9%98%B5/"><span class="title">难以理解的平移缩放旋转矩阵</span></a><a class="item title" href="/2026/03/08/%E5%BC%80%E7%BC%B8%E5%85%BB%E5%B0%8F%E9%BE%99%E8%99%BE/"><span class="title">开缸养小龙虾</span></a><a class="item title" href="/2026/02/27/%E6%8E%A2%E7%A9%B6TArray/"><span class="title">探究TArray</span></a><a class="item title" href="/2026/03/06/UE%E6%B8%B8%E6%88%8F%E5%BE%AA%E7%8E%AF1/"><span class="title">深入理解游戏循环、DeltaTime与时间膨胀的控制机制——基于UE5</span></a><a class="item title" href="/2026/02/18/C-%E6%8B%BE%E9%81%97%E5%BD%954/"><span class="title">C++拾遗录4</span></a><a class="item title" href="/2026/02/12/%E5%88%9D%E6%8E%A2%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/"><span class="title">初探异常处理</span></a><a class="item title" href="/2026/02/13/%E5%BF%AB%E6%8E%92%E5%B0%8F%E8%AE%B0/"><span class="title">快排小记</span></a><a class="item title" href="/2026/02/12/%E7%A0%81%E8%82%8C%E7%BB%83%E4%B9%A0day1/"><span class="title">码肌练习day1</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" onclick="switchTheme()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><path fill="currentColor" fill-rule="evenodd" d="M582.4 326.4c-140.8 0-256 115.2-256 256s115.2 256 256 256 256-115.2 256-256-115.2-256-256-256z m0 448c-70.4 0-131.2-36.8-164.8-92.8 12.8 3.2 27.2 4.8 40 4.8 121.6 0 219.2-99.2 219.2-219.2 0-17.6-1.6-35.2-6.4-52.8 60.8 32 102.4 96 102.4 169.6 1.6 104-84.8 190.4-190.4 190.4zM582.4 262.4c17.6 0 32-14.4 32-32v-128c0-17.6-14.4-32-32-32s-32 14.4-32 32v128c0 17.6 14.4 32 32 32zM262.4 582.4c0-17.6-14.4-32-32-32h-128c-17.6 0-32 14.4-32 32s14.4 32 32 32h128c17.6 0 32-14.4 32-32zM310.4 356.8c6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6 12.8-12.8 12.8-32 0-44.8l-91.2-91.2c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l91.2 91.2zM944 220.8c-12.8-12.8-32-12.8-44.8 0l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-33.6 0-44.8zM310.4 808l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-32 0-44.8-11.2-11.2-32-11.2-44.8 0z"></path></svg></a></div></footer>
 </div></aside><div class="l_main" id="main">
 
-<header class="header mobile-only"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://pic.imgdb.cn/item/66f22aeff21886ccc06a4cdd.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">BaoboboboBao</div><div class="sub cap">baobobo</div></a></div></header>
-
- 
 
 
 
 
-<div class="navbar top"><nav class="post"><a href="/">近期发布</a><a class="active" href="/tags">标签：C++</a><a href="/archives">归档</a></nav></div>
-<div class="post-list post"><a class="post-card post" href="/2025/10/25/%E7%BB%86%E6%8B%86%E4%BA%8C%E5%88%86%E6%B3%95/">
-<article class="md-text"><h2 class="post-title">细拆二分法</h2><div class="excerpt"><p>这两周学到了二分相关，思想听起来颇为简单，实际写起来漏洞百出，如果是面向测试案例编程的话，经常胡乱+1-1，随机尝试&gt;或者&gt;=，拆了东墙补西墙，怎么堵都堵不明白。细节太多了，各种写法层出不穷，开区间的，闭区间的，左开右闭的，左闭右开的。找...</p></div><div class="meta cap"><span class="cap" id="post-meta"><svg style="margin-bottom:2px" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M6.94 2c.416 0 .753.324.753.724v1.46c.668-.012 1.417-.012 2.26-.012h4.015c.842 0 1.591 0 2.259.013v-1.46c0-.4.337-.725.753-.725s.753.324.753.724V4.25c1.445.111 2.394.384 3.09 1.055c.698.67.982 1.582 1.097 2.972L22 9H2v-.724c.116-1.39.4-2.302 1.097-2.972c.697-.67 1.645-.944 3.09-1.055V2.724c0-.4.337-.724.753-.724"/><path fill="currentColor" d="M22 14v-2c0-.839-.004-2.335-.017-3H2.01c-.013.665-.01 2.161-.01 3v2c0 3.771 0 5.657 1.172 6.828C4.343 22 6.228 22 10 22h4c3.77 0 5.656 0 6.828-1.172C22 19.658 22 17.772 22 14" opacity=".5"/><path fill="currentColor" d="M18 17a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><time datetime="2025-10-25T08:02:00.000Z">2025-10-25</time></span></div></article>
-</a><a class="post-card post" href="/2025/10/10/%E8%B0%88%E8%B0%88%E5%8F%B3%E5%80%BC/">
-<article class="md-text"><h2 class="post-title">谈谈右值与右值引用</h2><div class="excerpt"><p>之前学习了C++的左值右值，但只留在了对于概念的理解上面。今天学习了一下移动构造函数，临时对象/将亡值即将被销毁时会唤起移动构造函数。还有一个std::move()，它的主要作用是将一个左值转换为右值引用，从而强制使用移动构造函数或移动赋值运算符。所...</p></div><div class="meta cap"><span class="cap" id="post-meta"><svg style="margin-bottom:2px" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M6.94 2c.416 0 .753.324.753.724v1.46c.668-.012 1.417-.012 2.26-.012h4.015c.842 0 1.591 0 2.259.013v-1.46c0-.4.337-.725.753-.725s.753.324.753.724V4.25c1.445.111 2.394.384 3.09 1.055c.698.67.982 1.582 1.097 2.972L22 9H2v-.724c.116-1.39.4-2.302 1.097-2.972c.697-.67 1.645-.944 3.09-1.055V2.724c0-.4.337-.724.753-.724"/><path fill="currentColor" d="M22 14v-2c0-.839-.004-2.335-.017-3H2.01c-.013.665-.01 2.161-.01 3v2c0 3.771 0 5.657 1.172 6.828C4.343 22 6.228 22 10 22h4c3.77 0 5.656 0 6.828-1.172C22 19.658 22 17.772 22 14" opacity=".5"/><path fill="currentColor" d="M18 17a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><time datetime="2025-10-10T12:37:29.000Z">2025-10-10</time></span></div></article>
-</a><a class="post-card post" href="/2025/10/09/%E9%A1%B6%E5%B1%82const%E4%B8%8E%E5%BA%95%E5%B1%82const/">
-<article class="md-text"><h2 class="post-title">顶层const与底层const</h2><div class="excerpt"><p>理清 C++ 中顶层 const 和底层 const 的概念，感觉理解起来有些混乱。
-具体讲解看的是《C++ Primer》。
-核心概念顶层 const (top-level const)：对象本身是常量底层 const (low-level con...</p></div><div class="meta cap"><span class="cap" id="post-meta"><svg style="margin-bottom:2px" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M6.94 2c.416 0 .753.324.753.724v1.46c.668-.012 1.417-.012 2.26-.012h4.015c.842 0 1.591 0 2.259.013v-1.46c0-.4.337-.725.753-.725s.753.324.753.724V4.25c1.445.111 2.394.384 3.09 1.055c.698.67.982 1.582 1.097 2.972L22 9H2v-.724c.116-1.39.4-2.302 1.097-2.972c.697-.67 1.645-.944 3.09-1.055V2.724c0-.4.337-.724.753-.724"/><path fill="currentColor" d="M22 14v-2c0-.839-.004-2.335-.017-3H2.01c-.013.665-.01 2.161-.01 3v2c0 3.771 0 5.657 1.172 6.828C4.343 22 6.228 22 10 22h4c3.77 0 5.656 0 6.828-1.172C22 19.658 22 17.772 22 14" opacity=".5"/><path fill="currentColor" d="M18 17a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><time datetime="2025-10-09T07:01:31.000Z">2025-10-09</time></span></div></article>
-</a><a class="post-card post" href="/2025/08/29/C-%E5%B7%A6%E5%8F%B3%E5%80%BC%E4%B8%8E%E5%BC%95%E7%94%A8/">
-<article class="md-text"><h2 class="post-title">C++左右值与引用</h2><div class="excerpt"><p>本笔记为【彻底搞懂C++移动语义/左值/右值/引用！！！】 https://www.bilibili.com/video/BV17ce7zLEzu/?p=2&amp;share_source=copy_web&amp;vd_source=92a7da...</p></div><div class="meta cap"><span class="cap" id="post-meta"><svg style="margin-bottom:2px" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M6.94 2c.416 0 .753.324.753.724v1.46c.668-.012 1.417-.012 2.26-.012h4.015c.842 0 1.591 0 2.259.013v-1.46c0-.4.337-.725.753-.725s.753.324.753.724V4.25c1.445.111 2.394.384 3.09 1.055c.698.67.982 1.582 1.097 2.972L22 9H2v-.724c.116-1.39.4-2.302 1.097-2.972c.697-.67 1.645-.944 3.09-1.055V2.724c0-.4.337-.724.753-.724"/><path fill="currentColor" d="M22 14v-2c0-.839-.004-2.335-.017-3H2.01c-.013.665-.01 2.161-.01 3v2c0 3.771 0 5.657 1.172 6.828C4.343 22 6.228 22 10 22h4c3.77 0 5.656 0 6.828-1.172C22 19.658 22 17.772 22 14" opacity=".5"/><path fill="currentColor" d="M18 17a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><time datetime="2025-08-29T10:38:58.000Z">2025-08-29</time></span></div></article>
-</a><a class="post-card post" href="/2025/08/17/%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E4%B8%8E%E5%BA%8F%E5%88%97%E5%8C%96/">
-<article class="md-text"><h2 class="post-title">反射机制与序列化</h2><div class="excerpt"><p>之前用Unity在定义变量时经常会在变量前面标记[SerializeField]，用于将private和protected属性的变量显示在inspector上（public变量会直接显示）。学习时没有细想这些都是什么。关于序列化也是只知道大概的作用。...</p></div><div class="meta cap"><span class="cap" id="post-meta"><svg style="margin-bottom:2px" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M6.94 2c.416 0 .753.324.753.724v1.46c.668-.012 1.417-.012 2.26-.012h4.015c.842 0 1.591 0 2.259.013v-1.46c0-.4.337-.725.753-.725s.753.324.753.724V4.25c1.445.111 2.394.384 3.09 1.055c.698.67.982 1.582 1.097 2.972L22 9H2v-.724c.116-1.39.4-2.302 1.097-2.972c.697-.67 1.645-.944 3.09-1.055V2.724c0-.4.337-.724.753-.724"/><path fill="currentColor" d="M22 14v-2c0-.839-.004-2.335-.017-3H2.01c-.013.665-.01 2.161-.01 3v2c0 3.771 0 5.657 1.172 6.828C4.343 22 6.228 22 10 22h4c3.77 0 5.656 0 6.828-1.172C22 19.658 22 17.772 22 14" opacity=".5"/><path fill="currentColor" d="M18 17a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><time datetime="2025-08-17T07:44:39.000Z">2025-08-17</time></span></div></article>
-</a></div>
-
-  <div class='paginator-wrap dis-select'>
-  <a class="extend prev" rel="prev" href="/tags/C/page/2/"></a><a class="page-number" href="/tags/C/">1</a><a class="page-number" href="/tags/C/page/2/">2</a><span class="page-number current">3</span>
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-03-11T13:40:50.000Z">2026-03-11</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-03-11T15:04:54.756Z">2026-03-11</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>伤害系统更新日志</span></h1>
+        
+      </div>
+    </div>
+    
   </div>
+  </div><article class="md-text content"><p>今天更新一下moba游戏demo的伤害系统。目前的伤害计算函数实现如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">float</span> <span class="title">UMMC_BaseAttackDamage::CalculateBaseMagnitude_Implementation</span><span class="params">(<span class="type">const</span> FGameplayEffectSpec&amp; Spec)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    FAggregatorEvaluateParameters EvalParams;</span><br><span class="line">    EvalParams.SourceTags = Spec.CapturedSourceTags.<span class="built_in">GetAggregatedTags</span>();</span><br><span class="line">    EvalParams.TargetTags = Spec.CapturedTargetTags.<span class="built_in">GetAggregatedTags</span>();</span><br><span class="line"></span><br><span class="line">    <span class="type">float</span> Attack = <span class="number">0.f</span>;</span><br><span class="line">    <span class="built_in">GetCapturedAttributeMagnitude</span>(AttackCaptureDef, Spec, EvalParams, Attack);</span><br><span class="line"></span><br><span class="line">    <span class="type">float</span> Armor = <span class="number">0.f</span>;</span><br><span class="line">    <span class="built_in">GetCapturedAttributeMagnitude</span>(ArmorCaptureDef, Spec, EvalParams, Armor);</span><br><span class="line"></span><br><span class="line">    <span class="type">float</span> DamageReduction = Armor / (Armor + <span class="number">100</span>);</span><br><span class="line"></span><br><span class="line">    <span class="type">float</span> Damage = Attack * (<span class="number">1</span> - DamageReduction);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">UE_LOG</span>(LogTemp, Log, <span class="built_in">TEXT</span>(<span class="string">&quot;Damage = %f&quot;</span>), Damage);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> -Damage;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>思路很简单，就是根据攻击者的攻击力还有目标的护甲来计算出最终的伤害值并返回一个负数来表示生命值削减。</p>
+<p>这段代码本身没有什么问题——捕获攻击方的 <code>Attack</code> 属性和防御方的 <code>Armor</code> 属性，套一个基本的减伤公式，返回一个负数直接叠加到 <code>Health</code> 上，逻辑清晰，代码简洁。</p>
+<p>但问题在于 MMC 的定位。MMC 是作为 GameplayEffect 里某一个 Modifier 的计算插件存在的，一个 Modifier 只能针对一个目标属性做计算，MMC 的返回值也只有一个浮点数。这意味着 MMC 从结构上就被限制住了——它能做给 Health 改变多少这个问题，但做不到在造成伤害的同时顺便做些别的判断。</p>
+<p>第一，想引入暴击系统。暴击是一个概率事件，需要在伤害计算的过程中做一次随机判断，如果暴击成立就把伤害乘以一个系数。这个判断和分叉的逻辑MMC 的 <code>CalculateBaseMagnitude</code> 一个返回值是表达不了的——返回的要么是普通伤害，要么是暴击伤害，但是否发生了暴击这个信息本身就丢失了。</p>
+<p>第二，希望不同技能能传入不同的伤害系数。比如重击应该是 150% 攻击力，普攻是 100% 攻击力，激光技能是 80% 攻击力持续输出。这种技能决定计算参数的需求，依赖 GAS 的 <code>SetByCaller</code> 机制，而 MMC 读取 <code>SetByCaller</code> 的能力很弱，语义上也不自然。</p>
+<p>第三，最根本的问题：MMC 的计算结果直接作用在 <code>Health</code> 这个属性上，是绕过了很多 GAS 推荐的最佳实践的。Health 是游戏里最核心的状态之一，直接用 Modifier 改它，意味着其他系统很难在”伤害发生”这个时机插入额外逻辑，比如护盾吸收、无敌帧判断、击杀奖励触发等等。</p>
+<p>还是换成是UGameplayEffectExecutionCalculation，通常简称 ExecCalc。</p>
+<blockquote>
+<p>ExecCalc 则是一个独立的计算单元，挂在 GE 的 <code>Execution Calculations</code> 列表里而不是 Modifiers 里。它拿到的是 <code>FGameplayEffectCustomExecutionParameters</code>，这个对象包含了完整的执行上下文——不仅是 Spec，还有 Source 和 Target 各自的 <code>AbilitySystemComponent</code> 引用，可以直接读取双方所有被声明为”可捕获”的属性。计算结束后，它通过 <code>OutExecutionOutput.AddOutputModifier</code> 往外输出任意数量的属性修改操作，而不仅仅是一个数值。</p>
+</blockquote>
+<p>换用 ExecCalc 之前，还有一个设计问题需要先想清楚：伤害值算出来之后，怎么安全地交给 <code>PostGameplayEffectExecute</code> 去扣血？</p>
+<p>如果 ExecCalc 直接输出对 Health 的修改，技术上没问题，但 <code>PostGameplayEffectExecute</code> 里分不清”这次 Health 变化来自伤害、回血、还是初始化”，逻辑分支会越来越乱，护盾吸收之类的中间层也没地方写。</p>
+<p>GAS 社区里广泛采用的做法是引入一个”元属性”叫做 Damage。它不代表任何真实的游戏状态，不需要复制到客户端，也不会持久存在。它唯一的作用就是充当一个临时的数据通道：ExecCalc 把算出来的伤害值写进去，<code>PostGameplayEffectExecute</code> 把它读出来、立刻清零、然后从 Health 里扣掉。</p>
+<p>这个设计把计算伤害是多少和把伤害落实到 Health 上两件事彻底分开了。ExecCalc 只关心前者，AttributeSet 的 <code>PostGameplayEffectExecute</code> 只关心后者，中间通过 Damage 这个元属性握手。将来想在”扣血之前”插入护盾逻辑，就在 <code>PostGameplayEffectExecute</code> 里读出 Damage 值之后、扣 Health 之前加判断就行，不需要动 ExecCalc 的任何代码。</p>
+<p>有了 ExecCalc 和元属性之后，技能系数的问题也顺势解决了。GAS 的 SetByCaller 机制允许技能在创建 GE Spec 的时候，以一个 GameplayTag 为 Key，写入任意浮点值。ExecCalc 执行时用同一个 Tag 把这个值读出来，作为伤害系数参与计算。</p>
+<p>为此专门在 GameplayTags 里新建了一个 <code>Tags::Damage::Coefficient</code>。技能只要在发起攻击时传入系数，伤害计算系统就能识别。如果技能没有传入这个值，ExecCalc 里设置的默认值是 1.0，等于 100% 攻击力，行为和原来保持一致。这样一来的话不同技能的伤害倍率完全由技能自己决定，伤害计算系统不需要知道是哪个技能调用的它，也不需要为每个技能维护单独的一份公式。新增技能只需要传入自己的系数，伤害系统的代码一行都不用改。</p>
+<p>有了 ExecCalc 这个自由度后暴击系统的加入变得非常自然。在英雄属性集里加入暴击率和暴击伤害加成两个属性，ExecCalc 在执行时同样捕获这两个值，在算出基础伤害之后做一次概率判断，如果暴击成立就把伤害乘以对应倍率，最终写入 Damage 元属性。而且整个暴击判断完全内聚在 ExecCalc 里，不需要在 GE 蓝图上做任何额外配置。</p>
+<p>受不了了编译一次100多个文件5到6分钟我真的受不了了早晚全改成前向声明。感觉我学习UE有一半时间都在编译啊啊啊啊啊啊啊啊啊啊啊啊玛德有些东西只能编译的时候报错看出来导致还要重新跑我真的受不了了受不了了也得受着谁叫我非得学UE不再学Unity了呢啊啊啊啊啊啊。</p>
+<p>改造完成后，一次伤害的完整流程是这样的：技能代码创建伤害 GE 的 Spec，写入伤害系数，把 Spec 应用到目标身上。GE 执行时，ExecCalc 拿到双方属性和技能系数，算出经过护甲减伤和暴击判断的最终伤害，把这个正数写进 Damage 元属性。<code>PostGameplayEffectExecute</code> 检测到 Damage 属性被写入，读取其值、清零、扣除 Health，同步更新缓存的血量百分比。</p>
+<p>这样每个环节就清晰了后面也好扩展。ExecCalc 往后还可以加伤害类型、护甲穿透、易伤 Tag 加成等逻辑；<code>PostGameplayEffectExecute</code> 往后可以加护盾、无敌、反伤等逻辑。</p>
+<p>后面就好计算扩展了。</p>
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/03/11/MSVC-STL%E4%B8%ADvector-shrink-to-fit%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">MSVC STL中vector::shrink_to_fit及扩容与缩容源码解析</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body twikoo'>
+      
+
+<div id="twikoo_container"><svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg></div>
+    </section>
+  </div>
+
 
 
 <footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">baobobo</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
@@ -416,6 +466,22 @@
 
 
 <!-- optional -->
+
+  <script type="module">
+  const el = document.getElementById('twikoo_container');
+  util.viewportLazyload(el, load_twikoo, false);
+
+  function load_twikoo() {
+    if (!el) return;
+    utils.js('https://gcore.jsdelivr.net/npm/twikoo@1.6.8/dist/twikoo.all.min.js', {defer: true}).then(function () {
+      const path = el.getAttribute('comment_id') ?? decodeURI(window.location.pathname);
+      twikoo.init(Object.assign({"js":"https://gcore.jsdelivr.net/npm/twikoo@1.6.8/dist/twikoo.all.min.js","envId":"https://xxx"}, {
+        el: '#twikoo_container',
+        path: path,
+      }));
+    });
+  }
+</script>
 
 
 
