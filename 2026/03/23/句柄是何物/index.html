@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
-  <meta name="robots" content="noindex,follow">
+  
   <meta name="generator" content="Hexo 5.4.2">
   <meta http-equiv='x-dns-prefetch-control' content='on' />
   
@@ -17,22 +17,25 @@
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
   
-  <title>标签：GAS - BaoboboboBao</title>
+  <title>句柄是何物 - BaoboboboBao</title>
 
   
-    <meta name="description" content="���ڲ�����">
-<meta property="og:type" content="website">
-<meta property="og:title" content="BaoboboboBao">
-<meta property="og:url" content="http://example.com/tags/GAS/index.html">
+    <meta name="description" content="句柄是何物最开始我听到这个词听起来像吃的，以为和语法糖同属一类。结果发现此柄非饼，从此这个词给我的感觉就是咯牙。 我在看UE的源码的时候以及看一些其他工程代码的时候看到了非常多的Handle，但是一直没有搞清楚它的设计以及用法。之前写dx12的时候，比如 1static void ImGui::DockSettingsHandler_ClearAll(ImGuiContext* ctx, ImGu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="句柄是何物">
+<meta property="og:url" content="http://example.com/2026/03/23/%E5%8F%A5%E6%9F%84%E6%98%AF%E4%BD%95%E7%89%A9/index.html">
 <meta property="og:site_name" content="BaoboboboBao">
-<meta property="og:description" content="���ڲ�����">
+<meta property="og:description" content="句柄是何物最开始我听到这个词听起来像吃的，以为和语法糖同属一类。结果发现此柄非饼，从此这个词给我的感觉就是咯牙。 我在看UE的源码的时候以及看一些其他工程代码的时候看到了非常多的Handle，但是一直没有搞清楚它的设计以及用法。之前写dx12的时候，比如 1static void ImGui::DockSettingsHandler_ClearAll(ImGuiContext* ctx, ImGu">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-03-23T15:18:28.000Z">
+<meta property="article:modified_time" content="2026-03-23T15:19:02.231Z">
 <meta property="article:author" content="baobobo">
+<meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
   
   
   
-  
+  <meta name="keywords" content="C++">
 
   <!-- feed -->
   
@@ -47,7 +50,7 @@
 </head>
 <body>
 
-<div class="l_body s:aa index tech" id="start" layout="undefined" ><aside class="l_left"><div class="leftbar-container">
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
 
 
 <header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://pic.imgdb.cn/item/66f22aeff21886ccc06a4cdd.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">BaoboboboBao</div><div class="sub cap">baobobo</div></a></div></header>
@@ -59,28 +62,93 @@
 <nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="关于" href="/about/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a></nav>
 </div>
 <div class="widgets">
+
+
 <widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/03/23/%E5%8F%A5%E6%9F%84%E6%98%AF%E4%BD%95%E7%89%A9/"><span class="title">句柄是何物</span></a><a class="item title" href="/2026/03/23/%E5%86%85%E6%8E%A2malloc/"><span class="title">内探malloc</span></a><a class="item title" href="/2026/03/22/%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%80%9D%E8%80%83%EF%BC%9AC-%E4%B8%8EUE%E7%9A%84%E7%B1%BB%E5%9E%8B%E6%93%A6%E9%99%A41%EF%BC%9Astd-function%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"><span class="title">学习与思考：C++与UE的类型擦除1：std::function源码解析</span></a><a class="item title" href="/2026/02/16/GAS%E7%9A%84%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%EF%BC%88%E4%B8%80%EF%BC%89/"><span class="title">GAS的学习资料记录</span></a><a class="item title" href="/2026/03/12/C-%E6%8B%BE%E9%81%97%E5%BD%955/"><span class="title">C++拾遗录5</span></a><a class="item title" href="/2026/03/11/%E4%BC%A4%E5%AE%B3%E7%B3%BB%E7%BB%9F%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97/"><span class="title">伤害系统更新日志</span></a><a class="item title" href="/2026/03/11/MSVC-STL%E4%B8%ADvector-shrink-to-fit%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"><span class="title">MSVC STL中vector::shrink_to_fit及扩容与缩容源码解析</span></a><a class="item title" href="/2026/03/09/%E9%9A%BE%E4%BB%A5%E7%90%86%E8%A7%A3%E7%9A%84%E5%B9%B3%E7%A7%BB%E7%BC%A9%E6%94%BE%E6%97%8B%E8%BD%AC%E7%9F%A9%E9%98%B5/"><span class="title">难以理解的平移缩放旋转矩阵</span></a><a class="item title" href="/2026/03/08/%E5%BC%80%E7%BC%B8%E5%85%BB%E5%B0%8F%E9%BE%99%E8%99%BE/"><span class="title">开缸养小龙虾</span></a><a class="item title" href="/2026/02/27/%E6%8E%A2%E7%A9%B6TArray/"><span class="title">探究TArray</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" onclick="switchTheme()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><path fill="currentColor" fill-rule="evenodd" d="M582.4 326.4c-140.8 0-256 115.2-256 256s115.2 256 256 256 256-115.2 256-256-115.2-256-256-256z m0 448c-70.4 0-131.2-36.8-164.8-92.8 12.8 3.2 27.2 4.8 40 4.8 121.6 0 219.2-99.2 219.2-219.2 0-17.6-1.6-35.2-6.4-52.8 60.8 32 102.4 96 102.4 169.6 1.6 104-84.8 190.4-190.4 190.4zM582.4 262.4c17.6 0 32-14.4 32-32v-128c0-17.6-14.4-32-32-32s-32 14.4-32 32v128c0 17.6 14.4 32 32 32zM262.4 582.4c0-17.6-14.4-32-32-32h-128c-17.6 0-32 14.4-32 32s14.4 32 32 32h128c17.6 0 32-14.4 32-32zM310.4 356.8c6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6 12.8-12.8 12.8-32 0-44.8l-91.2-91.2c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l91.2 91.2zM944 220.8c-12.8-12.8-32-12.8-44.8 0l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-33.6 0-44.8zM310.4 808l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-32 0-44.8-11.2-11.2-32-11.2-44.8 0z"></path></svg></a></div></footer>
 </div></aside><div class="l_main" id="main">
 
-<header class="header mobile-only"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://pic.imgdb.cn/item/66f22aeff21886ccc06a4cdd.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">BaoboboboBao</div><div class="sub cap">baobobo</div></a></div></header>
-
- 
 
 
 
 
-<div class="navbar top"><nav class="post"><a href="/">近期发布</a><a class="active" href="/tags">标签：GAS</a><a href="/archives">归档</a></nav></div>
-<div class="post-list post"><a class="post-card post" href="/2026/02/16/GAS%E7%9A%84%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%EF%BC%88%E4%B8%80%EF%BC%89/">
-<article class="md-text"><h2 class="post-title">GAS的学习资料记录</h2><div class="excerpt"><p>此学习笔记系列是这么一种思路：参考官方文档的每一步的使用教程，去看相关的源码，最好能够搞清楚调用链。先声明此次学习的重点在于GAS插件的整套委托思想，以及经常出问题的GAS网络同步相关，搞清楚为什么能够把游戏能力解耦，网络又是怎么同步的，还有网络在同...</p></div><div class="meta cap"><span class="cap" id="post-meta"><svg style="margin-bottom:2px" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M6.94 2c.416 0 .753.324.753.724v1.46c.668-.012 1.417-.012 2.26-.012h4.015c.842 0 1.591 0 2.259.013v-1.46c0-.4.337-.725.753-.725s.753.324.753.724V4.25c1.445.111 2.394.384 3.09 1.055c.698.67.982 1.582 1.097 2.972L22 9H2v-.724c.116-1.39.4-2.302 1.097-2.972c.697-.67 1.645-.944 3.09-1.055V2.724c0-.4.337-.724.753-.724"/><path fill="currentColor" d="M22 14v-2c0-.839-.004-2.335-.017-3H2.01c-.013.665-.01 2.161-.01 3v2c0 3.771 0 5.657 1.172 6.828C4.343 22 6.228 22 10 22h4c3.77 0 5.656 0 6.828-1.172C22 19.658 22 17.772 22 14" opacity=".5"/><path fill="currentColor" d="M18 17a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><time datetime="2026-02-16T11:36:51.000Z">2026-02-16</time></span></div></article>
-</a></div>
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-03-23T15:18:28.000Z">2026-03-23</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-03-23T15:19:02.231Z">2026-03-23</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>句柄是何物</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h2 id="句柄是何物"><a href="#句柄是何物" class="headerlink" title="句柄是何物"></a>句柄是何物</h2><p>最开始我听到这个词听起来像吃的，以为和语法糖同属一类。结果发现此柄非饼，从此这个词给我的感觉就是咯牙。</p>
+<p>我在看UE的源码的时候以及看一些其他工程代码的时候看到了非常多的Handle，但是一直没有搞清楚它的设计以及用法。之前写dx12的时候，比如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">static void ImGui::DockSettingsHandler_ClearAll(ImGuiContext* ctx, ImGuiSettingsHandler*)</span><br></pre></td></tr></table></figure>
+
+<p>动不动Handle，Handler。经常和指针搞不清楚。</p>
+<p>我目前认为它就是指针的包装？比如智能指针这些类就是包装了原始指针，那么它们是不是也能叫句柄。那标准库的迭代器是不是也是句柄。这些东西感觉在win编程里尤其多，什么文件句柄，窗口句柄等等。</p>
+<p>下面列出一些我搜到的答案：</p>
+<blockquote>
+<p>句柄<em>是</em>一种指针，它通常是引用某个实体的一种方式。</p>
+<p>更准确的说法是，指针是句柄的一种类型，但并非所有句柄都是指针。</p>
+<p>例如，句柄也可以是内存表中的某个索引，该索引对应于一个条目，该条目本身包含指向某个对象的指针。</p>
+<p>关键在于，当你拥有一个“句柄”时，你既不知道也不关心这个句柄最终是如何识别它所识别的事物的，你只需要知道它确实识别了它所识别的事物即可。</p>
+<p>显然，“句柄究竟是什么”这个问题并没有统一的答案，因为即使在同一个系统中，指向不同对象的句柄在“底层”的实现方式也可能不同。但你无需关心这些差异。</p>
+</blockquote>
+<p>这个讲到了不透明指针：<a target="_blank" rel="noopener" href="https://en.wikibooks.org/wiki/C%2B%2B_Programming/Idioms#Pointer_To_Implementation_(pImpl)">https://en.wikibooks.org/wiki/C%2B%2B_Programming/Idioms#Pointer_To_Implementation_(pImpl)</a></p>
+<p>还有其他理解：</p>
+<blockquote>
+<p>指针是句柄的一种特殊情况。指针的优点在于它可以直接标识内存中的对象，但代价是对象不可重定位。句柄则抽象了对象在内存中的位置，但访问它需要额外的上下文信息。例如，如果句柄被定义为数组索引，我们需要一个数组基址指针来计算数组元素的地址。有时，上下文信息在调用点是隐式的，例如当对象池是全局的时。这使得我们可以优化句柄的大小和使用方式，例如使用 16 位整数而不是 64 位指针。</p>
+</blockquote>
+<p>这个youtube视频讲得挺好：<strong>A Introduction to Handles (in C++)</strong></p>
+<p><a target="_blank" rel="noopener" href="https://youtu.be/BQC5WH_t-Uc?si=FqTXAwjhIj21NSKi">https://youtu.be/BQC5WH_t-Uc?si=FqTXAwjhIj21NSKi</a></p>
+<p>总之看下来，这个概念很宽泛，每个语言的术语也不太一样，但总的来说，可以这么理解：句柄就是能让你访问到资源或者你想要知道的对象，但是又包装了实现细节，我感觉stl里的迭代器就是一种句柄，只不过迭代器更能描述好功能而已。还是看使用者以及程序设计者怎么定义吧，这本来就是个宽泛的名词。</p>
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/03/23/%E5%86%85%E6%8E%A2malloc/">内探malloc</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body twikoo'>
+      
+
+<div id="twikoo_container"><svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg></div>
+    </section>
+  </div>
+
 
 
 <footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">baobobo</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
 </div></footer>
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
-</aside><div class='float-panel blur'>
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%A5%E6%9F%84%E6%98%AF%E4%BD%95%E7%89%A9"><span class="toc-text">句柄是何物</span></a></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089" clip-rule="evenodd"/><path fill="currentColor" d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
   </button>
@@ -402,6 +470,22 @@
 
 
 <!-- optional -->
+
+  <script type="module">
+  const el = document.getElementById('twikoo_container');
+  util.viewportLazyload(el, load_twikoo, false);
+
+  function load_twikoo() {
+    if (!el) return;
+    utils.js('https://gcore.jsdelivr.net/npm/twikoo@1.6.8/dist/twikoo.all.min.js', {defer: true}).then(function () {
+      const path = el.getAttribute('comment_id') ?? decodeURI(window.location.pathname);
+      twikoo.init(Object.assign({"js":"https://gcore.jsdelivr.net/npm/twikoo@1.6.8/dist/twikoo.all.min.js","envId":"https://xxx"}, {
+        el: '#twikoo_container',
+        path: path,
+      }));
+    });
+  }
+</script>
 
 
 

@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
-  <meta name="robots" content="noindex,follow">
+  
   <meta name="generator" content="Hexo 5.4.2">
   <meta http-equiv='x-dns-prefetch-control' content='on' />
   
@@ -17,22 +17,25 @@
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
   
-  <title>标签：GAS - BaoboboboBao</title>
+  <title>内探malloc - BaoboboboBao</title>
 
   
-    <meta name="description" content="���ڲ�����">
-<meta property="og:type" content="website">
-<meta property="og:title" content="BaoboboboBao">
-<meta property="og:url" content="http://example.com/tags/GAS/index.html">
+    <meta name="description" content="源码在 1C:\Program Files (x86)\Windows Kits\10\Source\10.0.26100.0\ucrt\heap  malloc.cpp文件非常简洁： 12345678910111213141516171819202122232425262728&#x2F;&#x2F;&#x2F;&#x2F; malloc.cpp&#x2F;&#x2F;&#x2F;&#x2F;      Copyright (c) Microsoft Corporation">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内探malloc">
+<meta property="og:url" content="http://example.com/2026/03/23/%E5%86%85%E6%8E%A2malloc/index.html">
 <meta property="og:site_name" content="BaoboboboBao">
-<meta property="og:description" content="���ڲ�����">
+<meta property="og:description" content="源码在 1C:\Program Files (x86)\Windows Kits\10\Source\10.0.26100.0\ucrt\heap  malloc.cpp文件非常简洁： 12345678910111213141516171819202122232425262728&#x2F;&#x2F;&#x2F;&#x2F; malloc.cpp&#x2F;&#x2F;&#x2F;&#x2F;      Copyright (c) Microsoft Corporation">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-03-23T07:12:06.000Z">
+<meta property="article:modified_time" content="2026-03-23T07:12:55.229Z">
 <meta property="article:author" content="baobobo">
+<meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
   
   
   
-  
+  <meta name="keywords" content="C++">
 
   <!-- feed -->
   
@@ -47,7 +50,7 @@
 </head>
 <body>
 
-<div class="l_body s:aa index tech" id="start" layout="undefined" ><aside class="l_left"><div class="leftbar-container">
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
 
 
 <header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://pic.imgdb.cn/item/66f22aeff21886ccc06a4cdd.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">BaoboboboBao</div><div class="sub cap">baobobo</div></a></div></header>
@@ -59,22 +62,94 @@
 <nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="关于" href="/about/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a></nav>
 </div>
 <div class="widgets">
+
+
 <widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/03/23/%E5%8F%A5%E6%9F%84%E6%98%AF%E4%BD%95%E7%89%A9/"><span class="title">句柄是何物</span></a><a class="item title" href="/2026/03/23/%E5%86%85%E6%8E%A2malloc/"><span class="title">内探malloc</span></a><a class="item title" href="/2026/03/22/%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%80%9D%E8%80%83%EF%BC%9AC-%E4%B8%8EUE%E7%9A%84%E7%B1%BB%E5%9E%8B%E6%93%A6%E9%99%A41%EF%BC%9Astd-function%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"><span class="title">学习与思考：C++与UE的类型擦除1：std::function源码解析</span></a><a class="item title" href="/2026/02/16/GAS%E7%9A%84%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%EF%BC%88%E4%B8%80%EF%BC%89/"><span class="title">GAS的学习资料记录</span></a><a class="item title" href="/2026/03/12/C-%E6%8B%BE%E9%81%97%E5%BD%955/"><span class="title">C++拾遗录5</span></a><a class="item title" href="/2026/03/11/%E4%BC%A4%E5%AE%B3%E7%B3%BB%E7%BB%9F%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97/"><span class="title">伤害系统更新日志</span></a><a class="item title" href="/2026/03/11/MSVC-STL%E4%B8%ADvector-shrink-to-fit%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"><span class="title">MSVC STL中vector::shrink_to_fit及扩容与缩容源码解析</span></a><a class="item title" href="/2026/03/09/%E9%9A%BE%E4%BB%A5%E7%90%86%E8%A7%A3%E7%9A%84%E5%B9%B3%E7%A7%BB%E7%BC%A9%E6%94%BE%E6%97%8B%E8%BD%AC%E7%9F%A9%E9%98%B5/"><span class="title">难以理解的平移缩放旋转矩阵</span></a><a class="item title" href="/2026/03/08/%E5%BC%80%E7%BC%B8%E5%85%BB%E5%B0%8F%E9%BE%99%E8%99%BE/"><span class="title">开缸养小龙虾</span></a><a class="item title" href="/2026/02/27/%E6%8E%A2%E7%A9%B6TArray/"><span class="title">探究TArray</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" onclick="switchTheme()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><path fill="currentColor" fill-rule="evenodd" d="M582.4 326.4c-140.8 0-256 115.2-256 256s115.2 256 256 256 256-115.2 256-256-115.2-256-256-256z m0 448c-70.4 0-131.2-36.8-164.8-92.8 12.8 3.2 27.2 4.8 40 4.8 121.6 0 219.2-99.2 219.2-219.2 0-17.6-1.6-35.2-6.4-52.8 60.8 32 102.4 96 102.4 169.6 1.6 104-84.8 190.4-190.4 190.4zM582.4 262.4c17.6 0 32-14.4 32-32v-128c0-17.6-14.4-32-32-32s-32 14.4-32 32v128c0 17.6 14.4 32 32 32zM262.4 582.4c0-17.6-14.4-32-32-32h-128c-17.6 0-32 14.4-32 32s14.4 32 32 32h128c17.6 0 32-14.4 32-32zM310.4 356.8c6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6 12.8-12.8 12.8-32 0-44.8l-91.2-91.2c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l91.2 91.2zM944 220.8c-12.8-12.8-32-12.8-44.8 0l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-33.6 0-44.8zM310.4 808l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-32 0-44.8-11.2-11.2-32-11.2-44.8 0z"></path></svg></a></div></footer>
 </div></aside><div class="l_main" id="main">
 
-<header class="header mobile-only"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://pic.imgdb.cn/item/66f22aeff21886ccc06a4cdd.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">BaoboboboBao</div><div class="sub cap">baobobo</div></a></div></header>
-
- 
 
 
 
 
-<div class="navbar top"><nav class="post"><a href="/">近期发布</a><a class="active" href="/tags">标签：GAS</a><a href="/archives">归档</a></nav></div>
-<div class="post-list post"><a class="post-card post" href="/2026/02/16/GAS%E7%9A%84%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%EF%BC%88%E4%B8%80%EF%BC%89/">
-<article class="md-text"><h2 class="post-title">GAS的学习资料记录</h2><div class="excerpt"><p>此学习笔记系列是这么一种思路：参考官方文档的每一步的使用教程，去看相关的源码，最好能够搞清楚调用链。先声明此次学习的重点在于GAS插件的整套委托思想，以及经常出问题的GAS网络同步相关，搞清楚为什么能够把游戏能力解耦，网络又是怎么同步的，还有网络在同...</p></div><div class="meta cap"><span class="cap" id="post-meta"><svg style="margin-bottom:2px" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M6.94 2c.416 0 .753.324.753.724v1.46c.668-.012 1.417-.012 2.26-.012h4.015c.842 0 1.591 0 2.259.013v-1.46c0-.4.337-.725.753-.725s.753.324.753.724V4.25c1.445.111 2.394.384 3.09 1.055c.698.67.982 1.582 1.097 2.972L22 9H2v-.724c.116-1.39.4-2.302 1.097-2.972c.697-.67 1.645-.944 3.09-1.055V2.724c0-.4.337-.724.753-.724"/><path fill="currentColor" d="M22 14v-2c0-.839-.004-2.335-.017-3H2.01c-.013.665-.01 2.161-.01 3v2c0 3.771 0 5.657 1.172 6.828C4.343 22 6.228 22 10 22h4c3.77 0 5.656 0 6.828-1.172C22 19.658 22 17.772 22 14" opacity=".5"/><path fill="currentColor" d="M18 17a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><time datetime="2026-02-16T11:36:51.000Z">2026-02-16</time></span></div></article>
-</a></div>
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-03-23T07:12:06.000Z">2026-03-23</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-03-23T07:12:55.229Z">2026-03-23</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>内探malloc</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><p>源码在</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Program Files (x86)\Windows Kits\10\Source\10.0.26100.0\ucrt\heap</span><br></pre></td></tr></table></figure>
+
+<p>malloc.cpp文件非常简洁：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// malloc.cpp</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//      Copyright (c) Microsoft Corporation. All rights reserved.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Implementation of malloc().</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;corecrt_internal.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;malloc.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// Allocates a block of memory of size &#x27;size&#x27; bytes in the heap.  If allocation</span></span><br><span class="line"><span class="comment">// fails, nullptr is returned.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// This function supports patching and therefore must be marked noinline.</span></span><br><span class="line"><span class="comment">// Both _malloc_dbg and _malloc_base must also be marked noinline</span></span><br><span class="line"><span class="comment">// to prevent identical COMDAT folding from substituting calls to malloc</span></span><br><span class="line"><span class="comment">// with either other function or vice versa.</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> _CRT_HYBRIDPATCHABLE __declspec(noinline) <span class="function">_CRTRESTRICT <span class="type">void</span>* __cdecl <span class="title">malloc</span><span class="params">(<span class="type">size_t</span> <span class="type">const</span> size)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="meta">#<span class="keyword">ifdef</span> _DEBUG</span></span><br><span class="line">    <span class="keyword">return</span> _malloc_dbg(size, _NORMAL_BLOCK, <span class="literal">nullptr</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">    <span class="keyword">return</span> _malloc_base(size);</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>可以看到就是调试debug模式与其他。</p>
+<p>先看看release模式：进入到_malloc_base</p>
+<p>mallocbase也很简洁：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// malloc_base.cpp</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//      Copyright (c) Microsoft Corporation. All rights reserved.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Implementation of _malloc_base().  This is defined in a different source file</span></span><br><span class="line"><span class="comment">// from the malloc() function to allow malloc() to be replaced by the user.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;corecrt_internal.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;malloc.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;new.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// This function implements the logic of malloc().  It is called directly by the</span></span><br><span class="line"><span class="comment">// malloc() function in the Release CRT and is called by the debug heap in the</span></span><br><span class="line"><span class="comment">// Debug CRT.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// This function must be marked noinline, otherwise malloc and</span></span><br><span class="line"><span class="comment">// _malloc_base will have identical COMDATs, and the linker will fold</span></span><br><span class="line"><span class="comment">// them when calling one from the CRT. This is necessary because malloc</span></span><br><span class="line"><span class="comment">// needs to support users patching in custom implementations.</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> __declspec(noinline) _CRTRESTRICT <span class="type">void</span>* __cdecl _malloc_base(<span class="type">size_t</span> <span class="type">const</span> size)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Ensure that the requested size is not too large:</span></span><br><span class="line">    _VALIDATE_RETURN_NOEXC(_HEAP_MAXREQ &gt;= size, ENOMEM, <span class="literal">nullptr</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Ensure we request an allocation of at least one byte:</span></span><br><span class="line">    <span class="type">size_t</span> <span class="type">const</span> actual_size = size == <span class="number">0</span> ? <span class="number">1</span> : size;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (;;)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">void</span>* <span class="type">const</span> block = <span class="built_in">HeapAlloc</span>(__acrt_heap, <span class="number">0</span>, actual_size);</span><br><span class="line">        <span class="keyword">if</span> (block)</span><br><span class="line">            <span class="keyword">return</span> block;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Otherwise, see if we need to call the new handler, and if so call it.</span></span><br><span class="line">        <span class="comment">// If the new handler fails, just return nullptr:</span></span><br><span class="line">        <span class="keyword">if</span> (_query_new_mode() == <span class="number">0</span> || !_callnewh(actual_size))</span><br><span class="line">        &#123;</span><br><span class="line">            errno = ENOMEM;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// The new handler was successful; try to allocate again...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>感觉注释已经讲得很清楚了</p>
+<p>分解一下看看，第一行代码是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_VALIDATE_RETURN_NOEXC(_HEAP_MAXREQ &gt;= size, ENOMEM, nullptr);</span><br></pre></td></tr></table></figure>
+
+<p>这是一个宏，用来做参数检查。宏展开后逻辑大致类似：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (size &gt; _HEAP_MAXREQ)</span><br><span class="line">&#123;</span><br><span class="line">    errno = ENOMEM;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也就是说，CRT 会先检查用户请求的大小是不是超过了运行时允许的最大分配尺寸。这个最大值 <code>_HEAP_MAXREQ</code> 通常接近 <code>SIZE_MAX</code>，但略小一点，因为堆管理器还需要在块前面放 header。如果请求太大，直接失败并设置 <code>errno</code> 为 <code>ENOMEM</code>。从内存角度看，这一步只是防止一个明显不可能完成的请求继续往下执行。</p>
+<p>接下来是一个很小但很重要的处理：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">size_t</span> <span class="type">const</span> actual_size = size == <span class="number">0</span> ? <span class="number">1</span> : size;</span><br></pre></td></tr></table></figure>
+
+<p>也就是说，如果用户调用</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">malloc</span>(<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p>CRT 实际会把请求改成至少分配 1 个字节。原因是 C 标准允许 <code>malloc(0)</code> 返回 <code>nullptr</code> 或返回一个可释放的指针，而 Windows 的实现选择第二种策略。这样做有两个好处：第一，调用者仍然可以把这个指针交给 <code>free</code>；第二，分配器的内部逻辑不需要处理“0 字节块”这种特殊情况。</p>
+<p>到这里为止，函数只是把请求做了合法化处理。真正的分配发生在下面的循环里：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">for (;;)</span><br><span class="line">&#123;</span><br><span class="line">    void* const block = HeapAlloc(__acrt_heap, 0, actual_size);</span><br><span class="line">    if (block)</span><br><span class="line">        return block;</span><br></pre></td></tr></table></figure>
+
+<p>这里第一次出现了真正重要的函数：<code>HeapAlloc</code>。这就是 Windows 的用户态堆分配 API。<code>__acrt_heap</code> 是 CRT 在初始化时获取的进程默认堆句柄，通常来自 <code>GetProcessHeap()</code>。因此这行代码的真实含义其实是：到当前进程的堆里，找一块大小为 <code>actual_size</code> 的空闲内存块。</p>
+<p>然后还检查了一次：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// If the new handler fails, just return nullptr:</span></span><br><span class="line">        <span class="keyword">if</span> (_query_new_mode() == <span class="number">0</span> || !_callnewh(actual_size))</span><br><span class="line">        &#123;</span><br><span class="line">            errno = ENOMEM;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// The new handler was successful; try to allocate again...</span></span><br></pre></td></tr></table></figure>
+
+<p>这里出现了 C++ 运行时和 C 运行时之间的一个桥接机制。<code>_query_new_mode()</code> 用来查询当前 CRT 是否启用了new-handler 模式。在 C++ 里，如果 <code>new</code> 分配失败，可以触发一个用户注册的函数（通过 <code>std::set_new_handler</code>）。CRT提供了一种兼容机制：当 <code>malloc</code> 失败时，也可以尝试调用这个 handler。</p>
+<p>简单总结一下就是它首先检查请求是否合法，然后把 0 字节请求转换为最小分配单位，接着调用 Windows 堆分配函数 <code>HeapAlloc</code>。如果堆分配失败，它会尝试通过 C++ 的 new-handler 机制释放一些内存，再重复尝试；只有在 handler 也无法解决问题时，才真正返回 <code>nullptr</code> 并设置 <code>errno</code> 为 <code>ENOMEM</code>。</p>
+<p>HeapAlloc又在哪呢？</p>
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2026/03/23/%E5%8F%A5%E6%9F%84%E6%98%AF%E4%BD%95%E7%89%A9/">句柄是何物</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/03/22/%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%80%9D%E8%80%83%EF%BC%9AC-%E4%B8%8EUE%E7%9A%84%E7%B1%BB%E5%9E%8B%E6%93%A6%E9%99%A41%EF%BC%9Astd-function%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">学习与思考：C++与UE的类型擦除1：std::function源码解析</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body twikoo'>
+      
+
+<div id="twikoo_container"><svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg></div>
+    </section>
+  </div>
+
 
 
 <footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">baobobo</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
@@ -402,6 +477,22 @@
 
 
 <!-- optional -->
+
+  <script type="module">
+  const el = document.getElementById('twikoo_container');
+  util.viewportLazyload(el, load_twikoo, false);
+
+  function load_twikoo() {
+    if (!el) return;
+    utils.js('https://gcore.jsdelivr.net/npm/twikoo@1.6.8/dist/twikoo.all.min.js', {defer: true}).then(function () {
+      const path = el.getAttribute('comment_id') ?? decodeURI(window.location.pathname);
+      twikoo.init(Object.assign({"js":"https://gcore.jsdelivr.net/npm/twikoo@1.6.8/dist/twikoo.all.min.js","envId":"https://xxx"}, {
+        el: '#twikoo_container',
+        path: path,
+      }));
+    });
+  }
+</script>
 
 
 
